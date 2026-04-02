@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Inicio</title>
+    <title>Paraná</title>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
 </head>
 
