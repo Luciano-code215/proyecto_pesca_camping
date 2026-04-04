@@ -17,3 +17,11 @@ Route::get('/crear_cuenta', function () {
 Route::get('/ingresar', function () {
     return view('ingresar');
 });
+
+Route::get('/pesca', function () {
+    return view('pesca');
+});
+
+Route::get('/camping', function () {
+    return view('camping');
+});

@@ -4,6 +4,7 @@
 <head>
     <title>Contacto</title>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
 </head>
 
 <body>

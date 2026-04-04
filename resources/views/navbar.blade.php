@@ -21,8 +21,8 @@
                         Productos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Pesca</a></li>
-                        <li><a class="dropdown-item" href="#">Camping</a></li>
+                        <li><a class="dropdown-item" href="/pesca">Pesca</a></li>
+                        <li><a class="dropdown-item" href="/camping">Camping</a></li>
                         <li><a class="dropdown-item" href="#">Indumentaria</a></li>
                     </ul>
                 </li>
@@ -40,18 +40,21 @@
         </div>
     </div>
     <div class="navbar-nav ms-auto d-flex align-items-center">
-
-        <a class="nav-link position-relative" href="#">
-            <img src="{{ asset('img/ico-carrito.png') }}" alt="Carrito" width="30" height="30">
+        <a class="nav-link px-2 position-relative" href="#">
+            <i class="bi bi-cart3 fs-4 text-white"></i>
+            <span
+                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none"></span>
         </a>
 
         <a class="nav-link px-2" href="#" target="_blank">
-            <img src="{{ asset('img/ico-wpp.png') }}" alt="WhatsApp" width="30" height="30">
+            <i class="bi bi-whatsapp fs-4" style="color: #25D366;"></i>
         </a>
 
         <a class="nav-link px-2" href="#" target="_blank">
-            <img src="{{ asset('img/ico-ig.png') }}" alt="Instagram" width="30" height="30">
+            <i class="bi bi-instagram fs-4" style="color: #E4405F;"></i>
         </a>
+
+
 
 
 
