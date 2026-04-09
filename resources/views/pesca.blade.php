@@ -21,9 +21,9 @@
         </a>
     </div>
     <div class="collapse" id="productos-canas">
-        <div class="card card-body">
-            @include("navbar")
-        </div>
+
+        @include("cañas")
+
     </div>
 
     <div class="text-center bg-image shadow-1-strong rounded d-flex align-items-center justify-content-center" style="background-image: url('{{ asset('img/banner-reel.png') }}'); 

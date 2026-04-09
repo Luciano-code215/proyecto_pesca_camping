@@ -10,7 +10,9 @@
 <body>
     @include('navbar')
 
-    <img src="{{ asset('img/portada-parana.png') }}" class="img-fluid" alt="Portada">
+    <div class="container-fluid me-0 mt-0">
+        <img src="{{ asset('img/portada-parana.png') }}" class="img-fluid" alt="Portada">
+    </div>
 
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>

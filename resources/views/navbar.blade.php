@@ -1,14 +1,21 @@
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-0">
+<style>
+    body {
+        background-color: #b5b7c4 !important;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-0 sticky-top">
     <div class="container-fluid py-0">
         <a class="navbar-brand" href="/">
             <img src="{{ asset('img/logo_parana.png') }}" height="60" class="d-inline-block align-top" alt="Paraná">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler oder-first" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav fw-bold">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                 </li>
@@ -39,24 +46,15 @@
             </ul>
         </div>
     </div>
-    <div class="navbar-nav ms-auto d-flex align-items-center">
-        <a class="nav-link px-2 position-relative" href="#">
-            <i class="bi bi-cart3 fs-4 text-white"></i>
-            <span
-                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none"></span>
-        </a>
+    <ul class="navbar-nav flex-row ms-auto">
+        <li class="nav-item me-3">
+            <a class="nav-link fs-3" href="#"><i class="bi bi-whatsapp"></i></a>
+        </li>
+        <li class="nav-item me-3">
+            <a class="nav-link fs-3" href="#"><i class="bi bi-instagram"></i></a>
+        </li>
 
-        <a class="nav-link px-2" href="#" target="_blank">
-            <i class="bi bi-whatsapp fs-4" style="color: #25D366;"></i>
-        </a>
-
-        <a class="nav-link px-2" href="#" target="_blank">
-            <i class="bi bi-instagram fs-4" style="color: #E4405F;"></i>
-        </a>
+    </ul>
 
 
-
-
-
-    </div>
 </nav>
