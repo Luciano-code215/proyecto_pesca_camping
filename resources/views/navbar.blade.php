@@ -20,7 +20,16 @@
                     <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/contacto">Quienes somos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contacto">Comercializacion</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/contacto">Contacto</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contacto">Terminos y usos</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
