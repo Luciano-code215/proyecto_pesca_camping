@@ -17,10 +17,10 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav fw-bold">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+                    <a class="nav-link" aria-current="page" href="/">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contacto">Quienes somos</a>
+                    <a class="nav-link" href="/quienes_somos">Quienes somos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contacto">Comercializacion</a>

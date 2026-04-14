@@ -25,3 +25,7 @@ Route::get('/pesca', function () {
 Route::get('/camping', function () {
     return view('camping');
 });
+
+Route::get('/quienes_somos', function () {
+    return view('quienes_somos');
+});
