@@ -37,9 +37,9 @@
                         Productos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/pesca">Pesca</a></li>
-                        <li><a class="dropdown-item" href="/camping">Camping</a></li>
-                        <li><a class="dropdown-item" href="#">Indumentaria</a></li>
+                        <li><a class="dropdown-item" href="/productos?categoria=pesca">Pesca</a></li>
+                        <li><a class="dropdown-item" href="/productos?categoria=camping">Camping</a></li>
+                        <li><a class="dropdown-item" href="/productos?categoria=indumentaria">Indumentaria</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
