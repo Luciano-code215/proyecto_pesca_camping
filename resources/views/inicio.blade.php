@@ -5,18 +5,8 @@
     <title>Paraná pesca</title>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
 </head>
-
-<style>
-    .zoom-link img {
-        transition: transform 0.3s ease;
-    }
-
-    .zoom-link:hover img {
-        transform: scale(1.1);
-    }
-</style>
 
 <body>
     @include('navbar')

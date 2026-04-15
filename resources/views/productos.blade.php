@@ -6,19 +6,32 @@
     <title>Productos</title>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
 </head>
 
 <body>
     @include('navbar')
 
+    @include('partials.breadcrumbs')
 
-    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
-        aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Library</li>
-        </ol>
-    </nav>
+    @if (request()->query('categoria') == 'pesca')
+        <div class="container text-center mt-4 mb-4">
+            <div class="row row-cols-2 row-cols-md-4 g-2 justify-content-center">
+                <div class="col">
+                    <a href="/productos?categoria=pesca" class="btn btn-dark w-100">Ver Todo</a>
+                </div>
+                <div class="col">
+                    <a href="/productos?categoria=pesca&tipo=caña" class="btn btn-dark w-100">Cañas</a>
+                </div>
+                <div class="col">
+                    <a href="/productos?categoria=pesca&tipo=reel" class="btn btn-dark w-100">Reels</a>
+                </div>
+                <div class="col">
+                    <a href="/productos?categoria=pesca&tipo=accesorio" class="btn btn-dark w-100">Accesorios</a>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <div class="container text-center">
         <div class="row">
@@ -33,17 +46,22 @@
                                 alt="{{ $producto['nombre'] }}">
                         </a>
 
-                        <div class="card-body">
-                            <p class="card-text">
-                                <a href="#" class="text-center fw-bold text-decoration-none text-dark">
+                        <div class="card-body d-flex flex-column">
+
+                            <p class="card-text text-center">
+                                <a href="#" class="fw-bold text-decoration-none text-dark">
                                     {{ $producto['nombre'] }}
                                 </a>
                             </p>
 
                             <h2 class="text-danger text-center">$ {{ number_format($producto['precio'], 0, ',', '.') }}
                             </h2>
+
                             <h5 class="text-center">{!! $producto['descripcion'] !!}</h5>
-                            <button type="button" class="btn btn-primary">Agregar al carrito</button>
+
+                            <div class="mt-auto pt-3">
+                                <button type="button" class="btn btn-primary w-100">Agregar al carrito</button>
+                            </div>
                         </div>
                     </div>
                 </div>
