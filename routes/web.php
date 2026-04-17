@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\FormConsultasController;
 
 
 Route::get('/', function () {
@@ -37,4 +38,10 @@ Route::get('/productos', [ProductoController::class, 'index'])->name('productos'
 Route::get('/en_construccion', function () {
     return view('en_construccion');
 });
+
+Route::get('/form-consultas', function () {
+    return view('form-consultas');
+});
+
+Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
 

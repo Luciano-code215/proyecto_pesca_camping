@@ -31,8 +31,8 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0"><i
                                             class="bi bi-envelope text-primary"></i></span>
-                                    <input type="email" class="form-control border-start-0" id="email" name="email"
-                                        placeholder="tu@email.com" required autofocus>
+                                    <input type="email" class="form-control border-start-0" id="email"
+                                        name="email" placeholder="tu@email.com" required autofocus>
                                 </div>
                             </div>
 
@@ -61,7 +61,8 @@
 
                             <div class="text-center">
                                 <p class="mb-1">
-                                    <a href="#" class="text-decoration-none text-muted small">¿Olvidaste tu
+                                    <a href="/en_construccion" class="text-decoration-none text-muted small">¿Olvidaste
+                                        tu
                                         contraseña?</a>
                                 </p>
                                 <p class="mb-0">

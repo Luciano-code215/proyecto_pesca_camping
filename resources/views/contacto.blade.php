@@ -2,70 +2,66 @@
 <html>
 
 <head>
-    <title>Contacto</title>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
+    <title>Contacto</title>
 </head>
 
 <body>
     @include('navbar')
-
-    <style>
-        body {
-            background-image: url('{{ asset('img/fondo-contacto.png') }}');
-            background-size: cover;
-            background-position: center;
-        }
-
-        background-color: #f1ebd8;
-    </style>
-
-
     <div class="container my-5">
-        <div class="row justify-content-center">
+        <div class="row g-4">
+
             <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-header bg-dark text-white">
-                        <h4 class="mb-0">Contactanos</h4>
-                    </div>
-                    <div class="card-body">
-                        <form action="#" method="POST">
-                            @csrf <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="Ej: Juan Pérez" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="nombre@ejemplo.com" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="celular" class="form-label">Número de Celular</label>
-                                <input type="tel" class="form-control" id="celular" name="celular"
-                                    placeholder="Ej: 3794123456">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="mensaje" class="form-label">Tu Mensaje</label>
-                                <textarea class="form-control" id="mensaje" name="mensaje" rows="4"
-                                    placeholder="¿En qué podemos ayudarte?" required></textarea>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary text-white">Enviar Mensaje</button>
-                            </div>
-                        </form>
-                    </div>
+                <h2 class="fw-bold mb-4">Contacto</h2>
+                <div class="card border-0 shadow-sm p-4">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3">
+                            <strong>Razón Social:</strong><br> Paraná Pesca S.A.
+                        </li>
+                        <li class="mb-3">
+                            <strong>Email Consultas:</strong><br> parana_clientes@gmail.com
+                        </li>
+                        <li class="mb-3">
+                            <strong>Email Proveedores:</strong><br> parana_proveedores@gmail.com
+                        </li>
+                        <li class="mb-3">
+                            <strong>Teléfono:</strong><br> +54 3795 101613
+                        </li>
+                        <li>
+                            <strong>Ubicación Física:</strong><br> Cazadores Correntinos 3120, Corrientes,
+                            Argentina.<br>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3539.4252818379073!2d-58.81698768871169!3d-27.48714631735143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94456b764c43a27b%3A0xa8e21ab208eaa5ef!2sAv.%20Regimiento%20Cazadores%20Correntinos%203120%2C%20W3402%20Corrientes!5e0!3m2!1ses!2sar!4v1776438766984!5m2!1ses!2sar"
+                                width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                            </iframe>
+                        </li>
+                    </ul>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <h2 class="fw-bold mb-4">Estamos aquí para ayudarte</h2>
+                <div class="d-grid gap-3">
+                    <a href="/en_construccion" target="_blank" class="btn btn-outline-success btn-lg">
+                        Chatear por WhatsApp
+                    </a>
+
+                    <a href="/en_construccion" target="_blank" class="btn btn-outline-danger btn-lg">
+                        Visitar nuestro Instagram
+                    </a>
+
+                    <a href="/form-consultas" class="btn btn-primary btn-lg">
+                        Ir al Formulario de Consultas
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
-
-
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    @include('footer')
 </body>
 
 </html>
