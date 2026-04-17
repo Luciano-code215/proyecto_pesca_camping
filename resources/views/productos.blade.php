@@ -21,13 +21,13 @@
                     <a href="/productos?categoria=pesca" class="btn btn-dark w-100">Ver Todo</a>
                 </div>
                 <div class="col">
-                    <a href="/productos?categoria=pesca&tipo=caña" class="btn btn-dark w-100">Cañas</a>
+                    <a href="/productos?categoria=pesca&tipo=cañas" class="btn btn-dark w-100">Cañas</a>
                 </div>
                 <div class="col">
-                    <a href="/productos?categoria=pesca&tipo=reel" class="btn btn-dark w-100">Reels</a>
+                    <a href="/productos?categoria=pesca&tipo=reels" class="btn btn-dark w-100">Reels</a>
                 </div>
                 <div class="col">
-                    <a href="/productos?categoria=pesca&tipo=accesorio" class="btn btn-dark w-100">Accesorios</a>
+                    <a href="/productos?categoria=pesca&tipo=accesorios" class="btn btn-dark w-100">Accesorios</a>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                             <h5 class="text-center">{!! $producto['descripcion'] !!}</h5>
 
                             <div class="mt-auto pt-3">
-                                <button type="button" class="btn btn-primary w-100">Agregar al carrito</button>
+                                <a href="/en_construccion" class="btn btn-primary w-100">Agregar al carrito</a>
                             </div>
                         </div>
                     </div>

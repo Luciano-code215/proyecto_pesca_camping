@@ -34,3 +34,7 @@ Route::get('/quienes_somos', function () {
 
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos');
 
+Route::get('/en_construccion', function () {
+    return view('en_construccion');
+});
+

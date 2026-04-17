@@ -97,17 +97,20 @@
     <div class= "container mt-5 mb-5">
         <div class= "row">
             <div class= "col-md-4 mb-3 align-items-center justify-content-center">
-                <a href="#" class="zoom-link" style="display: block; overflow: hidden;">
+                <a href="/productos?categoria=pesca&tipo=reels" class="zoom-link"
+                    style="display: block; overflow: hidden;">
                     <img src="{{ asset('img/banner-reels.png') }}" class="img-fluid rounded" alt="banner reels">
                 </a>
             </div>
             <div class= "col-md-4 mb-3 align-items-center justify-content-center">
-                <a href= "#" class="zoom-link" style="display: block; overflow: hidden;">
+                <a href= "/productos?categoria=pesca&tipo=cañas" class="zoom-link"
+                    style="display: block; overflow: hidden;">
                     <img src="{{ asset('img/banner-cañas.png') }}" class="img-fluid rounded" alt="banner cañas">
                 </a>
             </div>
             <div class= "col-md-4 mb-3 align-items-center justify-content-center">
-                <a href= "#" class="zoom-link" style="display: block; overflow: hidden;">
+                <a href= "/productos?categoria=pesca&tipo=accesorios" class="zoom-link"
+                    style="display: block; overflow: hidden;">
                     <img src="{{ asset('img/banner-señuelos.png') }}" class="img-fluid rounded" alt="banner señuelos">
                 </a>
             </div>
