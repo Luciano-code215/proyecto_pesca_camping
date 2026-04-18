@@ -63,17 +63,17 @@
 
   <div class="row justify-content-center text-center">
     <div class="col-md-4 mb-4">
-      <img src="assets/img/camilo_gomez_pesca.jpg" alt="Persona 1" class="rounded-circle mb-2" width="120" height="120">
+      <img src="{{ asset('img/camilo_gomez_pesca.jpg') }}" alt="Persona 1" class="rounded-circle mb-2" width="120" height="120">
       <h5>Camilo Gómez</h5>
       <p>Propietario – apasionado de la vida al aire libre, iniciador de nuestro proyecto.</p>
     </div>
     <div class="col-md-4 mb-4">
-      <img src="assets/img/staff2.jpg" alt="Persona 2" class="rounded-circle mb-2" width="120" height="120">
+      <img src="{{ asset('img/lucas_diaz_pesca.png') }}" alt="Persona 2" class="rounded-circle mb-2" width="120" height="120">
       <h5>Lucas Díaz</h5>
       <p>Coordinador general – se encarga de las compras, relacion con proveedores y redes sociales.</p>
     </div>
     <div class="col-md-4 mb-4">
-      <img src="assets/img/staff3.jpg" alt="Persona 3" class="rounded-circle mb-2" width="120" height="120">
+      <img src="{{ asset('img/andres_perez_pesca.png') }}" alt="Persona 3" class="rounded-circle mb-2" width="120" height="120">
       <h5>Andres Pérez</h5>
       <p>Vendedor – responsable de la atencion personalizada en nuestro local.</p>
     </div>
