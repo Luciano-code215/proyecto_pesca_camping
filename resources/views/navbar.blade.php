@@ -23,13 +23,13 @@
                     <a class="nav-link" href="/quienes_somos">Quienes somos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contacto">Comercializacion</a>
+                    <a class="nav-link" href="/comercializacion">Comercializacion</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contacto">Contacto</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contacto">Terminos y usos</a>
+                    <a class="nav-link" href="/terminos_y_usos">Terminos y usos</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

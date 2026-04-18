@@ -29,6 +29,11 @@ Route::get('/camping', function () {
     return view('camping');
 });
 
+Route::get('/comercializacion', function () {
+    return view('comercializacion');
+});
+
+
 Route::get('/quienes_somos', function () {
     return view('quienes_somos');
 });
