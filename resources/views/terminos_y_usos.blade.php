@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+@include('navbar')
 <style>
         body {
             background-image: url('{{ asset('img/terminos_y_usos_fondo.png') }}');
@@ -108,5 +108,6 @@
 
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
+@include('footer')
 </body>
 </html>
