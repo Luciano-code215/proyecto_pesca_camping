@@ -38,6 +38,11 @@ Route::get('/quienes_somos', function () {
     return view('quienes_somos');
 });
 
+Route::get('/terminos_y_usos', function () {
+    return view('terminos_y_usos');
+});
+
+
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos');
 
 Route::get('/en_construccion', function () {

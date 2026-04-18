@@ -32,13 +32,13 @@
                 
                 <div class="accordion-item">
                     <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#servicios">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#servicios">
                             1. Servicios y Productos Ofrecidos
                         </button>
                     </h2>
                     <div id="servicios" class="accordion-collapse collapse show">
                         <div class="accordion-body">
-                            Ofrecemos artículos especializados en pesca deportiva y camping. Esto incluye, pero no se limita a, cañas, riles, señuelos, carpas y accesorios de camping. Los servicios incluyen asesoramiento técnico y comercialización minorista/mayorista.
+                            Ofrecemos artículos especializados en pesca deportiva y camping. Esto incluye, pero no se limita a, cañas, reels, señuelos, carpas y accesorios de camping. Los servicios incluyen asesoramiento técnico y comercialización minorista/mayorista.
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                     </h2>
                     <div id="ventas" class="accordion-collapse collapse">
                         <div class="accordion-body">
-                            Los precios están expresados en Pesos Argentinos (ARS) e incluyen IVA. La compra se perfecciona al confirmar el pago mediante nuestras pasarelas autorizadas o transferencias bancarias.
+                            Los precios están expresados en Pesos e incluyen IVA. La compra se perfecciona al confirmar el pago mediante nuestras pasarelas autorizadas o transferencias bancarias.
                         </div>
                     </div>
                 </div>
@@ -78,8 +78,8 @@
                     <div id="envios" class="accordion-collapse collapse">
                         <div class="accordion-body">
                             <ul>
-                                <li><strong>Retiro en Local:</strong> Sin cargo en nuestro local en la ciudad de Corrientes.</li>
-                                <li><strong>Envíos Locales:</strong> Entregas en el día dentro del ejido urbano.</li>
+                                <li><strong>Retiro en Local:</strong> Sin cargo en nuestro local en la Ciudad de Corrientes.</li>
+                                <li><strong>Envíos Locales:</strong> Entregas en el día dentro de la ciudad y localidades aledañas.</li>
                                 <li><strong>Envíos Nacionales:</strong> Realizados vía transporte o correo privado. Tiempo estimado: 3 a 7 días hábiles.</li>
                             </ul>
                         </div>
@@ -105,6 +105,8 @@
         </div>
     </div>
 </div>
+
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 </body>
 </html>
