@@ -26,25 +26,22 @@
             </div>
         </div>
 
-            <div class="mb-3">
-                    <a href="https://facebook.com" class="text-white me-3 fs-4 text-decoration-none" target="_blank">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://instagram.com" class="text-white me-3 fs-4 text-decoration-none" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://wa.me" class="text-white fs-4 text-decoration-none" target="_blank">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                </div>
-            </div>
-
-
-
-        
-        <!-- Derechos -->
-        <div class="text-center mt-3 border-top pt-2">
-            <p>&copy; 2026 Parana Pesca. Todos los derechos reservados.</p>
+        <div class="mb-3">
+            <a href="/en_construccion" class="text-white me-3 fs-4 text-decoration-none" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="/en_construccion" class="text-white fs-4 text-decoration-none" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+            </a>
         </div>
+    </div>
+
+
+
+
+    <!-- Derechos -->
+    <div class="text-center mt-3 border-top pt-2">
+        <p>&copy; 2026 Parana Pesca. Todos los derechos reservados.</p>
+    </div>
     </div>
 </footer>

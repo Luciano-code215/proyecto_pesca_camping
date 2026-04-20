@@ -62,6 +62,7 @@
         </div>
     </div>
     @include('footer')
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
 </html>

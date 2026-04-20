@@ -5,6 +5,7 @@
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
 </head>
 
 <body>
@@ -23,7 +24,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form action="/" method="POST">
+                        <form action="/ingresar" method="POST">
                             @csrf
 
                             <div class="mb-3">

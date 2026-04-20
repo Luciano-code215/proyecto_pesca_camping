@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FormConsultasController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegistroController;
 
 
 Route::get('/', function () {
@@ -17,9 +19,13 @@ Route::get('/crear_cuenta', function () {
     return view('crear_cuenta');
 });
 
+Route::post('/crear_cuenta', [RegistroController::class, 'registrar']);
+
 Route::get('/ingresar', function () {
     return view('ingresar');
 });
+
+Route::post('/ingresar', [LoginController::class, 'login']);
 
 Route::get('/pesca', function () {
     return view('pesca');
@@ -54,4 +60,3 @@ Route::get('/form-consultas', function () {
 });
 
 Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
-
