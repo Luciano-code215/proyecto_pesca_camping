@@ -41,17 +41,15 @@
                     <div class="card h-100 shadow-sm border-0" onmouseover="this.classList.add('shadow-lg')"
                         onmouseout="this.classList.remove('shadow-lg')" style="transition: all 0.3s;">
 
-                        <a href="#">
-                            <img src="{{ asset('img/' . $producto['img']) }}" class="card-img-top"
-                                alt="{{ $producto['nombre'] }}">
-                        </a>
+                        <img src="{{ asset('img/' . $producto['img']) }}" class="card-img-top"
+                            alt="{{ $producto['nombre'] }}">
 
                         <div class="card-body d-flex flex-column">
 
                             <p class="card-text text-center">
-                                <a href="#" class="fw-bold text-decoration-none text-dark">
-                                    {{ $producto['nombre'] }}
-                                </a>
+
+                                {{ $producto['nombre'] }}
+
                             </p>
 
                             <h2 class="text-danger text-center">$ {{ number_format($producto['precio'], 0, ',', '.') }}

@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form action="#" method="POST">
+                        <form action="/crear_cuenta" method="POST">
                             @csrf
 
                             <div class="mb-3">

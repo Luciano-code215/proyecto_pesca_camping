@@ -43,7 +43,7 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Cuenta
                     </a>
@@ -57,10 +57,10 @@
     </div>
     <ul class="navbar-nav flex-row ms-auto">
         <li class="nav-item me-3">
-            <a class="nav-link fs-3" href="#"><i class="bi bi-whatsapp"></i></a>
+            <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-whatsapp"></i></a>
         </li>
         <li class="nav-item me-3">
-            <a class="nav-link fs-3" href="#"><i class="bi bi-instagram"></i></a>
+            <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-instagram"></i></a>
         </li>
 
     </ul>

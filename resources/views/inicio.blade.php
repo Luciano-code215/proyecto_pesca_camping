@@ -27,7 +27,8 @@
     </div>
 
 
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-pause="false" data-bs-ride="carousel"
+        data-bs-interval="3000">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="{{ asset('img/carrousel-inicio1.png') }}" class="d-block w-100" alt="...">

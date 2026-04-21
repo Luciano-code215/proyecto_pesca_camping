@@ -1,5 +1,7 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
 </head>
 
 <!-- Footer -->
@@ -16,12 +18,12 @@
             <!-- Columna 2: Enlaces -->
             <div class="col-md-6 text-md-end">
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">Inicio</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Quienes Somos</a></li>
+                    <li><a href="/" class="text-white text-decoration-none">Inicio</a></li>
+                    <li><a href="/quienes_somos" class="text-white text-decoration-none">Quienes Somos</a></li>
 
-                    <li><a href="#" class="text-white text-decoration-none">Comercializacion</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Terminos y Usos</a></li>
+                    <li><a href="/comercializacion" class="text-white text-decoration-none">Comercializacion</a></li>
+                    <li><a href="/contacto" class="text-white text-decoration-none">Contacto</a></li>
+                    <li><a href="/terminos_y_usos" class="text-white text-decoration-none">Terminos y Usos</a></li>
                 </ul>
             </div>
         </div>
