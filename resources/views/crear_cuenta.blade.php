@@ -50,7 +50,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
                                     <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Mínimo 8 caracteres" required>
+                                        placeholder="Mínimo 8 caracteres" minlength="8" required>
                                 </div>
                             </div>
 

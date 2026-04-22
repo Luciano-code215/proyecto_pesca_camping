@@ -53,23 +53,36 @@
     </div>
 
     <div class="container-fluid text-center mt-5 mb-5">
-        <div class= "row align-items-center justify-content-center bg-white bg-opacity-25">
-            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center">
-                <i class="bi bi-box-seam fs-1"></i>
-                <h5><strong>ENVÍOS A TODO EL PAÍS</strong></h5>
+        <h3 class="mb-4">Nuestras Marcas</h3>
+
+        <div class="row align-items-center justify-content-center g-4">
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <img src="{{ asset('img/redfish.png') }}" class="img-fluid" alt="Redfish" style="max-height: 60px;">
             </div>
-            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center">
-                <i class="bi bi-credit-card fs-1"></i>
-                <h5><strong>VARIEDAD EN METODOS DE PAGO</strong></h5>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <img src="{{ asset('img/x-fish.png') }}" class="img-fluid" alt="Xfish" style="max-height: 60px;">
             </div>
-            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center d-none d-lg-block">
-                <i class="bi bi-currency-dollar fs-1"></i>
-                <h5><strong>DESCUENTOS CON PAGO EN EFECTIVO</strong></h5>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <img src="{{ asset('img/marine-sport.png') }}" class="img-fluid" alt="Marine Sport"
+                    style="max-height: 60px;">
             </div>
-            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center d-none d-lg-block">
-                <i class="bi bi-whatsapp fs-1"></i>
-                <h5><strong>CONSULTAS VIA WHATSAPP</strong></h5>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <img src="{{ asset('img/abu-garcia.png') }}" class="img-fluid" alt="Abu Garcia"
+                    style="max-height: 60px;">
             </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <img src="{{ asset('img/albatros.png') }}" class="img-fluid" alt="Albatros" style="max-height: 60px;">
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <img src="{{ asset('img/xoptic.png') }}" class="img-fluid" alt="X-Optic" style="max-height: 60px;">
+            </div>
+
         </div>
     </div>
 
@@ -112,11 +125,34 @@
             <div class= "col-md-4 mb-3 align-items-center justify-content-center">
                 <a href= "/productos?categoria=pesca&tipo=accesorios" class="zoom-link"
                     style="display: block; overflow: hidden;">
-                    <img src="{{ asset('img/banner-señuelos.png') }}" class="img-fluid rounded" alt="banner señuelos">
+                    <img src="{{ asset('img/banner-señuelos.png') }}" class="img-fluid rounded"
+                        alt="banner señuelos">
                 </a>
             </div>
         </div>
     </div>
+
+    <div class="container-fluid text-center mt-5 mb-5">
+        <div class= "row align-items-center justify-content-center bg-white bg-opacity-25">
+            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center">
+                <i class="bi bi-box-seam fs-1"></i>
+                <h5><strong>ENVÍOS A TODO EL PAÍS</strong></h5>
+            </div>
+            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center">
+                <i class="bi bi-credit-card fs-1"></i>
+                <h5><strong>VARIEDAD EN METODOS DE PAGO</strong></h5>
+            </div>
+            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center d-none d-lg-block">
+                <i class="bi bi-currency-dollar fs-1"></i>
+                <h5><strong>DESCUENTOS CON PAGO EN EFECTIVO</strong></h5>
+            </div>
+            <div class= "col-6 col-lg-3 text-center align-items-center justify-content-center d-none d-lg-block">
+                <i class="bi bi-whatsapp fs-1"></i>
+                <h5><strong>CONSULTAS VIA WHATSAPP</strong></h5>
+            </div>
+        </div>
+    </div>
+
 
 
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
