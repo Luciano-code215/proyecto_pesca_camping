@@ -23,7 +23,7 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <h1 class="mb-4 text-primary text-center">Términos y Condiciones de Uso</h1>
+                <h1 class="mb-4 text-primary text-center"> <strong>Términos y Condiciones de Uso</strong></h1>
                 <p class="text-muted">Última actualización: {{ date('d/m/Y') }}</p>
 
                 <div class="accordion" id="accordionTerms">
@@ -32,10 +32,10 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#servicios">
-                                1. Servicios y Productos Ofrecidos
+                               <strong> 1. Servicios y Productos Ofrecidos </strong>
                             </button>
                         </h2>
-                        <div id="servicios" class="accordion-collapse collapse show">
+                        <div id="servicios" class="accordion-collapse collapse">
                             <div class="accordion-body">
                                 Ofrecemos artículos especializados en pesca deportiva y camping. Esto incluye, pero no
                                 se limita a, cañas, reels, señuelos, carpas y accesorios de camping. Los servicios
@@ -48,7 +48,7 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#privacidad">
-                                2. Políticas de Privacidad
+                                <strong>2. Políticas de Privacidad</strong>
                             </button>
                         </h2>
                         <div id="privacidad" class="accordion-collapse collapse">
@@ -64,7 +64,7 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#ventas">
-                                3. Procedimientos de Venta
+                                <strong>3. Procedimientos de Venta</strong>
                             </button>
                         </h2>
                         <div id="ventas" class="accordion-collapse collapse">
@@ -79,7 +79,7 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#envios">
-                                4. Formas de Entrega y Tiempos
+                                <strong>4. Formas de Entrega y Tiempos</strong>
                             </button>
                         </h2>
                         <div id="envios" class="accordion-collapse collapse">
@@ -100,7 +100,7 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#garantia">
-                                5. Garantía y Soporte Postventa
+                                <strong>5. Garantía y Soporte Postventa</strong>
                             </button>
                         </h2>
                         <div id="garantia" class="accordion-collapse collapse">

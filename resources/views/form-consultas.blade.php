@@ -40,11 +40,25 @@
                                     placeholder="nombre@ejemplo.com" required>
                             </div>
 
+                
+
                             <div class="mb-3">
-                                <label for="celular" class="form-label">Número de Celular</label>
-                                <input type="tel" class="form-control" id="celular" name="celular"
-                                    placeholder="Ej: 3794123456">
-                            </div>
+                            <label for="celular" class="form-label">Celular</label>
+                            <div class="input-group">
+                             <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="text" 
+                                class="form-control" 
+                                 id="celular" 
+                                  name="celular"
+                                     placeholder="Ej: 912345678" 
+                                        inputmode="numeric" 
+                                        pattern="[0-9]*"
+                                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                             required>
+                                                 </div>
+                                                  </div>
+
+
 
                             <div class="mb-3">
                                 <label for="mensaje" class="form-label">Tu Mensaje</label>
