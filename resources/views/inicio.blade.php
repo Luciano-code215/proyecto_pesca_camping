@@ -80,7 +80,7 @@
             </div>
 
             <div class="col-6 col-md-4 col-lg-2">
-                <img src="{{ asset('img/xoptic.png') }}" class="img-fluid" alt="X-Optic" style="max-height: 60px;">
+                <img src="{{ asset('img/shimano2.png') }}" class="img-fluid" alt="shimano2" style="max-height: 60px;">
             </div>
 
         </div>
