@@ -84,8 +84,8 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="imagen" class="form-label fw-bold">Imagen del Producto</label>
-                                    <input type="file" class="form-control" id="imagen" name="imagen"
+                                    <label for="url_imagen" class="form-label fw-bold">Imagen del Producto</label>
+                                    <input type="file" class="form-control" id="url_imagen" name="url_imagen"
                                         accept="image/*">
                                     <div class="form-text">Formatos permitidos: JPG, PNG o WEBP. Máximo 2MB.</div>
                                 </div>

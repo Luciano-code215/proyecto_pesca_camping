@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Producto;
 
 class ProductoController extends Controller
 {
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         // 1. Aquí capturamos la "nota" que viene en la URL (ej: ?categoria=pesca)
         $cat = $request->query('categoria');
@@ -38,7 +39,7 @@ class ProductoController extends Controller
             ["id" => 22, "nombre" => "Silla plegable", "descripcion" => "Silla plegable Smart Tech<h6 class= text-start><ul><li>Reforzada, soporta hasta 130kg.</li><li>Comodidad asegurada.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'silla-grande.png', "precio" => 62700],
             ["id" => 23, "nombre" => "Silla plegable", "descripcion" => "Silla plegable director<h6 class= text-start><ul><li>Soporta hasta 100kg.</li><li>Equipada con pasa vasos.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'silla.png', "precio" => 20900],
             ["id" => 24, "nombre" => "Colchon Inflable 1 plaza", "descripcion" => "Colchon inflable 1 plaza marca Alpina<h6 class= text-start><ul><li>Soporta hasta 120kg.</li><li>Almohada alta para mayor comodidad.</li><li>Incluye inflador.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'colchon-1p.png', "precio" => 28300],
-            ["id" => 25, "nombre" => "Colchon Inflable 2 plazas", "descripcion" => "Colchon inflable 2 plazas marca Alpina<h6 class= text-start><ul><li>Soporta hasta 240kg.</li><li>Almohada alta para mayor comodidad.</li><li>Incluye inflador.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'colchon-2p.png', "precio" => 43600],    
+            ["id" => 25, "nombre" => "Colchon Inflable 2 plazas", "descripcion" => "Colchon inflable 2 plazas marca Alpina<h6 class= text-start><ul><li>Soporta hasta 240kg.</li><li>Almohada alta para mayor comodidad.</li><li>Incluye inflador.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'colchon-2p.png', "precio" => 43600],
             ["id" => 26, "nombre" => "Termo de acero", "descripcion" => "Termo de acero inoxidable marca Lumilagro<h6 class= text-start><ul><li>Capacidad: 1 litro.</li><li>Conserva líquidos calientes por 12 horas y fríos por 24 horas.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'termo.png', "precio" => 57000],
             ["id" => 27, "nombre" => "Anafe portátil", "descripcion" => "Anafe portátil a gas marca Brogas<h6 class= text-start><ul><li>2 hornallas.</li><li>Incluye maletín de transporte.</li><li>Compatible con garrafas de 10kg.</li></ul></h6>", 'categoria' => 'camping', "tipo" => null, 'img' => 'anafe.png', "precio" => 48000],
             ["id" => 28, "nombre" => "Poncho para lluvia", "descripcion" => "Poncho para lluvia marca WaterDog.<h6 class= text-start><ul><li>Material impermeable de alta resistencia.</li><li>Talle único.</li></ul></h6>", 'categoria' => 'indumentaria', "tipo" => null, 'img' => 'poncho.png', "precio" => 25000],
@@ -54,42 +55,61 @@ class ProductoController extends Controller
 
         $productosFiltrados = [];
 
-       foreach ($todos as $producto) {
-        // ¿Coincide la categoría? (O es nula si no se filtró)
-        $coincideCat = ($cat == null) || ($cat == $producto['categoria']);
-        
-        // ¿Coincide el tipo? (O es nulo si no se filtró)
-        $coincideTipo = ($tipo == null) || ($tipo == $producto['tipo']);
+        foreach ($todos as $producto) {
+            // ¿Coincide la categoría? (O es nula si no se filtró)
+            $coincideCat = ($cat == null) || ($cat == $producto['categoria']);
 
-        // Si ambos coinciden, lo agregamos a la caja
-        if ($coincideCat && $coincideTipo) {
-            $productosFiltrados[] = $producto;
+            // ¿Coincide el tipo? (O es nulo si no se filtró)
+            $coincideTipo = ($tipo == null) || ($tipo == $producto['tipo']);
+
+            // Si ambos coinciden, lo agregamos a la caja
+            if ($coincideCat && $coincideTipo) {
+                $productosFiltrados[] = $producto;
+            }
         }
+
+        // 1. Inicializamos el array vacío
+        $breadcrumbs = [];
+
+        // 2. Si hay categoría, agregamos el primer paso
+        if ($cat) {
+            $breadcrumbs[] = [
+                'label' => ucfirst($cat),
+                'url' => '/productos?categoria=' . $cat
+            ];
+        }
+
+        // 3. Si hay tipo, agregamos el segundo paso AL MISMO ARRAY
+        // IMPORTANTE: Aquí no usamos '=', sino que el array ya contiene lo anterior
+        if ($tipo) {
+            $breadcrumbs[] = [
+                'label' => ucfirst($tipo),
+                'url' => '/productos?categoria=' . $cat . '&tipo=' . $tipo
+            ];
+        }
+
+        return view('productos', [
+            'productos' => $productosFiltrados,
+            'breadcrumbs' => $breadcrumbs
+        ]);
     }
 
-    // 1. Inicializamos el array vacío
-    $breadcrumbs = [];
-    
-    // 2. Si hay categoría, agregamos el primer paso
-    if ($cat) {
-        $breadcrumbs[] = [
-            'label' => ucfirst($cat), 
-            'url' => '/productos?categoria=' . $cat
-        ];
-    }
-    
-    // 3. Si hay tipo, agregamos el segundo paso AL MISMO ARRAY
-    // IMPORTANTE: Aquí no usamos '=', sino que el array ya contiene lo anterior
-    if ($tipo) {
-        $breadcrumbs[] = [
-            'label' => ucfirst($tipo), 
-            'url' => '/productos?categoria=' . $cat . '&tipo=' . $tipo
-        ];
+    public function store(Request $request)
+    {
+        $datosValidados = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'categoria_id' => 'required|integer|exists:categorias,id',
+            'precio' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'sku' => 'required|string|max:100|unique:productos,sku',
+            'url_imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'activo' => 'boolean',
+        ]);
+
+        Producto::crearProducto($datosValidados, $request->file('url_imagen'));
+        return redirect()->back()->with('success', 'Producto creado exitosamente');
     }
 
-    return view('productos', [
-        'productos' => $productosFiltrados,
-        'breadcrumbs' => $breadcrumbs 
-    ]);
-    }
+
 }
