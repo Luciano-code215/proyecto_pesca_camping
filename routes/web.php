@@ -60,3 +60,9 @@ Route::get('/form-consultas', function () {
 });
 
 Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
+
+Route::get('/agregar_producto', function () {
+    return view('agregar_producto');
+});
+
+Route::post('/agregar_producto', [ProductoController::class, 'store'])->name('agregar_producto');
