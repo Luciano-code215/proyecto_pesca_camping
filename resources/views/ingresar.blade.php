@@ -78,6 +78,62 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalLoginExitoso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalLabel">
+                        <i class="bi bi-door-open-fill"></i> ¡Bienvenido!
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="fs-5 mt-2">{{ session('success') }}</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <a href="{{ url('/') }}" class="btn btn-primary px-4">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalLoginError" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalLabel">
+                        <i class="bi bi-door-open-fill"></i> Credenciales incorrectas
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="fs-5 mt-2">{{ session('error') }}</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <a href="{{ url('/ingresar') }}" class="btn btn-primary px-4">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var miModal = new bootstrap.Modal(document.getElementById('modalLoginExitoso'));
+                miModal.show();
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var miModal = new bootstrap.Modal(document.getElementById('modalLoginError'));
+                miModal.show();
+            });
+        </script>
+    @endif
+
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 </body>

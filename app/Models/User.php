@@ -31,4 +31,19 @@ class User extends Authenticatable
             'active' => 'boolean',
         ];
     }
+
+    public static function registrarUser(array $datos)
+    {
+        return self::create($datos);
+    }
+
+    public function isAdmin()
+    {
+        return $this->rol === 'admin';
+    }
+
+    public function isComprador()
+    {
+        return $this->rol === 'comprador';
+    }
 }

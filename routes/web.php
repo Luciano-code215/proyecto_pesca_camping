@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FormConsultasController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegistroController;
+use App\Models\Producto;
+use Illuminate\Http\Request;
 
 
 Route::get('/', function () {
@@ -19,13 +21,13 @@ Route::get('/crear_cuenta', function () {
     return view('crear_cuenta');
 });
 
-Route::post('/crear_cuenta', [RegistroController::class, 'registrar']);
+Route::post('/crear_cuenta', [AuthController::class, 'store']);
 
 Route::get('/ingresar', function () {
     return view('ingresar');
 });
 
-Route::post('/ingresar', [LoginController::class, 'login']);
+Route::post('/ingresar', [AuthController::class, 'login']);
 
 Route::get('/pesca', function () {
     return view('pesca');
@@ -66,3 +68,5 @@ Route::get('/agregar_producto', function () {
 });
 
 Route::post('/agregar_producto', [ProductoController::class, 'store'])->name('agregar_producto');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

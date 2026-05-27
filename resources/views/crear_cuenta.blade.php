@@ -47,12 +47,21 @@
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
+
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        placeholder="Mínimo 8 caracteres" minlength="8" required>
-                                </div>
+
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                        id="password" name="password" placeholder="Mínimo 8 caracteres" minlength="8"
+                                        required>
+                                </div> @error('password')
+                                    <div class="invalid-feedback d-block">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
+
+
 
                             <div class="mb-4">
                                 <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
@@ -78,6 +87,35 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalUsuarioCreado" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="modalLabel">
+                        <i class="bi bi-check-circle-fill"></i> ¡Registro Exitoso!
+                    </h5>
+                </div>
+                <div class="modal-body text-center id="modalBody">
+                    <p class="fs-5 mt-2">El usuario ha sido creado exitosamente.</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <a href="{{ url('/') }}" class="btn btn-success px-4">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @if (session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var miModal = new bootstrap.Modal(document.getElementById('modalUsuarioCreado'));
+                miModal.show();
+            });
+        </script>
+    @endif
 
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
