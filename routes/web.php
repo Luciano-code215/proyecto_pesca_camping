@@ -70,3 +70,36 @@ Route::get('/agregar_producto', function () {
 Route::post('/agregar_producto', [ProductoController::class, 'store'])->name('agregar_producto');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->middleware('auth');
+
+Route::get('/admin/productos', function () {
+    $productos = Producto::all();
+    return view('admin.productos', compact('productos'));
+})->middleware('auth');
+
+Route::get('/admin/contactos', function () {
+    return view('admin.contactos');
+})->middleware('auth');
+
+Route::get('/admin/categorias', function () {
+    return view('admin.categorias');
+})->middleware('auth');
+
+Route::get('admin/pedidos', function () {
+    return view('admin.pedidos');
+})->middleware('auth');
+
+Route::get('/admin/consultas', function () {
+    return view('admin.consultas');
+})->middleware('auth');
+
+Route::get('/admin/informes', function () {
+    return view('admin.informes');
+})->middleware('auth');
+
+Route::get('/admin/usuarios', function () {
+    return view('admin.usuarios');
+})->middleware('auth');

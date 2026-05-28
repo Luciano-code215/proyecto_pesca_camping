@@ -100,7 +100,7 @@
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
                                 aria-labelledby="navbarDropdownAdmin">
                                 <li>
-                                    <a class="dropdown-item" href="/">
+                                    <a class="dropdown-item" href="/admin/dashboard">
                                         <i class="bi bi-gear-fill text-warning me-2"></i> Administrar Página
                                     </a>
                                 </li>
