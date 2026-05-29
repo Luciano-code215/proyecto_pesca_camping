@@ -11,6 +11,24 @@
 <body>
     @include('navbar')
 
+    @if (session('error'))
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+            <div class="toast show align-items-center text-white bg-danger border-0 shadow-lg" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                        <div>
+                            <strong>Acceso Denegado:</strong> {{ session('error') }}
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="container-sm text-center mt-4 mb-4">
         <div class="row align-items-center justify-content-center">
             <div class="col-4">

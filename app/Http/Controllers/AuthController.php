@@ -52,4 +52,20 @@ class AuthController extends Controller
 
         return redirect('/')->with('success', 'Has cerrado sesión exitosamente');
     }
+
+    public function storeAdmin(Request $request)
+    {
+        $datosValidados = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $datosValidados['rol'] = 'admin';
+        $datosValidados['active'] = true;
+
+        User::registrarUser($datosValidados);
+
+        return redirect()->back()->with('success', 'Administrador creado exitosamente');
+    }
 }

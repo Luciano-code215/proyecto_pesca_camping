@@ -37,6 +37,11 @@ class User extends Authenticatable
         return self::create($datos);
     }
 
+    public static function obtenerUsuarios()
+    {
+        return self::all();
+    }
+
     public function isAdmin()
     {
         return $this->rol === 'admin';

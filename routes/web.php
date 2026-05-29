@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FormConsultasController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RegistroController;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use App\Http\Middleware\AdminMiddleware;
 
 
 Route::get('/', function () {
@@ -71,35 +72,38 @@ Route::post('/agregar_producto', [ProductoController::class, 'store'])->name('ag
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware('auth');
+Route::middleware(['admin'])->group(function () {
 
-Route::get('/admin/productos', function () {
-    $productos = Producto::all();
-    return view('admin.productos', compact('productos'));
-})->middleware('auth');
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
 
-Route::get('/admin/contactos', function () {
-    return view('admin.contactos');
-})->middleware('auth');
+    Route::get('/admin/productos', function () {
+        $productos = Producto::all();
+        return view('admin.productos', compact('productos'));
+    });
 
-Route::get('/admin/categorias', function () {
-    return view('admin.categorias');
-})->middleware('auth');
+    Route::get('/admin/contactos', function () {
+        return view('admin.contactos');
+    });
 
-Route::get('admin/pedidos', function () {
-    return view('admin.pedidos');
-})->middleware('auth');
+    Route::get('/admin/categorias', function () {
+        return view('admin.categorias');
+    });
 
-Route::get('/admin/consultas', function () {
-    return view('admin.consultas');
-})->middleware('auth');
+    Route::get('admin/pedidos', function () {
+        return view('admin.pedidos');
+    });
 
-Route::get('/admin/informes', function () {
-    return view('admin.informes');
-})->middleware('auth');
+    Route::get('/admin/consultas', function () {
+        return view('admin.consultas');
+    });
 
-Route::get('/admin/usuarios', function () {
-    return view('admin.usuarios');
-})->middleware('auth');
+    Route::get('/admin/informes', function () {
+        return view('admin.informes');
+    });
+
+    Route::get('/admin/usuarios', [AdminController::class, 'usuarios'])->name('admin_usuarios');
+
+    Route::post('/crear-admin', [AdminController::class, 'store'])->name('crear_admin');
+});

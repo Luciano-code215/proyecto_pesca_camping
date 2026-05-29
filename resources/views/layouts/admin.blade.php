@@ -145,6 +145,14 @@
                                 <i class="bi bi-people-fill me-2"></i> Gestionar Usuarios
                             </a>
                         </li>
+                        <hr class="text-secondary my-3">
+
+                        <li class="nav-item mb-3">
+                            <a href="{{ url('/') }}"
+                                class="btn btn-outline-warning w-100 fw-bold d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-arrow-left-circle"></i> Volver a la Tienda
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

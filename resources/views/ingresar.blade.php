@@ -11,6 +11,17 @@
 <body>
     @include('navbar')
 
+    @if (session('auth_requiered'))
+        <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm d-flex align-items-center gap-2 mb-4"
+            role="alert">
+            <i class="bi bi-shield-lock-fill fs-4 text-warning"></i>
+            <div>
+                <strong>Área Restringida:</strong> {{ session('auth_requiered') }}
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-5 col-lg-4">

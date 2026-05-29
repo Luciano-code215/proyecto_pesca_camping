@@ -17,21 +17,23 @@
                 <p class="text-muted small">Crea credenciales para que personal de confianza colabore con el control de la
                     tienda.</p>
 
-                <form action="#" method="GET" onsubmit="return false;">
-
+                <form action="/crear-admin" method="POST">
+                    @csrf
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nombre Completo</label>
-                        <input type="text" class="form-control" placeholder="Ej: Marcos Maidana">
+                        <input type="text" name="name" id="name" class="form-control"
+                            placeholder="Ej: Marcos Maidana">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Correo Electrónico</label>
-                        <input type="email" class="form-control" placeholder="marcos@paranapesca.com">
+                        <input type="email" name="email" id="email" class="form-control"
+                            placeholder="marcos@paranapesca.com">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Contraseña Temporal</label>
-                        <input type="password" class="form-control" placeholder="••••••••">
+                        <label class="form-label fw-semibold">Contraseña</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="••••••••">
                     </div>
 
                     <div class="mb-3">
@@ -48,7 +50,7 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-dark w-100 fw-bold mt-2">
+                    <button type="submit" class="btn btn-dark w-100 fw-bold mt-2">
                         <i class="bi bi-person-check-fill me-1"></i> Crear Cuenta Admin
                     </button>
                 </form>
@@ -72,44 +74,57 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="ps-3 fw-bold text-dark">Luciano (Vos)</td>
-                                <td>luciano@admin.com</td>
-                                <td><span class="badge bg-dark"><i class="bi bi-shield-shaded me-1"></i> Admin</span></td>
-                                <td class="text-center"><span
-                                        class="badge bg-success-subtle text-success border border-success">Activo</span>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" title="Editar datos"
-                                        disabled><i class="bi bi-pencil"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="ps-3 fw-bold text-dark">Marisa Gómez</td>
-                                <td>marisa_ventas@gmail.com</td>
-                                <td><span class="badge bg-dark"><i class="bi bi-shield-shaded me-1"></i> Admin</span></td>
-                                <td class="text-center"><span
-                                        class="badge bg-success-subtle text-success border border-success">Activo</span>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-outline-danger"
-                                        title="Dar de baja acceso"><i class="bi bi-person-x-fill"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="ps-3 text-secondary">Esteban Quito</td>
-                                <td class="text-muted">esteban_pesca@hotmail.com</td>
-                                <td><span class="badge bg-light text-dark border"><i class="bi bi-cart me-1"></i>
-                                        Comprador</span></td>
-                                <td class="text-center"><span
-                                        class="badge bg-success-subtle text-success border border-success">Activo</span>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-outline-warning text-dark"
-                                        title="Suspender cuenta por mal comportamiento"><i class="bi bi-slash-circle"></i>
-                                        Suspender</button>
-                                </td>
-                            </tr>
+                            @foreach ($usuarios as $usuario)
+                                <tr>
+                                    <td class="ps-3 fw-bold text-dark">
+                                        {{ $usuario->name }}
+                                        @if (auth()->check() && auth()->id() === $usuario->id)
+                                            <span class="text-secondary font-monospace small">(Vos)</span>
+                                        @endif
+                                    </td>
+
+                                    <td>{{ $usuario->email }}</td>
+
+                                    <td>
+                                        @if ($usuario->rol === 'admin')
+                                            <span class="badge bg-dark"><i class="bi bi-shield-shaded me-1"></i>
+                                                Admin</span>
+                                        @else
+                                            <span class="badge bg-light text-dark border"><i class="bi bi-cart me-1"></i>
+                                                Comprador</span>
+                                        @endif
+                                    </td>
+
+                                    <td class="text-center">
+                                        @if ($usuario->active)
+                                            <span
+                                                class="badge bg-success-subtle text-success border border-success">Activo</span>
+                                        @else
+                                            <span
+                                                class="badge bg-danger-subtle text-danger border border-danger">Inactivo</span>
+                                        @endif
+                                    </td>
+
+                                    <td class="text-center">
+                                        @if (auth()->check() && auth()->id() === $usuario->id)
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                title="Editar datos" disabled>
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        @elseif($usuario->rol === 'admin')
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                title="Dar de baja acceso">
+                                                <i class="bi bi-person-x-fill"></i>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-sm btn-outline-warning text-dark"
+                                                title="Suspender cuenta">
+                                                <i class="bi bi-slash-circle"></i> Suspender
+                                            </button>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -122,4 +137,23 @@
         </div>
 
     </div>
+
+    @if (session('success'))
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+            <div class="toast show align-items-center text-white bg-success border-0 shadow-lg" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body d-flex align-items-center gap-2">
+                        <i class="bi bi-shield-check fs-4"></i>
+                        <div>
+                            <strong>¡Registro Exitoso!</strong><br>
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
