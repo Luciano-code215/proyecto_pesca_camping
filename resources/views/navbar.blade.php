@@ -156,6 +156,16 @@
             </ul>
         </div>
     </div>
+
+     <div class="d-flex align-items-center">
+          <a href="/carrito" class="btn btn-outline-dark position-relative">
+              <i class="bi bi-cart3 fs-5"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>
+              </span>
+          </a>
+      </div>
+
     <ul class="navbar-nav flex-row ms-auto">
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-whatsapp"></i></a>

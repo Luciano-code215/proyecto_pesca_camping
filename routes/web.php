@@ -62,6 +62,20 @@ Route::get('/form-consultas', function () {
     return view('form-consultas');
 });
 
+// CARRITO:
+Route::get('/carrito', function () {
+    return view('carrito');
+
+});
+
+Route::get('/agregar-al-carrito/{id}', [CartController::class, 'add'])->name('cart.add');
+
+Route::patch('/actualizar-carrito', [CartController::class, 'update'])->name('cart.update');
+
+Route::delete('/eliminar-del-carrito', [CartController::class, 'remove'])->name('cart.remove');
+
+// AGREGAR PARA VACIAR EL CARRITO
+
 Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
 
 Route::get('/agregar_producto', function () {
