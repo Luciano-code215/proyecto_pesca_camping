@@ -106,4 +106,10 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/usuarios', [AdminController::class, 'usuarios'])->name('admin_usuarios');
 
     Route::post('/crear-admin', [AdminController::class, 'store'])->name('crear_admin');
+
+    Route::post('/admin/usuarios/{id}/alternar-estado', [AdminController::class, 'alternarEstado'])->name('admin.usuarios.estado');
+
+    Route::post('/admin/usuarios/{id}/baja-admin', [AdminController::class, 'bajaAdmin']);
+
+    Route::post('/admin/usuarios/cambiar-password', [AdminController::class, 'cambiarPassword']);
 });

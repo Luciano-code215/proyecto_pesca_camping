@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 #[Fillable(['name', 'email', 'password', 'rol', 'active'])]
 #[Hidden(['password', 'remember_token'])]
@@ -50,5 +51,17 @@ class User extends Authenticatable
     public function isComprador()
     {
         return $this->rol === 'comprador';
+    }
+
+    public static function buscarPorId($id)
+    {
+        return self::find($id);
+    }
+
+    public static function actualizarPassword($id, $nuevaPassword)
+    {
+        $usuario = self::buscarPorId($id);
+        $usuario->password = Hash::make($nuevaPassword);
+        return $usuario->save();
     }
 }

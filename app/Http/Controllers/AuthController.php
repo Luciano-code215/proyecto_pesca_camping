@@ -12,7 +12,7 @@ class AuthController extends Controller
     {
         $datosValidados = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -51,21 +51,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Has cerrado sesión exitosamente');
-    }
-
-    public function storeAdmin(Request $request)
-    {
-        $datosValidados = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $datosValidados['rol'] = 'admin';
-        $datosValidados['active'] = true;
-
-        User::registrarUser($datosValidados);
-
-        return redirect()->back()->with('success', 'Administrador creado exitosamente');
     }
 }
