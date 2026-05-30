@@ -158,7 +158,7 @@
     </div>
 
      <div class="d-flex align-items-center">
-          <a href="/carrito" class="btn btn-outline-dark position-relative">
+          <a href="/carrito" class="btn btn-outline-light position-relative">
               <i class="bi bi-cart3 fs-5"></i>
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>

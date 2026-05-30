@@ -5,12 +5,24 @@
 <head>
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}">
     <title>Carrito</title>
 </head>
 
 
 
 <body>
+@include('navbar')
+
+<style>
+        body {
+            background-image: url('{{ asset('img/carrito_fondo.jpg') }}');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 
 <div class="container my-5">
     <h2 class="mb-4"><i class="bi bi-cart4"></i> Tu Carrito de Compras</h2>
@@ -24,7 +36,7 @@
             <p>Tu carrito está vacío actualmente.</p>
             <a href="{{ url('/') }}" class="btn btn-primary">Volver a la tienda</a>
         </div>
-    @parent
+    
     @else
         <div class="table-responsive">
             <table class="table table-hover align-middle">
@@ -71,6 +83,9 @@
         </div>
     @endif
 </div>
+
+@include('footer')
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 </body>
 
