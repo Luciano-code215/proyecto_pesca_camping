@@ -96,7 +96,7 @@
                             Gestión de Tienda</div>
 
                         <li class="nav-item">
-                            <a href="{{ url('/admin/productos') }}"
+                            <a href="{{ Route('productos.index') }}"
                                 class="nav-link text-white py-2 {{ request()->is('admin/productos*') ? 'active bg-primary rounded' : '' }}">
                                 <i class="bi bi-box-seam-fill text-warning me-2"></i> Productos
                             </a>

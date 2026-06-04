@@ -16,4 +16,8 @@ class Categoria extends Model
         'activo' => 'boolean',
     ];
 
+    public static function buscar($id)
+    {
+        return self::find($id);
+    }
 }

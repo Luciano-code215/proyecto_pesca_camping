@@ -7,6 +7,7 @@ use App\Http\Controllers\FormConsultasController;
 use App\Http\Controllers\AuthController;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use App\Models\Categoria;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -64,11 +65,9 @@ Route::get('/form-consultas', function () {
 
 Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
 
-Route::get('/agregar_producto', function () {
-    return view('agregar_producto');
-});
 
-Route::post('/agregar_producto', [ProductoController::class, 'store'])->name('agregar_producto');
+
+
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -78,10 +77,9 @@ Route::middleware(['admin'])->group(function () {
         return view('admin.dashboard');
     });
 
-    Route::get('/admin/productos', function () {
-        $productos = Producto::all();
-        return view('admin.productos', compact('productos'));
-    });
+    Route::post('/admin/productos/store', [ProductoController::class, 'store'])->name('productos.store');
+
+    Route::get('/admin/productos', [ProductoController::class, 'index'])->name('productos.index');
 
     Route::get('/admin/contactos', function () {
         return view('admin.contactos');
@@ -112,4 +110,18 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admin/usuarios/{id}/baja-admin', [AdminController::class, 'bajaAdmin']);
 
     Route::post('/admin/usuarios/cambiar-password', [AdminController::class, 'cambiarPassword']);
+
+    Route::get('/admin/agregar_producto', function () {
+        $categorias = Categoria::all();
+        return view('admin.agregar_producto', compact('categorias'));
+    });
+
+    Route::patch('/admin/productos/{id}/reactivar', [ProductoController::class, 'restore'])->name('productos.restore');
+
+    Route::get('/admin/productos/{id}/editar', [ProductoController::class, 'edit'])->name('productos.edit');
+
+    Route::delete('/admin/productos/{id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+    Route::put('/admin/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
+
 });
