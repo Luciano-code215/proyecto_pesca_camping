@@ -4,7 +4,10 @@ use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FormConsultasController;
+use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriaController;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Models\Categoria;
@@ -27,7 +30,7 @@ Route::post('/crear_cuenta', [AuthController::class, 'store']);
 
 Route::get('/ingresar', function () {
     return view('ingresar');
-});
+})->name('login');
 
 Route::post('/ingresar', [AuthController::class, 'login']);
 
@@ -59,17 +62,35 @@ Route::get('/en_construccion', function () {
     return view('en_construccion');
 });
 
-Route::get('/form-consultas', function () {
-    return view('form-consultas');
-});
-
-Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
+Route::get('/form-contacto', function () {
+    return view('contacto_cliente');
+})->name('form.contacto');
 
 
 
 
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+///// CLIENTES LOGUEADOS //////
+Route::middleware('auth')->group(function () {
+    Route::get('/form-consultas', function () {
+        return view('consulta_cliente');
+    })->name('form.consultas');
+
+
+    Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+});
+
+
+
+////// PUBLICAS  //////    
+
+Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
+
+
+////// ADMIN //////
 
 Route::middleware(['admin'])->group(function () {
 
@@ -86,7 +107,8 @@ Route::middleware(['admin'])->group(function () {
     });
 
     Route::get('/admin/categorias', function () {
-        return view('admin.categorias');
+        $categorias = Categoria::all();
+        return view('admin.categorias', compact('categorias'));
     });
 
     Route::get('admin/pedidos', function () {
@@ -112,7 +134,7 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admin/usuarios/cambiar-password', [AdminController::class, 'cambiarPassword']);
 
     Route::get('/admin/agregar_producto', function () {
-        $categorias = Categoria::all();
+        $categorias = Categoria::categoriasActivas();
         return view('admin.agregar_producto', compact('categorias'));
     });
 
@@ -123,5 +145,15 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('/admin/productos/{id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
     Route::put('/admin/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
+
+    Route::get('/admin/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
+
+    Route::post('/admin/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
+
+    Route::patch('/admin/categorias/{id}/desactivar', [CategoriaController::class, 'desactivar'])->name('categorias.desactivar');
+
+    Route::patch('/admin/categorias/{id}/reactivar', [CategoriaController::class, 'reactivar'])->name('categorias.reactivar');
+
+    Route::put('/admin/categorias/{id}', [CategoriaController::class, 'update'])->name('categorias.update');
 
 });

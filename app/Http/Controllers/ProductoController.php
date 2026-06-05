@@ -97,7 +97,7 @@ class ProductoController extends Controller
 
     public function index(Request $request)
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::categoriasActivas();
 
         $estado = $request->get('estado', 'activos');
 
@@ -118,7 +118,7 @@ class ProductoController extends Controller
         $datosValidados = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
-            'categoria_id' => 'required|integer|exists:categorias,id',
+            'categoria_id' => 'required|integer',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'sku' => 'nullable|string|max:100|unique:productos,sku',
@@ -141,7 +141,7 @@ class ProductoController extends Controller
     {
         $producto = Producto::find($id);
 
-        $categorias = Categoria::all();
+        $categorias = Categoria::categoriasActivas();
 
         return view('admin.agregar_producto', compact('producto', 'categorias'));
     }
@@ -153,7 +153,7 @@ class ProductoController extends Controller
         $datosValidados = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
-            'categoria_id' => 'required|integer',
+            'categoria_id' => 'required|integer|exists:categorias,id',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'sku' => 'nullable|string|max:100|unique:productos,sku,' . $id,

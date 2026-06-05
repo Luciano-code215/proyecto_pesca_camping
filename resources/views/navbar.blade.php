@@ -71,8 +71,13 @@
                         href="/comercializacion">Comercializacion</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('contacto') ? 'active text-warning fw-bold' : '' }}"
-                        href="/contacto">Contacto</a>
+                    @auth
+                        <a class="nav-link {{ request()->is('consultas') ? 'active text-warning fw-bold' : '' }}"
+                            href="/contacto">Consultas</a>
+                    @else
+                        <a class="nav-link {{ request()->is('contacto') ? 'active text-warning fw-bold' : '' }}"
+                            href="/contacto">Contacto</a>
+                    @endauth
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('terminos_y_usos') ? 'active text-warning fw-bold' : '' }}"

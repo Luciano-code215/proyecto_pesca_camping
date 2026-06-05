@@ -122,6 +122,13 @@ class Producto extends Model
         }
         return false;
     }
+
+    public static function contarPorCategoria($categoriaId)
+    {
+        return self::where('categoria_id', $categoriaId)
+            ->where('activo', true)
+            ->count();
+    }
 }
 
 

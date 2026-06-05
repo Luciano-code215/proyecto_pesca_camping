@@ -3,120 +3,203 @@
 @section('titulo', 'Gestión de Categorías')
 
 @section('contenido')
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-dark mb-0"><i class="bi bi-tags-fill text-info me-2"></i>Módulo de Categorías</h3>
-        <span class="text-muted">Organización del catálogo de Pesca y Camping</span>
+    <div class="row g-3 mb-4">
+        @php
+            $colores = [
+                'bg-primary',
+                'bg-success',
+                'bg-warning text-dark',
+                'bg-danger',
+                'bg-info text-dark',
+                'bg-secondary',
+            ];
+        @endphp
+
+        @foreach ($categorias as $categoria)
+            @if ($categoria->activo)
+                @php
+                    // Usamos un contador manual o el $loop->iteration para que los colores no se salten si hay ocultas
+                    $colorActual = $colores[$loop->iteration % count($colores)];
+                @endphp
+
+                <div class="col-12 col-md-4">
+                    <div class="card {{ $colorActual }} p-3 shadow-sm border-0 position-relative overflow-hidden h-100">
+                        <div class="position-absolute end-0 bottom-0 opacity-25 me-2"
+                            style="font-size: 4rem; line-height: 1;">
+                            <i class="bi bi-fish"></i>
+                        </div>
+
+                        <h6
+                            class="text-uppercase fw-bold small {{ str_contains($colorActual, 'text-dark') ? 'text-black-50' : 'text-white-50' }}">
+                            Rubro {{ $categoria->nombre }}
+                        </h6>
+                        <h2 class="fw-bold mb-0 mt-2">
+                            {{ \App\Models\Producto::contarPorCategoria($categoria->id) }}
+                        </h2>
+                    </div>
+                </div>
+            @endif
+        @endforeach
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-12 col-md-4">
-            <div class="card bg-primary text-white p-3 shadow-sm border-0 position-relative overflow-hidden">
-                <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
-                    <i class="bi bi-fish"></i>
-                </div>
-                <h6 class="text-uppercase fw-bold small">Rubro Pesca</h6>
-                <h2 class="fw-bold mb-1">84</h2>
-                <p class="mb-0 small">Productos maquetados (Cañas, Reeles)</p>
-            </div>
+    @if (session('categoria_creada'))
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2 text-success"></i> {{ session('categoria_creada') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="col-12 col-md-4">
-            <div class="card bg-success text-white p-3 shadow-sm border-0 position-relative overflow-hidden">
-                <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
-                    <i class="bi bi-tent"></i>
-                </div>
-                <h6 class="text-uppercase fw-bold small">Rubro Camping</h6>
-                <h2 class="fw-bold mb-1">45</h2>
-                <p class="mb-0 small">Productos maquetados (Carpas, Bolsas)</p>
-            </div>
+    @endif
+
+    @if (session('categoria_desactivada'))
+        <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+            <i class="bi bi-eye-slash-fill me-2 text-warning"></i> {{ session('categoria_desactivada') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="col-12 col-md-4">
-            <div class="card bg-warning text-dark p-3 shadow-sm border-0 position-relative overflow-hidden">
-                <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
-                    <i class="bi bi-tsunami"></i>
-                </div>
-                <h6 class="text-uppercase fw-bold small">Rubro Náutica / Otros</h6>
-                <h2 class="fw-bold mb-1">13</h2>
-                <p class="mb-0 small">Productos maquetados (Botes, Salvavidas)</p>
-            </div>
+    @endif
+
+    @if (session('categoria_reactivada'))
+        <div class="alert alert-info alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+            <i class="bi bi-eye-fill me-2 text-info"></i> {{ session('categoria_reactivada') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
+    @endif
 
     <div class="row g-4">
 
-        <div class="col-12 col-lg-5">
+        <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0 border-top border-info border-3 p-4 bg-white">
-                <h5 class="fw-bold text-dark mb-3"><i class="bi bi-plus-circle me-2 text-success"></i>Nueva Categoría</h5>
+                <h5 class="fw-bold text-dark mb-3">
+                    <i class="bi bi-plus-circle me-2 text-success"></i>Nueva Categoría
+                </h5>
 
-                <form action="#" method="GET" onsubmit="return false;">
-
-                    <div class="mb-3">
+                <form action="{{ route('categorias.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-4">
                         <label for="nombre_categoria" class="form-label fw-semibold">Nombre de la Categoría</label>
-                        <input type="text" class="form-control" id="nombre_categoria"
-                            placeholder="Ej: Señuelos, Linternas, Cuchillos">
+                        <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror"
+                            id="nombre_categoria" placeholder="Ej: Señuelos, Linternas, Cuchillos"
+                            value="{{ old('nombre') }}" required>
+                        @error('nombre')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label for="categoria_padre" class="form-label fw-semibold">Clasificación General</label>
-                        <select class="form-select" id="categoria_padre">
-                            <option value="" selected disabled>-- Selecciona el rubro principal --</option>
-                            <option value="pesca">Pesca Deportiva</option>
-                            <option value="camping">Camping y Aventura</option>
-                            <option value="nautica">Náutica</option>
-                        </select>
-                        <div class="form-text">Estructura para agrupar subcategorías en el futuro.</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold d-block">Estado Inicial</label>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="estado" id="activo" value="1"
-                                checked>
-                            <label class="form-check-label text-success fw-bold">Visible en la Tienda</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="estado" id="inactivo" value="0">
-                            <label class="form-check-label text-danger fw-bold">Oculta por ahora</label>
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-info text-white w-100 fw-bold mt-2">
-                        <i class="bi bi-disk me-1"></i> Guardar Categoría (Esqueleto)
+                    <button type="submit" class="btn btn-info text-white w-100 fw-bold">
+                        <i class="bi bi-disk me-1"></i> Guardar Categoría
                     </button>
                 </form>
             </div>
         </div>
 
-        <div class="col-12 col-lg-7">
+        <div class="col-12 col-lg-8">
             <div class="card shadow-sm border-0 border-top border-secondary border-3 p-4 bg-white">
-                <h5 class="fw-bold text-dark mb-2"><i class="bi bi-funnel-fill text-secondary me-2"></i>Filtro de Control
-                    Rápido</h5>
-                <p class="text-muted small">Estructura visual para filtrar los datos que se listen abajo.</p>
+                <h5 class="fw-bold text-dark mb-3">
+                    <i class="bi bi-tags-fill text-secondary me-2"></i>Categorías Registradas
+                </h5>
 
-                <div class="row g-2 align-items-center mb-4">
-                    <div class="col-sm-8">
-                        <select class="form-select border-primary">
-                            <option value="todos">Mostrar todas las categorías activas</option>
-                            <option value="1">Solo Categorías de Pesca</option>
-                            <option value="2">Solo Categorías de Camping</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i>
-                            Filtrar</button>
-                    </div>
-                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle border mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 10%">ID</th>
+                                <th style="width: 50%">Nombre</th>
+                                <th style="width: 20%" class="text-center">Estado</th>
+                                <th style="width: 20%" class="text-end">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($categorias as $cat)
+                                <tr class="{{ !$cat->activo ? 'table-light opacity-75' : '' }}">
+                                    <td class="fw-bold text-muted">#{{ $cat->id }}</td>
+                                    <td
+                                        class="fw-semibold {{ !$cat->activo ? 'text-muted text-decoration-line-through' : 'text-dark' }}">
+                                        {{ $cat->nombre }}
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($cat->activo)
+                                            <span
+                                                class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5">Visible</span>
+                                        @else
+                                            <span
+                                                class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5">Oculta</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end gap-1">
 
-                <div class="p-4 bg-light rounded text-center border border-dashed py-5">
-                    <i class="bi bi-table fs-1 text-muted d-block mb-2"></i>
-                    <h6 class="fw-bold text-secondary">Contenedor de Listado General</h6>
-                    <p class="text-muted small mb-0 px-4">
-                        Este espacio queda reservado para tu etiqueta `
-                    <table>`. Cuando asocies tu Base de Datos, acá adentro vas a meter el bucle que muestre los nombres
-                        creados junto a sus botones de Editar y Eliminar.
-                        </p>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                data-bs-toggle="modal" data-bs-target="#modalEditar{{ $cat->id }}"
+                                                title="Modificar Nombre">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+
+                                            @if ($cat->activo)
+                                                <form action="{{ route('categorias.desactivar', $cat->id) }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        title="Ocultar Categoría">
+                                                        <i class="bi bi-eye-slash"></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('categorias.reactivar', $cat->id) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-outline-success"
+                                                        title="Hacer Visible">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <div class="modal fade" id="modalEditar{{ $cat->id }}" tabindex="-1"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 shadow">
+                                            <div class="modal-header bg-light border-bottom-0">
+                                                <h5 class="modal-title fw-bold text-dark"><i
+                                                        class="bi bi-pencil-square text-secondary me-2"></i>Editar Categoría
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('categorias.update', $cat->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body py-3">
+                                                    <label class="form-label fw-semibold">Nombre de la Categoría</label>
+                                                    <input type="text" name="nombre" class="form-control"
+                                                        value="{{ $cat->nombre }}" required>
+                                                </div>
+                                                <div class="modal-footer bg-light border-top-0">
+                                                    <button type="button" class="btn btn-sm btn-secondary fw-semibold"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-info text-white fw-bold">Guardar
+                                                        Cambios</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="bi bi-folder-x fs-1 d-block mb-2 text-secondary opacity-50"></i>
+                                        No hay categorías creadas todavía.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
     </div>
 @endsection

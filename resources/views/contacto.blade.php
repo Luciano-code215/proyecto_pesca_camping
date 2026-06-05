@@ -53,9 +53,15 @@
                         Visitar nuestro Instagram
                     </a>
 
-                    <a href="/form-consultas" class="btn btn-primary btn-lg">
-                        Ir al Formulario de Consultas
-                    </a>
+                    @auth
+                        <a href="{{ route('form.consultas') }}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-chat-left-text me-2"></i>Ir al Formulario de Consultas
+                        </a>
+                    @else
+                        <a href="{{ route('form.contacto') }}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-envelope me-2"></i>Ir al Formulario de Contacto
+                        </a>
+                    @endauth
                 </div>
             </div>
 
