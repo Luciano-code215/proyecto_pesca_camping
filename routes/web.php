@@ -11,6 +11,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use App\Models\Contacto;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -103,7 +104,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/productos', [ProductoController::class, 'index'])->name('productos.index');
 
     Route::get('/admin/contactos', function () {
-        return view('admin.contactos');
+        $contactos = Contacto::all();
+        return view('admin.contactos', compact('contactos'));
     });
 
     Route::get('/admin/categorias', function () {

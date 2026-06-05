@@ -16,28 +16,18 @@
                     <i class="bi bi-mailbox2"></i>
                 </div>
                 <h6 class="text-uppercase fw-bold small">Mensajes Nuevos</h6>
-                <h2 class="fw-bold mb-1">4</h2>
+                <h2 class="fw-bold mb-1">{{ \App\Models\Contacto::obtenerContactosPendientes()->count() }}</h2>
                 <p class="mb-0 small">Emails entrantes sin revisar</p>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-md-4">
-            <div class="card bg-secondary text-white p-3 shadow-sm border-0 position-relative overflow-hidden">
+            <div class="card bg-success text-white p-3 shadow-sm border-0 position-relative overflow-hidden">
                 <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
                     <i class="bi bi-archive-fill"></i>
                 </div>
-                <h6 class="text-uppercase fw-bold small">Mensajes Archivados</h6>
-                <h2 class="fw-bold mb-1">150</h2>
+                <h6 class="text-uppercase fw-bold small">Mensajes Respondidos</h6>
+                <h2 class="fw-bold mb-1">{{ \App\Models\Contacto::obtenerContactosRespondidos()->count() }}</h2>
                 <p class="mb-0 small">Historial de consultas resueltas</p>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4">
-            <div class="card bg-dark text-white p-3 shadow-sm border-0 position-relative overflow-hidden">
-                <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
-                    <i class="bi bi-trash3-fill"></i>
-                </div>
-                <h6 class="text-uppercase fw-bold small">Spam / Descartados</h6>
-                <h2 class="fw-bold mb-1">12</h2>
-                <p class="mb-0 small">Correos publicitarios filtrados</p>
             </div>
         </div>
     </div>

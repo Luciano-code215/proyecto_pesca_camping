@@ -12,6 +12,7 @@ class Contacto extends Model
         'asunto',
         'mensaje',
         'estado',
+        'respuesta',
     ];
 
     protected $casts = [
@@ -26,7 +27,24 @@ class Contacto extends Model
         $contacto->asunto = $datos['asunto'];
         $contacto->mensaje = $datos['mensaje'];
         $contacto->estado = 'pendiente';
+        $contacto->respuesta = null;
 
         return $contacto->save();
+    }
+
+    public function marcarComoRespondida()
+    {
+        $this->estado = 'respondida';
+        return $this->save();
+    }
+
+    public static function obtenerContactosPendientes()
+    {
+        return self::where('estado', 'pendiente')->get();
+    }
+
+    public static function obtenerContactosRespondidos()
+    {
+        return self::where('estado', 'respondida')->get();
     }
 }

@@ -11,6 +11,7 @@ class Consulta extends Model
         'asunto',
         'mensaje',
         'estado',
+        'respuesta',
     ];
 
     protected $casts = [
@@ -24,6 +25,7 @@ class Consulta extends Model
         $consulta->asunto = $datos['asunto'];
         $consulta->mensaje = $datos['mensaje'];
         $consulta->estado = 'pendiente';
+        $consulta->respuesta = null;
 
         return $consulta->save();
     }
