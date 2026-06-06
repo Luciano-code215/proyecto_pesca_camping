@@ -37,81 +37,185 @@
         <h5 class="fw-bold text-dark mb-3"><i class="bi bi-search text-secondary me-2"></i>Bandeja de Entrada General</h5>
         <div class="row g-2 align-items-center mb-4">
             <div class="col-sm-9">
-                <input type="text" class="form-control"
-                    placeholder="Buscar por nombre, correo electrónico o palabra clave (Esqueleto)...">
+                <form action="{{ route('admin.contactos') }}" method="GET">
+                    <div class="input-group input-group-lg">
+
+                        <input type="text" name="buscar" class="form-control"
+                            placeholder="Buscar por nombre, correo electrónico o palabra clave"
+                            value="{{ request('buscar') }}">
+
+                        <button type="submit" class="btn btn-danger fw-bold px-4">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-danger w-100 fw-bold"><i class="bi bi-search"></i> Buscar</button>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle border mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-3">Nombre Remitente</th>
+                            <th>Correo Electrónico</th>
+                            <th>Mensaje Breve</th>
+                            <th>Fecha</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($contactos as $c)
+                            <tr
+                                @if ($c->estado == 'pendiente') style="background-color: rgba(220, 53, 69, 0.02); border-left: 3px solid #dc3545;" class="fw-bold"
+                    @else 
+                        class="text-muted opacity-75" @endif>
+
+                                <td class="ps-3 text-dark">{{ $c->nombre }}</td>
+                                <td>{{ $c->email }}</td>
+                                <td>
+                                    <span class="text-muted fw-normal text-truncate d-inline-block"
+                                        style="max-width: 250px;">
+                                        {{ $c->mensaje }}
+                                    </span>
+                                </td>
+                                <td>{{ $c->created_at->format('d/m/Y H:i A') }}</td>
+
+                                <td class="text-center">
+                                    @if ($c->estado == 'pendiente')
+                                        <button type="button" class="btn btn-sm btn-outline-danger px-3"
+                                            data-bs-toggle="modal" data-bs-target="#modalContacto{{ $c->id }}"
+                                            title="Leer mensaje completo">
+                                            <i class="bi bi-envelope-open-fill me-1"></i> Leer Mensaje
+                                        </button>
+                                    @else
+                                        <button type="button" class="btn btn-sm btn-light border px-3"
+                                            data-bs-toggle="modal" data-bs-target="#modalContacto{{ $c->id }}"
+                                            title="Volver a leer">
+                                            <i class="bi bi-eye me-1"></i> Volver a Leer
+                                        </button>
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <div class="modal fade" id="modalContacto{{ $c->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content border-0 shadow">
+
+                                        <div
+                                            class="modal-header {{ $c->estado == 'pendiente' ? 'bg-dark text-white' : 'bg-light text-dark' }}">
+                                            <h5 class="modal-title fw-bold">
+                                                {{ $c->estado == 'pendiente' ? 'Nueva Consulta Pendiente' : 'Consulta Leída' }}
+                                            </h5>
+                                            <button type="button"
+                                                class="btn-close {{ $c->estado == 'pendiente' ? 'btn-close-white' : '' }}"
+                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body p-4" style="text-align: left;">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label class="text-muted small d-block">Remitente</label>
+                                                    <strong class="text-dark">{{ $c->nombre }}</strong>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="text-muted small d-block">Correo de Contacto</label>
+                                                    <strong class="text-primary">{{ $c->email }}</strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="text-muted small d-block">Asunto</label>
+                                                <h6 class="fw-bold text-dark">{{ $c->asunto ?? 'Sin Asunto' }}</h6>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <label class="text-muted small d-block mb-1">Mensaje de la Consulta</label>
+                                                <div class="p-3 bg-light rounded border text-dark"
+                                                    style="white-space: pre-line;">
+                                                    {{ $c->mensaje }}
+                                                </div>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="text-end">
+                                                @if ($c->estado == 'pendiente')
+                                                    <form action="{{ route('admin.contactos.leido', $c->id) }}"
+                                                        method="POST" id="formLeido{{ $c->id }}"
+                                                        class="d-inline mb-0">
+                                                        @csrf
+                                                        <button type="button" class="btn btn-secondary me-2"
+                                                            data-bs-dismiss="modal">Cerrar</button>
+
+                                                        <button type="button" class="btn btn-danger fw-bold btn-entendido"
+                                                            data-email="{{ $c->email }}"
+                                                            data-form="formLeido{{ $c->id }}"
+                                                            data-modal="modalContacto{{ $c->id }}">
+                                                            <i class="bi bi-check2-circle me-1"></i> Entendido
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <button type="button" class="btn btn-secondary px-4"
+                                                        data-bs-dismiss="modal">Cerrar Vista</button>
+                                                @endif
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-        </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle border mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th class="ps-3">Nombre Remitente</th>
-                        <th>Correo Electrónico</th>
-                        <th>Teléfono / Celular</th>
-                        <th>Mensaje Breve</th>
-                        <th>Fecha</th>
-                        <th class="text-center">Acciones Estáticas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="fw-bold" style="background-color: rgba(220, 53, 69, 0.02); border-left: 3px solid #dc3545;">
-                        <td class="ps-3 text-dark">Carlos Gutiérrez</td>
-                        <td>carlos.guti@gmail.com</td>
-                        <td>3794-112233</td>
-                        <td><span class="text-muted fw-normal text-truncate d-inline-block" style="max-width: 250px;">Hola,
-                                quería saber si tienen stock de carpas estructurales para 6 personas y si hacen precio por
-                                cantidad...</span></td>
-                        <td>Hoy, 08:30 AM</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-outline-danger me-1"
-                                title="Leer mensaje completo"><i class="bi bi-envelope-open-fill"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Archivar"><i
-                                    class="bi bi-archive"></i></button>
-                        </td>
-                    </tr>
-                    <tr class="fw-bold" style="background-color: rgba(220, 53, 69, 0.02); border-left: 3px solid #dc3545;">
-                        <td class="ps-3 text-dark">Martín Basualdo</td>
-                        <td>m_basualdo@outlook.com</td>
-                        <td>-- Sin Teléfono --</td>
-                        <td><span class="text-muted fw-normal text-truncate d-inline-block"
-                                style="max-width: 250px;">Buenas, soy distribuidor de plomadas y anzuelos artesanales. Me
-                                gustaría dejarles un catálogo de productos...</span></td>
-                        <td>Ayer, 18:12 PM</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-outline-danger me-1"
-                                title="Leer mensaje completo"><i class="bi bi-envelope-open-fill"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Archivar"><i
-                                    class="bi bi-archive"></i></button>
-                        </td>
-                    </tr>
-                    <tr class="text-muted opacity-75">
-                        <td class="ps-3">Estela Maris Benítez</td>
-                        <td>estela_maris@yahoo.com</td>
-                        <td>3794-556677</td>
-                        <td><span class="text-truncate d-inline-block" style="max-width: 250px;">¿Qué horarios de atención
-                                tienen en el local esta semana santa? Gracias.</span></td>
-                        <td>22/05/2026</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-light me-1" title="Volver a leer"><i
-                                    class="bi bi-eye"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Archivar"><i
-                                    class="bi bi-archive"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const botonesEntendido = document.querySelectorAll('.btn-entendido');
 
-        <div class="form-text mt-3 text-center text-muted">
-            <i class="bi bi-info-circle-fill text-danger me-1"></i> <strong>Estructura Diferenciada:</strong> A diferencia
-            de las consultas internas, estos datos no están vinculados a un ID de usuario. En tu base de datos, esta tabla
-            (`contactos`) guardará los strings de texto puros de correo y teléfono para que les puedas responder por fuera
-            de la plataforma.
-        </div>
+                    botonesEntendido.forEach(boton => {
+                        boton.addEventListener('click', function() {
+                            const botonActual = this;
+                            const email = botonActual.getAttribute('data-email');
+                            const formId = botonActual.getAttribute('data-form');
+                            const modalId = botonActual.getAttribute('data-modal');
 
-    </div>
-@endsection
+                            const formulario = document.getElementById(formId);
+                            const modalElement = document.getElementById(modalId);
+                            const modalBody = modalElement.querySelector('.modal-body');
+
+                            // 🛠️ INYECCIÓN INTERNA: Creamos el bloque de texto temporal DENTRO del modal
+                            // para que Bootstrap no bloquee el portapapeles del sistema operativo.
+                            const aux = document.createElement("textarea");
+                            aux.value = email;
+                            aux.style.position = "absolute";
+                            aux.style.opacity = "0"; // Invisible
+                            modalBody.appendChild(aux);
+
+                            aux.select();
+                            aux.setSelectionRange(0, 99999);
+
+                            try {
+                                // Copiamos el email
+                                document.execCommand("copy");
+
+                                // Feedback visual en el botón
+                                botonActual.className = "btn btn-success fw-bold";
+                                botonActual.innerHTML =
+                                    '<i class="bi bi-clipboard-check-fill me-1"></i> ¡Copiado!';
+                            } catch (err) {
+                                console.error("No se pudo copiar", err);
+                            }
+
+                            // Limpiamos el elemento temporal
+                            modalBody.removeChild(aux);
+
+                            // Esperamos un instante para que veas el "¡Copiado!" en verde y envía el formulario
+                            setTimeout(() => {
+                                formulario.submit();
+                            }, 400);
+                        });
+                    });
+                });
+            </script>
+        </div>
+    @endsection

@@ -29,4 +29,13 @@ class ContactoController extends Controller
             'email_usuario' => $request->email
         ]);
     }
+
+    public function marcarLeido($id)
+    {
+        $contacto = Contacto::findOrFail($id);
+
+        $contacto->marcarComoRespondida();
+
+        return redirect()->back()->with('status', 'Mensaje marcado como resuelto.');
+    }
 }

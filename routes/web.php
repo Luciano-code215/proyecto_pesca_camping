@@ -104,9 +104,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/productos', [ProductoController::class, 'index'])->name('productos.index');
 
     Route::get('/admin/contactos', function () {
-        $contactos = Contacto::all();
+        $contactos = Contacto::index(Request());
         return view('admin.contactos', compact('contactos'));
-    });
+    })->name('admin.contactos');
 
     Route::get('/admin/categorias', function () {
         $categorias = Categoria::all();
@@ -158,4 +158,5 @@ Route::middleware(['admin'])->group(function () {
 
     Route::put('/admin/categorias/{id}', [CategoriaController::class, 'update'])->name('categorias.update');
 
+    Route::post('/admin/contactos/{id}/leido', [ContactoController::class, 'marcarLeido'])->name('admin.contactos.leido');
 });

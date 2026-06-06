@@ -59,4 +59,6 @@ class CategoriaController extends Controller
 
         return redirect()->route('categorias.index')->with('categoria_reactivada', '¡La categoría vuelve a estar visible!');
     }
+
+
 }
