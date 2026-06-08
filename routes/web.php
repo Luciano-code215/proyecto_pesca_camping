@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FormConsultasController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\ConsultaController;
+use App\Models\Consulta;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Models\Producto;
@@ -118,7 +119,8 @@ Route::middleware(['admin'])->group(function () {
     });
 
     Route::get('/admin/consultas', function () {
-        return view('admin.consultas');
+        $consultas = Consulta::index();
+        return view('admin.consultas', compact('consultas'));
     });
 
     Route::get('/admin/informes', function () {
@@ -159,4 +161,7 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/admin/categorias/{id}', [CategoriaController::class, 'update'])->name('categorias.update');
 
     Route::post('/admin/contactos/{id}/leido', [ContactoController::class, 'marcarLeido'])->name('admin.contactos.leido');
+
+    Route::post('/admin/consultas/atender', [ConsultaController::class, 'responder'])
+        ->name('admin.consultas.responder');
 });

@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('asunto', 255);
             $table->text('mensaje');
             $table->enum('estado', ['pendiente', 'respondida'])->default('pendiente');
-            $table->string('respuesta')->nullable();
             $table->timestamps();
         });
     }

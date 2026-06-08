@@ -13,7 +13,6 @@ class Contacto extends Model
         'asunto',
         'mensaje',
         'estado',
-        'respuesta',
     ];
 
     protected $casts = [
@@ -28,7 +27,6 @@ class Contacto extends Model
         $contacto->asunto = $datos['asunto'];
         $contacto->mensaje = $datos['mensaje'];
         $contacto->estado = 'pendiente';
-        $contacto->respuesta = null;
 
         return $contacto->save();
     }
@@ -40,8 +38,8 @@ class Contacto extends Model
         if ($request->has('buscar') && !empty($request->get('buscar'))) {
             $query->where(function ($q) use ($request) {
                 $q->where('nombre', 'like', '%' . $request->get('buscar') . '%')
-                  ->orWhere('email', 'like', '%' . $request->get('buscar') . '%')
-                  ->orWhere('asunto', 'like', '%' . $request->get('buscar') . '%');
+                    ->orWhere('email', 'like', '%' . $request->get('buscar') . '%')
+                    ->orWhere('asunto', 'like', '%' . $request->get('buscar') . '%');
             });
         }
 

@@ -10,13 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('contactos', function (Blueprint $table) {
+        Schema::create('respuesta_consultas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 255);
-            $table->string('email', 255);
-            $table->string('asunto', 255);
-            $table->text('mensaje');
-            $table->enum('estado', ['pendiente', 'respondida'])->default('pendiente');
+            $table->foreignId('consulta_id')->constrained('consultas')->onDelete('cascade');
+            $table->text('respuesta');
+            $table->boolean('leido')->default(false);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('contactos');
+        Schema::dropIfExists('respuesta_consultas');
     }
 };

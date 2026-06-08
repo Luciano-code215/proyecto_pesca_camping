@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Consulta;
+use App\Models\Respuesta_consulta;
 
 class ConsultaController extends Controller
 {
@@ -31,5 +32,22 @@ class ConsultaController extends Controller
             'nombre_usuario' => auth()->user()->name,
             'email_usuario' => auth()->user()->email
         ]);
+    }
+
+    public function responder(Request $request)
+    {
+        $request->validate([
+            'consulta_id' => 'required|exists:consultas,id',
+            'respuesta' => 'required|string|min:5',
+        ]);
+
+        Respuesta_consulta::guardarRespuesta(
+            $request->consulta_id,
+            $request->respuesta
+        );
+
+        return redirect()
+            ->back()
+            ->with('respuesta_guardada', 'La respuesta se guardó correctamente y el cliente ha sido notificado.');
     }
 }

@@ -4,8 +4,9 @@
 
 @section('contenido')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-dark mb-0"><i class="bi bi-envelope-fill text-danger me-2"></i>Mensajes de Contacto (Público
-            General)</h3>
+        <h3 class="fw-bold text-dark mb-0">
+            <i class="bi bi-envelope-fill text-danger me-2"></i>Mensajes de Contacto (Público General)
+        </h3>
         <span class="text-muted">Correos recibidos desde el formulario de la web pública</span>
     </div>
 
@@ -33,189 +34,145 @@
     </div>
 
     <div class="card shadow-sm border-0 border-top border-danger border-3 p-4 bg-white">
-
         <h5 class="fw-bold text-dark mb-3"><i class="bi bi-search text-secondary me-2"></i>Bandeja de Entrada General</h5>
+
         <div class="row g-2 align-items-center mb-4">
             <div class="col-sm-9">
                 <form action="{{ route('admin.contactos') }}" method="GET">
                     <div class="input-group input-group-lg">
-
                         <input type="text" name="buscar" class="form-control"
                             placeholder="Buscar por nombre, correo electrónico o palabra clave"
                             value="{{ request('buscar') }}">
-
                         <button type="submit" class="btn btn-danger fw-bold px-4">
                             <i class="bi bi-search"></i> Buscar
                         </button>
                     </div>
                 </form>
             </div>
-
-            <div class="table-responsive">
-                <table class="table table-hover align-middle border mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-3">Nombre Remitente</th>
-                            <th>Correo Electrónico</th>
-                            <th>Mensaje Breve</th>
-                            <th>Fecha</th>
-                            <th class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($contactos as $c)
-                            <tr
-                                @if ($c->estado == 'pendiente') style="background-color: rgba(220, 53, 69, 0.02); border-left: 3px solid #dc3545;" class="fw-bold"
-                    @else 
-                        class="text-muted opacity-75" @endif>
-
-                                <td class="ps-3 text-dark">{{ $c->nombre }}</td>
-                                <td>{{ $c->email }}</td>
-                                <td>
-                                    <span class="text-muted fw-normal text-truncate d-inline-block"
-                                        style="max-width: 250px;">
-                                        {{ $c->mensaje }}
-                                    </span>
-                                </td>
-                                <td>{{ $c->created_at->format('d/m/Y H:i A') }}</td>
-
-                                <td class="text-center">
-                                    @if ($c->estado == 'pendiente')
-                                        <button type="button" class="btn btn-sm btn-outline-danger px-3"
-                                            data-bs-toggle="modal" data-bs-target="#modalContacto{{ $c->id }}"
-                                            title="Leer mensaje completo">
-                                            <i class="bi bi-envelope-open-fill me-1"></i> Leer Mensaje
-                                        </button>
-                                    @else
-                                        <button type="button" class="btn btn-sm btn-light border px-3"
-                                            data-bs-toggle="modal" data-bs-target="#modalContacto{{ $c->id }}"
-                                            title="Volver a leer">
-                                            <i class="bi bi-eye me-1"></i> Volver a Leer
-                                        </button>
-                                    @endif
-                                </td>
-                            </tr>
-
-                            <div class="modal fade" id="modalContacto{{ $c->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                    <div class="modal-content border-0 shadow">
-
-                                        <div
-                                            class="modal-header {{ $c->estado == 'pendiente' ? 'bg-dark text-white' : 'bg-light text-dark' }}">
-                                            <h5 class="modal-title fw-bold">
-                                                {{ $c->estado == 'pendiente' ? 'Nueva Consulta Pendiente' : 'Consulta Leída' }}
-                                            </h5>
-                                            <button type="button"
-                                                class="btn-close {{ $c->estado == 'pendiente' ? 'btn-close-white' : '' }}"
-                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-                                        <div class="modal-body p-4" style="text-align: left;">
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="text-muted small d-block">Remitente</label>
-                                                    <strong class="text-dark">{{ $c->nombre }}</strong>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="text-muted small d-block">Correo de Contacto</label>
-                                                    <strong class="text-primary">{{ $c->email }}</strong>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="text-muted small d-block">Asunto</label>
-                                                <h6 class="fw-bold text-dark">{{ $c->asunto ?? 'Sin Asunto' }}</h6>
-                                            </div>
-
-                                            <div class="mb-4">
-                                                <label class="text-muted small d-block mb-1">Mensaje de la Consulta</label>
-                                                <div class="p-3 bg-light rounded border text-dark"
-                                                    style="white-space: pre-line;">
-                                                    {{ $c->mensaje }}
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="text-end">
-                                                @if ($c->estado == 'pendiente')
-                                                    <form action="{{ route('admin.contactos.leido', $c->id) }}"
-                                                        method="POST" id="formLeido{{ $c->id }}"
-                                                        class="d-inline mb-0">
-                                                        @csrf
-                                                        <button type="button" class="btn btn-secondary me-2"
-                                                            data-bs-dismiss="modal">Cerrar</button>
-
-                                                        <button type="button" class="btn btn-danger fw-bold btn-entendido"
-                                                            data-email="{{ $c->email }}"
-                                                            data-form="formLeido{{ $c->id }}"
-                                                            data-modal="modalContacto{{ $c->id }}">
-                                                            <i class="bi bi-check2-circle me-1"></i> Entendido
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <button type="button" class="btn btn-secondary px-4"
-                                                        data-bs-dismiss="modal">Cerrar Vista</button>
-                                                @endif
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const botonesEntendido = document.querySelectorAll('.btn-entendido');
-
-                    botonesEntendido.forEach(boton => {
-                        boton.addEventListener('click', function() {
-                            const botonActual = this;
-                            const email = botonActual.getAttribute('data-email');
-                            const formId = botonActual.getAttribute('data-form');
-                            const modalId = botonActual.getAttribute('data-modal');
-
-                            const formulario = document.getElementById(formId);
-                            const modalElement = document.getElementById(modalId);
-                            const modalBody = modalElement.querySelector('.modal-body');
-
-                            // 🛠️ INYECCIÓN INTERNA: Creamos el bloque de texto temporal DENTRO del modal
-                            // para que Bootstrap no bloquee el portapapeles del sistema operativo.
-                            const aux = document.createElement("textarea");
-                            aux.value = email;
-                            aux.style.position = "absolute";
-                            aux.style.opacity = "0"; // Invisible
-                            modalBody.appendChild(aux);
-
-                            aux.select();
-                            aux.setSelectionRange(0, 99999);
-
-                            try {
-                                // Copiamos el email
-                                document.execCommand("copy");
-
-                                // Feedback visual en el botón
-                                botonActual.className = "btn btn-success fw-bold";
-                                botonActual.innerHTML =
-                                    '<i class="bi bi-clipboard-check-fill me-1"></i> ¡Copiado!';
-                            } catch (err) {
-                                console.error("No se pudo copiar", err);
-                            }
-
-                            // Limpiamos el elemento temporal
-                            modalBody.removeChild(aux);
-
-                            // Esperamos un instante para que veas el "¡Copiado!" en verde y envía el formulario
-                            setTimeout(() => {
-                                formulario.submit();
-                            }, 400);
-                        });
-                    });
-                });
-            </script>
         </div>
-    @endsection
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle border mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">Nombre Remitente</th>
+                        <th>Correo Electrónico</th>
+                        <th>Mensaje Breve</th>
+                        <th>Fecha</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($contactos as $c)
+                        <tr
+                            @if ($c->estado == 'pendiente') style="background-color: rgba(220, 53, 69, 0.02); border-left: 3px solid #dc3545;" class="fw-bold"
+                            @else 
+                                class="text-muted opacity-75" @endif>
+
+                            <td class="ps-3 text-dark">{{ $c->nombre }}</td>
+                            <td>{{ $c->email }}</td>
+                            <td>
+                                <span class="text-muted fw-normal text-truncate d-inline-block" style="max-width: 250px;">
+                                    {{ $c->mensaje }}
+                                </span>
+                            </td>
+                            <td>{{ $c->created_at->format('d/m/Y H:i A') }}</td>
+
+                            <td class="text-center">
+                                <button type="button"
+                                    class="btn btn-sm {{ $c->estado == 'pendiente' ? 'btn-outline-danger' : 'btn-light border' }} px-3"
+                                    data-bs-toggle="modal" data-bs-target="#modalAtenderContacto"
+                                    data-id="{{ $c->id }}" data-cliente="{{ $c->nombre }}"
+                                    data-email="{{ $c->email }}" data-mensaje="{{ $c->mensaje }}"
+                                    data-respuesta="{{ $c->respuesta ? $c->respuesta->respuesta : '' }}">
+
+                                    @if ($c->estado == 'pendiente')
+                                        <i class="bi bi-envelope-open-fill me-1"></i> Leer Mensaje
+                                    @else
+                                        <i class="bi bi-eye me-1"></i> Volver a Leer
+                                    @endif
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAtenderContacto" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form action="{{ route('admin.contactos.responder') }}" method="POST" class="modal-content">
+                @csrf
+                <input type="hidden" name="contacto_id" id="input-contacto-id">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">Mensaje de <span id="span-cliente"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="alert alert-secondary border-0 shadow-sm">
+                        <h6><strong>Correo:</strong> <span id="text-email" class="text-danger"></span></h6>
+                        <hr>
+                        <p class="mb-1"><strong>Mensaje original:</strong></p>
+                        <p id="text-mensaje" class="fst-italic text-dark mb-0"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-respuesta" class="form-label fw-bold">Escribe la respuesta por correo:</label>
+                        <textarea class="form-control" name="respuesta" id="input-respuesta" rows="6"
+                            placeholder="Escribe aquí los detalles que se le enviarán al remitente..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-danger" id="btn-enviar">
+                        <i class="bi bi-send-fill me-1"></i> Registrar y Responder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalAtender = document.getElementById('modalAtenderContacto');
+
+            if (modalAtender) {
+                modalAtender.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget; // Botón que disparó el evento
+
+                    // Extraemos los atributos data-* del botón
+                    const id = button.getAttribute('data-id');
+                    const cliente = button.getAttribute('data-cliente');
+                    const email = button.getAttribute('data-email');
+                    const mensaje = button.getAttribute('data-mensaje');
+                    const respuestaExistente = button.getAttribute('data-respuesta');
+
+                    // Inyectamos los valores en los contenedores del modal
+                    document.getElementById('input-contacto-id').value = id;
+                    document.getElementById('span-cliente').textContent = cliente;
+                    document.getElementById('text-email').textContent = email;
+                    document.getElementById('text-mensaje').textContent = mensaje;
+
+                    const textarea = document.getElementById('input-respuesta');
+                    const btnEnviar = document.getElementById('btn-enviar');
+
+                    // Si ya existe una respuesta cargada en la relación, bloqueamos el modal
+                    if (respuestaExistente && respuestaExistente.trim() !== '') {
+                        textarea.value = respuestaExistente;
+                        textarea.readOnly = true;
+                        btnEnviar.classList.add('d-none'); // Esconde el botón de enviar
+                    } else {
+                        textarea.value = '';
+                        textarea.readOnly = false;
+                        btnEnviar.classList.remove('d-none'); // Muestra el botón de enviar
+                    }
+                });
+            }
+        });
+    </script>
+@endsection
