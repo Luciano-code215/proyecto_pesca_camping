@@ -10,6 +10,18 @@
         <span class="text-muted">Correos recibidos desde el formulario de la web pública</span>
     </div>
 
+    @if (session('status'))
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm d-flex align-items-center mb-4"
+            role="alert">
+            <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
+            <div>
+                <strong class="d-block text-success fw-bold">¡Mensaje Actualizado!</strong>
+                {{ session('status') }}
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row g-3 mb-4">
         <div class="col-12 col-sm-6 col-md-4">
             <div class="card bg-danger text-white p-3 shadow-sm border-0 position-relative overflow-hidden">
@@ -26,9 +38,9 @@
                 <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
                     <i class="bi bi-archive-fill"></i>
                 </div>
-                <h6 class="text-uppercase fw-bold small">Mensajes Respondidos</h6>
+                <h6 class="text-uppercase fw-bold small">Mensajes Leídos</h6>
                 <h2 class="fw-bold mb-1">{{ \App\Models\Contacto::obtenerContactosRespondidos()->count() }}</h2>
-                <p class="mb-0 small">Historial de consultas resueltas</p>
+                <p class="mb-0 small">Historial de consultas revisadas</p>
             </div>
         </div>
     </div>
@@ -66,8 +78,7 @@
                     @foreach ($contactos as $c)
                         <tr
                             @if ($c->estado == 'pendiente') style="background-color: rgba(220, 53, 69, 0.02); border-left: 3px solid #dc3545;" class="fw-bold"
-                            @else 
-                                class="text-muted opacity-75" @endif>
+                            @else class="text-muted opacity-75" @endif>
 
                             <td class="ps-3 text-dark">{{ $c->nombre }}</td>
                             <td>{{ $c->email }}</td>
@@ -84,8 +95,7 @@
                                     data-bs-toggle="modal" data-bs-target="#modalAtenderContacto"
                                     data-id="{{ $c->id }}" data-cliente="{{ $c->nombre }}"
                                     data-email="{{ $c->email }}" data-mensaje="{{ $c->mensaje }}"
-                                    data-respuesta="{{ $c->respuesta ? $c->respuesta->respuesta : '' }}">
-
+                                    data-estado="{{ $c->estado }}">
                                     @if ($c->estado == 'pendiente')
                                         <i class="bi bi-envelope-open-fill me-1"></i> Leer Mensaje
                                     @else
@@ -100,12 +110,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalAtenderContacto" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalAtenderContacto" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <form action="{{ route('admin.contactos.responder') }}" method="POST" class="modal-content">
-                @csrf
-                <input type="hidden" name="contacto_id" id="input-contacto-id">
-
+            <div class="modal-content">
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title">Mensaje de <span id="span-cliente"></span></h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -113,27 +120,32 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="alert alert-secondary border-0 shadow-sm">
-                        <h6><strong>Correo:</strong> <span id="text-email" class="text-danger"></span></h6>
+                    <div class="alert alert-secondary border-0 shadow-sm mb-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6><strong>Correo:</strong> <span id="text-email" class="text-danger fw-bold"></span></h6>
+                            <button type="button" class="btn btn-sm btn-dark" id="btn-copiar-correo">
+                                <i class="bi bi-clipboard-plus me-1"></i> Copiar Correo
+                            </button>
+                        </div>
                         <hr>
                         <p class="mb-1"><strong>Mensaje original:</strong></p>
-                        <p id="text-mensaje" class="fst-italic text-dark mb-0"></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="input-respuesta" class="form-label fw-bold">Escribe la respuesta por correo:</label>
-                        <textarea class="form-control" name="respuesta" id="input-respuesta" rows="6"
-                            placeholder="Escribe aquí los detalles que se le enviarán al remitente..." required></textarea>
+                        <p id="text-mensaje" class="fst-italic text-dark mb-0 style-textarea-like"
+                            style="white-space: pre-wrap;"></p>
                     </div>
                 </div>
 
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-danger" id="btn-enviar">
-                        <i class="bi bi-send-fill me-1"></i> Registrar y Responder
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-cerrar-modal">Cerrar</button>
+
+                    <form action="#" method="POST" id="form-marcar-leido" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger d-none" id="btn-marcar-leido">
+                            <i class="bi bi-check2-all me-1"></i> Marcar como Leído
+                        </button>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -143,35 +155,82 @@
 
             if (modalAtender) {
                 modalAtender.addEventListener('show.bs.modal', function(event) {
-                    const button = event.relatedTarget; // Botón que disparó el evento
+                    const button = event.relatedTarget;
 
-                    // Extraemos los atributos data-* del botón
                     const id = button.getAttribute('data-id');
                     const cliente = button.getAttribute('data-cliente');
                     const email = button.getAttribute('data-email');
                     const mensaje = button.getAttribute('data-mensaje');
-                    const respuestaExistente = button.getAttribute('data-respuesta');
+                    const estado = button.getAttribute('data-estado');
 
-                    // Inyectamos los valores en los contenedores del modal
-                    document.getElementById('input-contacto-id').value = id;
                     document.getElementById('span-cliente').textContent = cliente;
                     document.getElementById('text-email').textContent = email;
                     document.getElementById('text-mensaje').textContent = mensaje;
 
-                    const textarea = document.getElementById('input-respuesta');
-                    const btnEnviar = document.getElementById('btn-enviar');
+                    const formLeido = document.getElementById('form-marcar-leido');
+                    const btnMarcarLeido = document.getElementById('btn-marcar-leido');
 
-                    // Si ya existe una respuesta cargada en la relación, bloqueamos el modal
-                    if (respuestaExistente && respuestaExistente.trim() !== '') {
-                        textarea.value = respuestaExistente;
-                        textarea.readOnly = true;
-                        btnEnviar.classList.add('d-none'); // Esconde el botón de enviar
+                    if (estado === 'pendiente') {
+                        formLeido.action = `/admin/contactos/${id}/leido`;
+                        btnMarcarLeido.classList.remove('d-none');
                     } else {
-                        textarea.value = '';
-                        textarea.readOnly = false;
-                        btnEnviar.classList.remove('d-none'); // Muestra el botón de enviar
+                        btnMarcarLeido.classList.add('d-none');
                     }
                 });
+            }
+
+            // 🟢 SISTEMA DE COPIADO CORREGIDO PARA MODALES
+            const btnCopiar = document.getElementById('btn-copiar-correo');
+            if (btnCopiar) {
+                btnCopiar.addEventListener('click', function() {
+                    const emailSpan = document.getElementById('text-email');
+                    const emailText = emailSpan.textContent.trim();
+
+                    if (!emailText) return;
+
+                    // Intento 1: API Moderna
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(emailText)
+                            .then(() => darFeedback(this))
+                            .catch(() => usarMetodoSeleccion(emailSpan, this));
+                    } else {
+                        // Intento 2: Copiado por selección directa del elemento del modal (Falla-safe absoluto)
+                        usarMetodoSeleccion(emailSpan, this);
+                    }
+                });
+            }
+
+            function usarMetodoSeleccion(elemento, elementoBoton) {
+                // Creamos una selección sobre el propio texto visible del modal
+                const rango = document.createRange();
+                rango.selectNodeContents(elemento);
+
+                const seleccion = window.getSelection();
+                seleccion.removeAllRanges();
+                seleccion.addRange(rango);
+
+                try {
+                    // Ejecutamos el copiado del texto seleccionado
+                    const exito = document.execCommand('copy');
+                    if (exito) {
+                        darFeedback(elementoBoton);
+                    }
+                } catch (err) {
+                    console.error('No se pudo copiar:', err);
+                }
+
+                // Deseleccionamos el texto para que el usuario no lo vea pintado de azul
+                seleccion.removeAllRanges();
+            }
+
+            function darFeedback(elementoBoton) {
+                elementoBoton.innerHTML = '<i class="bi bi-check-lg me-1"></i> ¡Copiado!';
+                elementoBoton.classList.replace('btn-dark', 'btn-success');
+
+                setTimeout(() => {
+                    elementoBoton.innerHTML = '<i class="bi bi-clipboard-plus me-1"></i> Copiar Correo';
+                    elementoBoton.classList.replace('btn-success', 'btn-dark');
+                }, 2000);
             }
         });
     </script>

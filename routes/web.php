@@ -118,10 +118,10 @@ Route::middleware(['admin'])->group(function () {
         return view('admin.pedidos');
     });
 
-    Route::get('/admin/consultas', function () {
-        $consultas = Consulta::index();
+    Route::get('/admin/consultas', function (Request $request) {
+        $consultas = Consulta::index($request);
         return view('admin.consultas', compact('consultas'));
-    });
+    })->name('admin.consultas');
 
     Route::get('/admin/informes', function () {
         return view('admin.informes');

@@ -17,7 +17,7 @@
                     <i class="bi bi-chat-dots"></i>
                 </div>
                 <h6 class="text-uppercase fw-bold small">Total Consultas</h6>
-                <h2 class="fw-bold mb-1">{{ \App\Models\Consulta::index()->count() }}</h2>
+                <h2 class="fw-bold mb-1">{{ \App\Models\Consulta::count() }}</h2>
                 <p class="mb-0 small">Historial acumulado de preguntas</p>
             </div>
         </div>
@@ -60,10 +60,14 @@
 
         <div class="row g-2 align-items-center mb-4">
             <div class="col-sm-8">
-                <select class="form-select border-primary">
-                    <option value="todos">Mostrar todas las consultas de la cuenta</option>
-                    <option value="pendientes">Ver solo las Pendientes</option>
-                    <option value="respondidas">Ver solo las Respondidas</option>
+                <select class="form-select border-primary" id="filtro-estado"
+                    onchange="window.location.href = `{{ route('admin.consultas') }}?estado=${this.value}`">
+                    <option value="todos" {{ request('estado') == 'todos' || !request('estado') ? 'selected' : '' }}>
+                        Mostrar todas las consultas de la cuenta</option>
+                    <option value="pendientes" {{ request('estado') == 'pendientes' ? 'selected' : '' }}>Ver solo las
+                        Pendientes</option>
+                    <option value="respondidas" {{ request('estado') == 'respondidas' ? 'selected' : '' }}>Ver solo las
+                        Respondidas</option>
                 </select>
             </div>
         </div>

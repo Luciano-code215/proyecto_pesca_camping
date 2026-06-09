@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Consulta extends Model
 {
@@ -32,9 +33,16 @@ class Consulta extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function index()
+    public static function index(Request $request)
     {
-        return self::with('user')->orderBy('created_at', 'desc')->get();
+        $query = self::with('user')->orderBy('created_at', 'desc');
+
+        if ($request->has('estado') && $request->estado !== 'todos') {
+            $valorEstado = ($request->estado === 'pendientes') ? 'pendiente' : 'respondida';
+            $query->where('estado', $valorEstado);
+        }
+
+        return $query->get();
     }
 
     public static function consultasPendientes()
