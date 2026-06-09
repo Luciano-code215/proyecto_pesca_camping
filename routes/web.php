@@ -13,6 +13,7 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use App\Models\Categoria;
 use App\Models\Contacto;
+use App\Models\Respuesta_consulta;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -92,6 +93,9 @@ Route::middleware('auth')->group(function () {
                 return $consulta->estado === $valorEstado;
             });
         }
+
+        Respuesta_consulta::marcarComoLeidasPorConsultas($consultas);
+
         return view('mis-consultas', compact('consultas'));
     })->name('mis.consultas');
 
