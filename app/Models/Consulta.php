@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use App\Models\Respuesta_consulta;
 
 class Consulta extends Model
 {
@@ -64,5 +65,15 @@ class Consulta extends Model
     public static function buscarPorId(int $id)
     {
         return self::find($id);
+    }
+
+    public static function buscarPorUsuarioId(int $userId)
+    {
+        return self::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+    }
+
+    public function respuesta()
+    {
+        return $this->hasOne(Respuesta_consulta::class, 'consulta_id');
     }
 }

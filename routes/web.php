@@ -83,6 +83,18 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+
+    Route::get('/mis-consultas', function (Request $request) {
+        $consultas = Consulta::buscarPorUsuarioId(auth()->id());
+        if ($request->has('estado') && $request->estado !== 'todos') {
+            $valorEstado = ($request->estado === 'pendientes') ? 'pendiente' : 'respondida';
+            $consultas = $consultas->filter(function ($consulta) use ($valorEstado) {
+                return $consulta->estado === $valorEstado;
+            });
+        }
+        return view('mis-consultas', compact('consultas'));
+    })->name('mis.consultas');
+
 });
 
 
@@ -164,4 +176,5 @@ Route::middleware(['admin'])->group(function () {
 
     Route::post('/admin/consultas/atender', [ConsultaController::class, 'responder'])
         ->name('admin.consultas.responder');
+
 });

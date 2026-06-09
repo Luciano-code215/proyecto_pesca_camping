@@ -134,6 +134,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                <li><a class="dropdown-item" href="{{ url('/mis-consultas') }}">Mis Consultas</a></li>
                                 <li>
                                     <form action="/logout" method="POST" class="px-3 py-1">
                                         @csrf
