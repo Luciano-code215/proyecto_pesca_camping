@@ -71,8 +71,13 @@
                         href="/comercializacion">Comercializacion</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('contacto') ? 'active text-warning fw-bold' : '' }}"
-                        href="/contacto">Contacto</a>
+                    @auth
+                        <a class="nav-link {{ request()->is('consultas') ? 'active text-warning fw-bold' : '' }}"
+                            href="/contacto">Consultas</a>
+                    @else
+                        <a class="nav-link {{ request()->is('contacto') ? 'active text-warning fw-bold' : '' }}"
+                            href="/contacto">Contacto</a>
+                    @endauth
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('terminos_y_usos') ? 'active text-warning fw-bold' : '' }}"
@@ -119,15 +124,36 @@
                         </li>
                     @else
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownUser"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Hola, {{ Auth::user()->name }}
+                            <a class="nav-link dropdown-toggle text-light position-relative px-3" href="#"
+                                id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="bi bi-person-circle me-1"></i> Hola, {{ Auth::user()->name }}
+
+                                @if (\App\Models\Respuesta_consulta::tieneRespuestasPendientes())
+                                    <span
+                                        class="position-absolute top-50 start-100 translate-middle-y p-1 bg-danger border border-light rounded-circle"
+                                        style="margin-left: -8px;">
+                                        <span class="visually-hidden">Nuevas alertas</span>
+                                    </span>
+                                @endif
                             </a>
+
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
                                 aria-labelledby="navbarDropdownUser">
                                 <li><a class="dropdown-item" href="{{ url('/mis-compras') }}">Mis Compras</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center"
+                                        href="{{ url('/mis-consultas') }}">
+                                        <span><i class="bi bi-chat-left-text me-2"></i>Mis Consultas</span>
+
+                                        @if (\App\Models\Respuesta_consulta::tieneRespuestasPendientes())
+                                            <span
+                                                class="p-1 bg-danger border border-light rounded-circle animate-pulse"></span>
+                                        @endif
+                                    </a>
                                 </li>
                                 <li>
                                     <form action="/logout" method="POST" class="px-3 py-1">

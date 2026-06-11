@@ -4,9 +4,18 @@ use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FormConsultasController;
+use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\ConsultaController;
+use App\Models\Consulta;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriaController;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use App\Models\Categoria;
+use App\Models\Contacto;
+use App\Models\Respuesta_consulta;
+use App\Models\Orden;
+use App\Models\ItemOrden;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -26,7 +35,7 @@ Route::post('/crear_cuenta', [AuthController::class, 'store']);
 
 Route::get('/ingresar', function () {
     return view('ingresar');
-});
+})->name('login');
 
 Route::post('/ingresar', [AuthController::class, 'login']);
 
@@ -58,9 +67,10 @@ Route::get('/en_construccion', function () {
     return view('en_construccion');
 });
 
-Route::get('/form-consultas', function () {
-    return view('form-consultas');
-});
+Route::get('/form-contacto', function () {
+    return view('contacto_cliente');
+})->name('form.contacto');
+
 
 // CARRITO:
 Route::get('/carrito', function () {
@@ -78,40 +88,78 @@ Route::delete('/eliminar-del-carrito', [CartController::class, 'remove'])->name(
 
 Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
 
-Route::get('/agregar_producto', function () {
-    return view('agregar_producto');
-});
 
-Route::post('/agregar_producto', [ProductoController::class, 'store'])->name('agregar_producto');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+///// CLIENTES LOGUEADOS //////
+Route::middleware('auth')->group(function () {
+    Route::get('/form-consultas', function () {
+        return view('consulta_cliente');
+    })->name('form.consultas');
+
+
+    Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+
+    Route::get('/mis-consultas', function (Request $request) {
+        $consultas = Consulta::buscarPorUsuarioId(auth()->id());
+        if ($request->has('estado') && $request->estado !== 'todos') {
+            $valorEstado = ($request->estado === 'pendientes') ? 'pendiente' : 'respondida';
+            $consultas = $consultas->filter(function ($consulta) use ($valorEstado) {
+                return $consulta->estado === $valorEstado;
+            });
+        }
+
+        Respuesta_consulta::marcarComoLeidasPorConsultas($consultas);
+
+        return view('mis-consultas', compact('consultas'));
+    })->name('mis.consultas');
+
+});
+
+
+
+////// PUBLICAS  //////    
+
+Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
+
+
+////// ADMIN //////
 
 Route::middleware(['admin'])->group(function () {
 
     Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
+        $topProductos = ItemOrden::obtenerTopVendidos(3);
+        $topCategorias = \App\Models\Categoria::obtenerTopVendidas(3);
+        return view('admin.dashboard', compact('topProductos', 'topCategorias'));
     });
 
-    Route::get('/admin/productos', function () {
-        $productos = Producto::all();
-        return view('admin.productos', compact('productos'));
-    });
+    Route::post('/admin/productos/store', [ProductoController::class, 'store'])->name('productos.store');
+
+    Route::get('/admin/productos', [ProductoController::class, 'index'])->name('productos.index');
 
     Route::get('/admin/contactos', function () {
-        return view('admin.contactos');
-    });
+        $contactos = Contacto::index(Request());
+        return view('admin.contactos', compact('contactos'));
+    })->name('admin.contactos');
 
     Route::get('/admin/categorias', function () {
-        return view('admin.categorias');
+        $categorias = Categoria::all();
+        return view('admin.categorias', compact('categorias'));
     });
 
-    Route::get('admin/pedidos', function () {
-        return view('admin.pedidos');
-    });
+    Route::get('admin/pedidos', function (Request $request) {
 
-    Route::get('/admin/consultas', function () {
-        return view('admin.consultas');
-    });
+        $ordenes = Orden::index($request);
+
+        return view('admin.pedidos', compact('ordenes'));
+    })->name('admin.pedidos');
+
+    Route::get('/admin/consultas', function (Request $request) {
+        $consultas = Consulta::index($request);
+        return view('admin.consultas', compact('consultas'));
+    })->name('admin.consultas');
 
     Route::get('/admin/informes', function () {
         return view('admin.informes');
@@ -120,4 +168,56 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/usuarios', [AdminController::class, 'usuarios'])->name('admin_usuarios');
 
     Route::post('/crear-admin', [AdminController::class, 'store'])->name('crear_admin');
+
+    Route::post('/admin/usuarios/{id}/alternar-estado', [AdminController::class, 'alternarEstado'])->name('admin.usuarios.estado');
+
+    Route::post('/admin/usuarios/{id}/baja-admin', [AdminController::class, 'bajaAdmin']);
+
+    Route::post('/admin/usuarios/cambiar-password', [AdminController::class, 'cambiarPassword']);
+
+    Route::get('/admin/agregar_producto', function () {
+        $categorias = Categoria::categoriasActivas();
+        return view('admin.agregar_producto', compact('categorias'));
+    });
+
+    Route::patch('/admin/productos/{id}/reactivar', [ProductoController::class, 'restore'])->name('productos.restore');
+
+    Route::get('/admin/productos/{id}/editar', [ProductoController::class, 'edit'])->name('productos.edit');
+
+    Route::delete('/admin/productos/{id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+    Route::put('/admin/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
+
+    Route::get('/admin/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
+
+    Route::post('/admin/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
+
+    Route::patch('/admin/categorias/{id}/desactivar', [CategoriaController::class, 'desactivar'])->name('categorias.desactivar');
+
+    Route::patch('/admin/categorias/{id}/reactivar', [CategoriaController::class, 'reactivar'])->name('categorias.reactivar');
+
+    Route::put('/admin/categorias/{id}', [CategoriaController::class, 'update'])->name('categorias.update');
+
+    Route::post('/admin/contactos/{id}/leido', [ContactoController::class, 'marcarLeido'])->name('admin.contactos.leido');
+
+    Route::post('/admin/consultas/atender', [ConsultaController::class, 'responder'])->name('admin.consultas.responder');
+
+    Route::post('/admin/ordenes/{id}/actualizar-estado', function (Request $request, $id) {
+
+        // Validamos que el estado enviado esté dentro de los permitidos
+        $estadosValidos = array_keys(Orden::obtenerEstadosDisponibles());
+
+        if (!in_array($request->estado, $estadosValidos)) {
+            return response()->json(['success' => false, 'message' => 'Estado inválido'], 400);
+        }
+
+        // Buscamos la orden y la actualizamos directamente
+        $orden = Orden::findOrFail($id);
+        $orden->estado = $request->estado;
+        $orden->save();
+
+        // Respondemos con éxito a JavaScript
+        return response()->json(['success' => true]);
+    })->name('admin.ordenes.actualizar_estado');
+
 });

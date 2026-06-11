@@ -16,7 +16,7 @@
                 <div class="fs-1 text-dark me-3"><i class="bi bi-calculator"></i></div>
                 <div>
                     <h6 class="text-muted mb-1 small fw-bold">Ticket Promedio</h6>
-                    <h4 class="mb-0 fw-bold">$42.300</h4>
+                    <h4 class="mb-0 fw-bold">{{ \App\Models\Orden::obtenerEntregadas()->avg('total') }}</h4>
                     <p class="mb-0 text-muted" style="font-size: 0.75rem;">Monto estimado por compra</p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="fs-1 text-dark me-3"><i class="bi bi-people-fill"></i></div>
                 <div>
                     <h6 class="text-muted mb-1 small fw-bold">Clientes Registrados</h6>
-                    <h4 class="mb-0 fw-bold">342</h4>
+                    <h4 class="mb-0 fw-bold">{{ \App\Models\User::usuariosActivos()->count() }}</h4>
                     <p class="mb-0 text-muted" style="font-size: 0.75rem;">Usuarios con cuenta activa</p>
                 </div>
             </div>

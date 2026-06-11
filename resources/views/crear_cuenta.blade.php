@@ -38,11 +38,18 @@
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
+
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" class="form-control" id="email" name="email"
+
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        id="email" name="email" value="{{ old('email') }}"
                                         placeholder="correo@ejemplo.com" required>
-                                </div>
+                                </div> @error('email')
+                                    <div class="text-danger small fw-bold mt-1 d-block">
+                                        <i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">

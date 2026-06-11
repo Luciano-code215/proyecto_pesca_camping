@@ -10,11 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('ordens', function (Blueprint $table) {
+        Schema::create('respuesta_consultas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('total', 10, 2);
-            $table->enum('estado', ['creada', 'pendientePago', 'pagada', 'pendienteEnvio', 'entregada', 'cancelada'])->default('creada');
+            $table->foreignId('consulta_id')->constrained('consultas')->onDelete('cascade');
+            $table->text('respuesta');
+            $table->boolean('leido')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('ordens');
+        Schema::dropIfExists('respuesta_consultas');
     }
 };
