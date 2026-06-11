@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('total', 10, 2);
-            $table->enum('estado', ['creada', 'pendientePago', 'pagada', 'cancelada'])->default('creada');
+            $table->enum('estado', ['creada', 'pendientePago', 'pagada', 'pendienteEnvio', 'entregada', 'cancelada'])->default('creada');
             $table->timestamps();
         });
     }

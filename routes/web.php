@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\Categoria;
 use App\Models\Contacto;
 use App\Models\Respuesta_consulta;
+use App\Models\Orden;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -130,9 +131,12 @@ Route::middleware(['admin'])->group(function () {
         return view('admin.categorias', compact('categorias'));
     });
 
-    Route::get('admin/pedidos', function () {
-        return view('admin.pedidos');
-    });
+    Route::get('admin/pedidos', function (Request $request) {
+
+        $ordenes = Orden::index($request);
+
+        return view('admin.pedidos', compact('ordenes'));
+    })->name('admin.pedidos');
 
     Route::get('/admin/consultas', function (Request $request) {
         $consultas = Consulta::index($request);
@@ -178,7 +182,24 @@ Route::middleware(['admin'])->group(function () {
 
     Route::post('/admin/contactos/{id}/leido', [ContactoController::class, 'marcarLeido'])->name('admin.contactos.leido');
 
-    Route::post('/admin/consultas/atender', [ConsultaController::class, 'responder'])
-        ->name('admin.consultas.responder');
+    Route::post('/admin/consultas/atender', [ConsultaController::class, 'responder'])->name('admin.consultas.responder');
+
+    Route::post('/admin/ordenes/{id}/actualizar-estado', function (Request $request, $id) {
+
+        // Validamos que el estado enviado esté dentro de los permitidos
+        $estadosValidos = array_keys(Orden::obtenerEstadosDisponibles());
+
+        if (!in_array($request->estado, $estadosValidos)) {
+            return response()->json(['success' => false, 'message' => 'Estado inválido'], 400);
+        }
+
+        // Buscamos la orden y la actualizamos directamente
+        $orden = Orden::findOrFail($id);
+        $orden->estado = $request->estado;
+        $orden->save();
+
+        // Respondemos con éxito a JavaScript
+        return response()->json(['success' => true]);
+    })->name('admin.ordenes.actualizar_estado');
 
 });

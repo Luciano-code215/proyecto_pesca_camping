@@ -19,4 +19,14 @@ class ItemOrden extends Model
         'precio_unitario' => 'decimal:2',
         'subtotal' => 'decimal:2',
     ];
+
+    public function orden()
+    {
+        return $this->belongsTo(Orden::class, 'orden_id');
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
 }
