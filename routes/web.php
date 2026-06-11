@@ -17,6 +17,7 @@ use App\Models\Respuesta_consulta;
 use App\Models\Orden;
 use App\Models\ItemOrden;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', function () {
@@ -77,6 +78,26 @@ Route::get('/carrito', function () {
     return view('carrito');
 
 });
+
+///////////////////////////   Ultima modificacion   //////////////////////////////
+Route::get('/carrito', [CartController::class, 'index'])->name('carrito.index');
+
+Route::post('/carrito/agregar/{id}', [CartController::class, 'add'])->name('cart.add');
+
+Route::get('/carrito/eliminar/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+Route::get('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
+
+Route::patch('/carrito/update/{id}', [CartController::class, 'update'])->name('cart.update');
+
+Route::delete('/carrito/eliminar/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+Route::post('/carrito/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
+
+Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
+
+
+///////////////////////////////////////////////////////////////////////////////
 
 Route::get('/agregar-al-carrito/{id}', [CartController::class, 'add'])->name('cart.add');
 
