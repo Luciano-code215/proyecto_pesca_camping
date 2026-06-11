@@ -92,7 +92,7 @@
                             </a>
                         </li>
 
-                        <div class="text-uppercase text-muted px-2 pt-3 pb-1 small fw-bold" style="font-size: 0.7rem;">
+                        <div class="text-uppercase text-white px-2 pt-3 pb-1 small fw-bold" style="font-size: 0.7rem;">
                             Gestión de Tienda</div>
 
                         <li class="nav-item">
@@ -114,7 +114,7 @@
                             </a>
                         </li>
 
-                        <div class="text-uppercase text-muted px-2 pt-3 pb-1 small fw-bold" style="font-size: 0.7rem;">
+                        <div class="text-uppercase text-white px-2 pt-3 pb-1 small fw-bold" style="font-size: 0.7rem;">
                             Mensajería</div>
 
                         <li class="nav-item">
@@ -130,15 +130,9 @@
                             </a>
                         </li>
 
-                        <div class="text-uppercase text-muted px-2 pt-3 pb-1 small fw-bold" style="font-size: 0.7rem;">
+                        <div class="text-uppercase text-white px-2 pt-3 pb-1 small fw-bold" style="font-size: 0.7rem;">
                             Reportes y Seguridad</div>
 
-                        <li class="nav-item">
-                            <a href="{{ url('/admin/informes') }}"
-                                class="nav-link text-white py-2 {{ request()->is('admin/informes*') ? 'active bg-primary rounded' : '' }}">
-                                <i class="bi bi-graph-up-arrow me-2"></i> Informes de Venta
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="{{ url('/admin/usuarios') }}"
                                 class="nav-link text-white py-2 {{ request()->is('admin/usuarios*') ? 'active bg-primary rounded' : '' }}">

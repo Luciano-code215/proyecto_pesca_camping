@@ -129,6 +129,11 @@ class Producto extends Model
             ->where('activo', true)
             ->count();
     }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'categoria_id');
+    }
 }
 
 

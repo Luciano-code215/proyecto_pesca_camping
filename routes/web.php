@@ -15,6 +15,7 @@ use App\Models\Categoria;
 use App\Models\Contacto;
 use App\Models\Respuesta_consulta;
 use App\Models\Orden;
+use App\Models\ItemOrden;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -114,7 +115,9 @@ Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.s
 Route::middleware(['admin'])->group(function () {
 
     Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
+        $topProductos = ItemOrden::obtenerTopVendidos(3);
+        $topCategorias = \App\Models\Categoria::obtenerTopVendidas(3);
+        return view('admin.dashboard', compact('topProductos', 'topCategorias'));
     });
 
     Route::post('/admin/productos/store', [ProductoController::class, 'store'])->name('productos.store');

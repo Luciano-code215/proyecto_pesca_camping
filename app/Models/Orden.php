@@ -113,4 +113,10 @@ class Orden extends Model
         return self::where('estado', 'entregada')->get();
     }
 
+    public function actualizarTotal()
+    {
+        $this->total = $this->items()->sum('subtotal');
+        return $this->save();
+    }
+
 }

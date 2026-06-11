@@ -43,4 +43,31 @@ class Categoria extends Model
     {
         return self::where('activo', true)->get();
     }
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'categoria_id');
+    }
+
+
+    public function items()
+    {
+        return $this->hasManyThrough(ItemOrden::class, Producto::class, 'categoria_id', 'producto_id');
+    }
+
+
+    public static function obtenerTopVendidas($limite = 3)
+    {
+        $filtroSoloEntregadas = function ($query) {
+            $query->whereHas('orden', function ($q) {
+                $q->where('estado', 'entregada');
+            });
+        };
+
+        return self::withSum(['items as total_vendido' => $filtroSoloEntregadas], 'cantidad')
+            ->withSum(['items as total_recaudado' => $filtroSoloEntregadas], 'subtotal')
+            ->orderBy('total_vendido', 'desc')
+            ->take($limite)
+            ->get();
+    }
 }

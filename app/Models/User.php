@@ -33,6 +33,11 @@ class User extends Authenticatable
         ];
     }
 
+    public static function usuariosActivos()
+    {
+        return self::where('active', true)->get();
+    }
+
     public static function registrarUser(array $datos)
     {
         return self::create($datos);
