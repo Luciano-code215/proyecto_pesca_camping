@@ -68,7 +68,7 @@ Route::get('/en_construccion', function () {
     return view('en_construccion');
 });
 
-Route::get('/form-contacto', function () {
+Route::get('contacto/form-contacto', function () {
     return view('contacto_cliente');
 })->name('form.contacto');
 
@@ -91,7 +91,7 @@ Route::get('/form-contacto', function () {
 ///// CLIENTES LOGUEADOS //////
 Route::middleware('auth')->group(function () {
 
-    Route::get('/form-consultas', function () {
+    Route::get('consultas/form-consultas', function () {
         return view('consulta_cliente');
     })->name('form.consultas');
 
@@ -130,6 +130,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/carrito/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
 
     Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
+
+    Route::get('/mis-compras', function () {
+        $ordenes = Orden::obtenerDeUsuarioLogueado();
+        return view('mis_compras', compact('ordenes'));
+    })->name('mis-compras');
 
 });
 

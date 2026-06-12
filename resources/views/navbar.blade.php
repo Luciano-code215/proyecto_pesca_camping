@@ -72,10 +72,10 @@
                 </li>
                 <li class="nav-item">
                     @auth
-                        <a class="nav-link {{ request()->is('consultas') ? 'active text-warning fw-bold' : '' }}"
+                        <a class="nav-link {{ request()->is('contacto') || request()->is('consultas*') ? 'active text-warning fw-bold' : '' }}"
                             href="/contacto">Consultas</a>
                     @else
-                        <a class="nav-link {{ request()->is('contacto') ? 'active text-warning fw-bold' : '' }}"
+                        <a class="nav-link {{ request()->is('contacto*') ? 'active text-warning fw-bold' : '' }}"
                             href="/contacto">Contacto</a>
                     @endauth
                 </li>
@@ -84,7 +84,7 @@
                         href="/terminos_y_usos">Terminos y usos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link dropdown-toggle {{ request()->is('productosPub*') ? 'active text-warning fw-bold' : '' }}"
+                    <a class="nav-link  {{ request()->is('productosPub*') ? 'active text-warning fw-bold' : '' }}"
                         href="/productosPub">
                         Productos
                     </a>
@@ -135,7 +135,7 @@
 
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark"
                                 aria-labelledby="navbarDropdownUser">
-                                <li><a class="dropdown-item" href="{{ url('/mis-compras') }}">Mis Compras</a></li>
+                                <li><a class="dropdown-item" href="{{ route('mis-compras') }}">Mis Compras</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -178,21 +178,23 @@
         </div>
     </div>
 
-    <div class="d-flex align-items-center">
-        <a href="/carrito" class="btn btn-outline-light position-relative">
-            <i class="bi bi-cart3 fs-5"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>
-            </span>
-        </a>
-    </div>
-
-    <ul class="navbar-nav flex-row ms-auto">
+    <ul class="navbar-nav flex-row ms-auto align-items-center">
+        <li class="nav-item me-3 position-relative">
+            <a class="nav-link fs-3" href="/carrito">
+                <i class="bi bi-cart3"></i>
+                <span class="position-absolute badge rounded-pill bg-danger"
+                    style="font-size: 0.45em; top: 5px; right: -5px; padding: 0.35em 0.5em;">
+                    <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>
+                </span>
+            </a>
+        </li>
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-whatsapp"></i></a>
         </li>
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-instagram"></i></a>
         </li>
+
+
     </ul>
 </nav>

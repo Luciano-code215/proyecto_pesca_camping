@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Orden extends Model
 {
@@ -119,4 +120,15 @@ class Orden extends Model
         return $this->save();
     }
 
+    public static function obtenerDeUsuarioLogueado()
+    {
+        return self::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(ItemOrden::class);
+    }
 }

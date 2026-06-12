@@ -50,42 +50,59 @@
                 </div>
             @else
                 @foreach ($productos as $producto)
-                    <div class="col-12 col-md-6 col-lg-3 mb-4 mt-4">
-                        <div class="card h-100 shadow-sm border-0" onmouseover="this.classList.add('shadow-lg')"
-                            onmouseout="this.classList.remove('shadow-lg')" style="transition: all 0.3s;">
+                    @if ($producto->activo)
+                        <div class="col-12 col-md-6 col-lg-3 mb-4 mt-4">
+                            <div class="card h-100 shadow-sm border-0" onmouseover="this.classList.add('shadow-lg')"
+                                onmouseout="this.classList.remove('shadow-lg')" style="transition: all 0.3s;">
 
-                            {{-- Imagen dinámica controlando si viene de Storage o carpeta img --}}
-                            @if (str_contains($producto->url_imagen, 'storage/'))
-                                <img src="{{ asset($producto->url_imagen) }}" class="card-img-top"
-                                    alt="{{ $producto->nombre }}">
-                            @else
-                                <img src="{{ asset('img/' . $producto->url_imagen) }}" class="card-img-top"
-                                    alt="{{ $producto->nombre }}">
-                            @endif
+                                {{-- Imagen dinámica controlando si viene de Storage o carpeta img --}}
+                                @if (str_contains($producto->url_imagen, 'storage/'))
+                                    <img src="{{ asset($producto->url_imagen) }}" class="card-img-top"
+                                        alt="{{ $producto->nombre }}">
+                                @else
+                                    <img src="{{ asset('img/' . $producto->url_imagen) }}" class="card-img-top"
+                                        alt="{{ $producto->nombre }}">
+                                @endif
 
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold text-start mb-1">{{ $producto->nombre }}</h5>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title fw-bold text-start mb-1">{{ $producto->nombre }}</h5>
 
-                                <h3 class="text-danger text-start mt-2">
-                                    $ {{ number_format($producto->precio, 2, ',', '.') }}
-                                </h3>
+                                    <h3 class="text-danger text-start mt-2">
+                                        $ {{ number_format($producto->precio, 2, ',', '.') }}
+                                    </h3>
 
-                                <div class="text-muted text-start small mb-3">
-                                    {!! $producto->descripcion !!}
-                                </div>
+                                    <div class="text-muted text-start small mb-3">
+                                        {!! $producto->descripcion !!}
+                                    </div>
 
-                                {{-- Formulario funcional para agregar al carrito --}}
-                                <div class="mt-auto pt-3">
-                                    <form action="{{ route('cart.add', $producto->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <i class="bi bi-cart-plus"></i> Agregar al carrito
-                                        </button>
-                                    </form>
+                                    {{-- Formulario funcional para agregar al carrito --}}
+                                    @if (auth()->check() && auth()->user()->isAdmin())
+                                        <a href="{{ route('productos.edit', $producto->id) }}"
+                                            class="btn btn-outline-secondary mt-auto">
+                                            <i class="bi bi-pencil-square"></i> Editar Producto
+                                        </a>
+                                        <p class="text-muted" style="font-size: 0.8rem;">Stock: {{ $producto->stock }}
+                                        </p>
+                                    @else
+                                        <div class="mt-auto pt-3">
+                                            <form action="{{ route('cart.add', $producto->id) }}" method="POST">
+                                                @csrf
+                                                @if (!$producto->stock || $producto->stock <= 0)
+                                                    <button type="button" class="btn btn-secondary w-100" disabled>
+                                                        <i class="bi bi-x-circle"></i> Sin Stock
+                                                    </button>
+                                                @else
+                                                    <button type="submit" class="btn btn-primary w-100">
+                                                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                                                    </button>
+                                                @endif
+                                            </form>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             @endif
         </div>
