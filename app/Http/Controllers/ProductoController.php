@@ -8,10 +8,10 @@ use App\Models\Categoria;
 
 class ProductoController extends Controller
 {
- 
-    
-    /*
- public function index(Request $request)
+
+
+
+    public function indexPub(Request $request)
     {
         $catId = $request->query('categoria');
         $tipo = $request->query('tipo');
@@ -27,9 +27,9 @@ class ProductoController extends Controller
         }
 
         if ($tipo) {
-            $query->where(function($q) use ($tipo) {
+            $query->where(function ($q) use ($tipo) {
                 $q->where('nombre', 'LIKE', '%' . $tipo . '%')
-                  ->orWhere('descripcion', 'LIKE', '%' . $tipo . '%');
+                    ->orWhere('descripcion', 'LIKE', '%' . $tipo . '%');
             });
         }
 
@@ -43,26 +43,26 @@ class ProductoController extends Controller
 
             $breadcrumbs[] = [
                 'label' => ucfirst($nombreCategoria),
-                'url' => '/productos?categoria=' . $catId
+                'url' => '/productosPub?categoria=' . $catId
             ];
         }
 
         if ($tipo) {
             $breadcrumbs[] = [
                 'label' => ucfirst($tipo),
-                'url' => '/productos?categoria=' . $catId . '&tipo=' . $tipo
+                'url' => '/productosPub?categoria=' . $catId . '&tipo=' . $tipo
             ];
         }
 
         // D. Enviamos tanto los productos como las categorías a la vista
-        return view('productos', [
+        return view('productosPub', [
             'productos' => $productosFiltrados,
             'categoriasMenu' => $categoriasMenu, // <-- Enviamos la colección de categorías
             'breadcrumbs' => $breadcrumbs
         ]);
     }
 
-*/
+
 
 
     public function index(Request $request)

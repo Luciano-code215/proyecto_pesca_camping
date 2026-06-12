@@ -83,16 +83,11 @@
                     <a class="nav-link {{ request()->is('terminos_y_usos') ? 'active text-warning fw-bold' : '' }}"
                         href="/terminos_y_usos">Terminos y usos</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ request()->is('productos*') ? 'active text-warning fw-bold' : '' }}"
-                        href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle {{ request()->is('productosPub*') ? 'active text-warning fw-bold' : '' }}"
+                        href="/productosPub">
                         Productos
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/productos?categoria=pesca">Pesca</a></li>
-                        <li><a class="dropdown-item" href="/productos?categoria=camping">Camping</a></li>
-                        <li><a class="dropdown-item" href="/productos?categoria=indumentaria">Indumentaria</a></li>
-                    </ul>
                 </li>
                 @auth
                     @if (Auth::user()->isAdmin())
@@ -183,14 +178,14 @@
         </div>
     </div>
 
-     <div class="d-flex align-items-center">
-          <a href="/carrito" class="btn btn-outline-light position-relative">
-              <i class="bi bi-cart3 fs-5"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>
-              </span>
-          </a>
-      </div>
+    <div class="d-flex align-items-center">
+        <a href="/carrito" class="btn btn-outline-light position-relative">
+            <i class="bi bi-cart3 fs-5"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>
+            </span>
+        </a>
+    </div>
 
     <ul class="navbar-nav flex-row ms-auto">
         <li class="nav-item me-3">

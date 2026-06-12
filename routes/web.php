@@ -62,7 +62,7 @@ Route::get('/terminos_y_usos', function () {
 });
 
 
-Route::get('/productos', [ProductoController::class, 'index'])->name('productos');
+Route::get('/productosPub', [ProductoController::class, 'indexPub'])->name('productosPub');
 
 Route::get('/en_construccion', function () {
     return view('en_construccion');
@@ -74,48 +74,23 @@ Route::get('/form-contacto', function () {
 
 
 // CARRITO:
-Route::get('/carrito', function () {
-    return view('carrito');
 
-});
 
-///////////////////////////   Ultima modificacion   //////////////////////////////
-Route::get('/carrito', [CartController::class, 'index'])->name('carrito.index');
 
-Route::post('/carrito/agregar/{id}', [CartController::class, 'add'])->name('cart.add');
-
-Route::get('/carrito/eliminar/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
-Route::get('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
-
-Route::patch('/carrito/update/{id}', [CartController::class, 'update'])->name('cart.update');
-
-Route::delete('/carrito/eliminar/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
-Route::post('/carrito/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
-
-Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
 
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Route::get('/agregar-al-carrito/{id}', [CartController::class, 'add'])->name('cart.add');
-
-Route::patch('/actualizar-carrito', [CartController::class, 'update'])->name('cart.update');
-
-Route::delete('/eliminar-del-carrito', [CartController::class, 'remove'])->name('cart.remove');
-
-// AGREGAR PARA VACIAR EL CARRITO
-
-Route::post('/form-consultas', [FormConsultasController::class, 'enviarConsulta'])->name('enviar_consulta');
 
 
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
 
 
 ///// CLIENTES LOGUEADOS //////
 Route::middleware('auth')->group(function () {
+
     Route::get('/form-consultas', function () {
         return view('consulta_cliente');
     })->name('form.consultas');
@@ -136,6 +111,25 @@ Route::middleware('auth')->group(function () {
 
         return view('mis-consultas', compact('consultas'));
     })->name('mis.consultas');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    ///////////////////////////   Ultima modificacion   //////////////////////////////
+    Route::get('/carrito', [CartController::class, 'index'])->name('carrito.index');
+
+    Route::post('/carrito/agregar/{id}', [CartController::class, 'add'])->name('cart.add');
+
+    Route::get('/carrito/eliminar/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    Route::get('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
+
+    Route::patch('/carrito/update/{id}', [CartController::class, 'update'])->name('cart.update');
+
+    Route::delete('/carrito/eliminar/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    Route::post('/carrito/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
+
+    Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
 
 });
 

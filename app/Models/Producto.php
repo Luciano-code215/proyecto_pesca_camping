@@ -134,23 +134,29 @@ class Producto extends Model
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');
     }
-/*   FUNCION AGREGADA
-    public function categoria()
-{
-    return $this->belongsTo(Categoria::class, 'categoria_id');
-}
 
-
- public static function crearProducto(array $datos, $archivoImagen = null)
+    public function descontarStock($cantidad)
     {
-        if ($archivoImagen) {
-            $path = $archivoImagen->store('public/productos'); // ESTA LINEA SERIA LA QUE ESTA DIFERENTE EN ESTA FUNCION
-            $datos['url_imagen'] = Storage::url($path);
+        if ($this->stock >= $cantidad) {
+            $this->stock -= $cantidad;
+            return $this->save();
         }
-
-        return self::create($datos);
+        return false;
     }
-*/
+
+    /*  
+
+
+     public static function crearProducto(array $datos, $archivoImagen = null)
+        {
+            if ($archivoImagen) {
+                $path = $archivoImagen->store('public/productos'); // ESTA LINEA SERIA LA QUE ESTA DIFERENTE EN ESTA FUNCION
+                $datos['url_imagen'] = Storage::url($path);
+            }
+
+            return self::create($datos);
+        }
+    */
 
 
 }
