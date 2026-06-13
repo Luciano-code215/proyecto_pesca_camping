@@ -87,13 +87,14 @@ class Producto extends Model
         return $this->update($datos);
     }
 
-    public static function filtrar($buscar = null, $categoriaId = null, $estado = 'activos')
+    public static function filtrar($buscar, $categoria_id, $estado, $orden = null)
     {
-        $query = self::query();
+        $query = self::query()->withSum('itemOrden as total_vendido', 'cantidad');
 
         if ($estado === 'inactivos') {
             $query->where('activo', false);
         } elseif ($estado === 'todos') {
+            // No hace nada, trae activos e inactivos
         } else {
             $query->where('activo', true);
         }
@@ -106,8 +107,34 @@ class Producto extends Model
             });
         }
 
-        if (!empty($categoriaId)) {
-            $query->where('categoria_id', $categoriaId);
+        // 🟢 CORREGIDO: Ahora coincide con el parámetro de la función
+        if (!empty($categoria_id)) {
+            $query->where('categoria_id', $categoria_id);
+        }
+
+        switch ($orden) {
+            case 'precio_asc':
+                $query->orderBy('precio', 'asc');
+                break;
+            case 'precio_desc':
+                $query->orderBy('precio', 'desc');
+                break;
+            case 'stock':
+                $query->orderBy('stock', 'asc');
+                break;
+            case 'alfabetico':
+                $query->orderBy('nombre', 'asc');
+                break;
+            case 'mas_vendidos':
+                $query->orderBy('total_vendido', 'desc');
+                break;
+
+            case 'menos_vendidos':
+                $query->orderBy('total_vendido', 'asc');
+                break;
+            default:
+                $query->orderBy('id', 'desc');
+                break;
         }
 
         return $query->get();
@@ -142,6 +169,17 @@ class Producto extends Model
             return $this->save();
         }
         return false;
+    }
+
+    public function itemOrden()
+    {
+        // Cambiá 'App\Models\ItemOrder' por el espacio de nombres real de tu modelo de ítems
+        return $this->hasMany(\App\Models\ItemOrden::class, 'producto_id');
+    }
+
+    public static function conTotalVendido($query)
+    {
+        return $query->withSum('itemOrden as total_vendido', 'cantidad');
     }
 
     /*  

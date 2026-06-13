@@ -128,7 +128,7 @@
 
     <div class="card shadow-sm border-0 border-top border-dark border-3 p-4 bg-white">
         <h5 class="fw-bold text-dark mb-3">
-            <i class="bi bi-star-fill text-warning me-2"></i>Top {{ $topCategorias->count() }} Categorías Más Vendidas
+            <i class="bi bi-star-fill text-warning me-2"></i>Ranking Categorías Más Vendidas
         </h5>
         <div class="table-responsive">
             <table class="table table-hover align-middle border mb-0">
@@ -140,16 +140,23 @@
                         <th>Total Recaudado</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ranking-body">
                     @foreach ($topCategorias as $categoria)
                         <tr>
                             <td class="ps-3">
+                                {{-- 🟢 Puestos Dinámicos con diseño condicional --}}
                                 @if ($loop->iteration == 1)
-                                    <span class="badge bg-warning text-dark fw-bold fs-6">#1</span>
+                                    <span class="badge bg-warning text-dark fw-bold fs-6 shadow-sm"><i
+                                            class="bi bi-trophy-fill me-1"></i>#1</span>
                                 @elseif($loop->iteration == 2)
-                                    <span class="badge bg-secondary fw-bold fs-6">#2</span>
+                                    <span class="badge bg-secondary text-white fw-bold fs-6 shadow-sm">#2</span>
+                                @elseif($loop->iteration == 3)
+                                    <span class="badge bg-danger text-white fw-bold fs-6 shadow-sm"
+                                        style="background-color: #cd7f32 !important;">#3</span>
                                 @else
-                                    <span class="badge bg-danger fw-bold fs-6">#3</span>
+                                    {{-- Del puesto 4 en adelante se genera el número automático gris clásico --}}
+                                    <span
+                                        class="badge bg-light text-dark border fw-semibold fs-6">#{{ $loop->iteration }}</span>
                                 @endif
                             </td>
 

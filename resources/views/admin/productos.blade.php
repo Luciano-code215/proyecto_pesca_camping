@@ -46,13 +46,17 @@
     <div class="card shadow-sm border-0 p-3 mb-4 bg-white">
         <div class="row g-3">
 
-            <div class="col-12 col-md-4">
+            {{-- 1. Buscador de Texto --}}
+            <div class="col-12 col-md-3">
                 <form action="{{ route('productos.index') }}" method="GET">
                     @if (request('categoria_id'))
                         <input type="hidden" name="categoria_id" value="{{ request('categoria_id') }}">
                     @endif
                     @if (request('estado'))
                         <input type="hidden" name="estado" value="{{ request('estado') }}">
+                    @endif
+                    @if (request('ordenar'))
+                        <input type="hidden" name="ordenar" value="{{ request('ordenar') }}">
                     @endif
 
                     <div class="input-group">
@@ -63,13 +67,17 @@
                 </form>
             </div>
 
-            <div class="col-12 col-md-4">
+            {{-- 2. Selector de Categorías --}}
+            <div class="col-12 col-md-3">
                 <form action="{{ route('productos.index') }}" method="GET">
                     @if (request('buscar'))
                         <input type="hidden" name="buscar" value="{{ request('buscar') }}">
                     @endif
                     @if (request('estado'))
                         <input type="hidden" name="estado" value="{{ request('estado') }}">
+                    @endif
+                    @if (request('ordenar'))
+                        <input type="hidden" name="ordenar" value="{{ request('ordenar') }}">
                     @endif
 
                     <select name="categoria_id" class="form-select" onchange="this.form.submit()">
@@ -84,13 +92,17 @@
                 </form>
             </div>
 
-            <div class="col-12 col-md-4">
+            {{-- 3. Selector de Estado --}}
+            <div class="col-12 col-md-3">
                 <form action="{{ route('productos.index') }}" method="GET">
                     @if (request('buscar'))
                         <input type="hidden" name="buscar" value="{{ request('buscar') }}">
                     @endif
                     @if (request('categoria_id'))
                         <input type="hidden" name="categoria_id" value="{{ request('categoria_id') }}">
+                    @endif
+                    @if (request('ordenar'))
+                        <input type="hidden" name="ordenar" value="{{ request('ordenar') }}">
                     @endif
 
                     <select name="estado" class="form-select border-warning" onchange="this.form.submit()">
@@ -105,108 +117,147 @@
                 </form>
             </div>
 
-        </div>
-        <div class="card shadow-sm border-0 border-top border-warning border-3 p-4 bg-white">
-            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-list-stars text-secondary me-2"></i>Artículos en Inventario
-            </h5>
+            {{-- 4. Selector de Ordenamiento Avanzado --}}
+            <div class="col-12 col-md-3">
+                <form action="{{ route('productos.index') }}" method="GET">
+                    @if (request('buscar'))
+                        <input type="hidden" name="buscar" value="{{ request('buscar') }}">
+                    @endif
+                    @if (request('categoria_id'))
+                        <input type="hidden" name="categoria_id" value="{{ request('categoria_id') }}">
+                    @endif
+                    @if (request('estado'))
+                        <input type="hidden" name="estado" value="{{ request('estado') }}">
+                    @endif
 
-            <div class="table-responsive">
-                <table class="table table-hover align-middle border mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-3" style="width: 8%;">Código</th>
-                            <th style="width: 10%;">Miniatura</th>
-                            <th>Nombre del Producto</th>
-                            <th>Categoría</th>
-                            <th>Precio Unitario</th>
-                            <th>Stock Disponible</th>
-                            <th class="text-center" style="width: 15%;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($productos as $producto)
-                            <tr>
-                                <td class="ps-3 fw-bold text-secondary">{{ $producto->sku }}</td>
-                                <td>
-                                    <div class="bg-light border rounded d-flex align-items-center justify-content-center text-muted"
-                                        style="width: 50px; height: 50px; font-size: 0.75rem; overflow: hidden;">
-                                        @if ($producto->url_imagen)
-                                            <img src="{{ asset($producto->url_imagen) }}"
-                                                alt="Miniatura de {{ $producto->nombre }}" class="w-100 h-100"
-                                                style="object-fit: cover;">
-                                        @else
-                                            <i class="bi bi-image" style="font-size: 1.2rem;"></i>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="fw-bold text-dark">{{ $producto->nombre }}</td>
-
-                                <td>
-                                    <span class="badge bg-light text-dark border">
-                                        @if ($cat = \App\Models\Categoria::buscar($producto->categoria_id))
-                                            {{ $cat->nombre }}
-                                        @else
-                                            Sin categoría
-                                        @endif
-                                    </span>
-                                </td>
-
-                                <td class="fw-semibold text-dark">${{ number_format($producto->precio, 0, ',', '.') }}
-                                </td>
-                                <td>
-                                    @if ($producto->stock == 0)
-                                        <span class="badge bg-danger-subtle text-danger border border-danger fw-bold">Sin
-                                            Stock</span>
-                                    @elseif($producto->stock <= 5)
-                                        <span
-                                            class="badge bg-warning-subtle text-warning border border-warning fw-bold">{{ $producto->stock }}
-                                            últimas</span>
-                                    @else
-                                        <span
-                                            class="badge bg-success-subtle text-success border border-success fw-bold">{{ $producto->stock }}
-                                            unidades</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    @if ($producto->activo)
-                                        <a href="{{ route('productos.edit', $producto->id) }}"
-                                            class="btn btn-sm btn-outline-primary me-1" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
-
-                                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('¿Estás seguro de desactivar este producto?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                title="Inactivar">
-                                                <i class="bi bi-trash3-fill"></i>
-                                            </button>
-                                        </form>
-                                    @else
-                                        <form action="{{ route('productos.restore', $producto->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="btn btn-sm btn-success fw-bold px-3"
-                                                title="Reactivar">
-                                                <i class="bi bi-arrow-counterclockwise me-1"></i> Reactivar
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
-                                    <i class="bi bi-emoji-frown fs-4 d-block mb-2 text-warning"></i>
-                                    No se encontraron productos que coincidan con la búsqueda.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                    <select name="ordenar" class="form-select border-info text-info fw-bold"
+                        onchange="this.form.submit()">
+                        <option value="">Ordenar por: Por Defecto</option>
+                        <option value="precio_asc" {{ request('ordenar') == 'precio_asc' ? 'selected' : '' }}>Precio:
+                            Menor a Mayor</option>
+                        <option value="precio_desc" {{ request('ordenar') == 'precio_desc' ? 'selected' : '' }}>Precio:
+                            Mayor a Menor</option>
+                        <option value="stock" {{ request('ordenar') == 'stock' ? 'selected' : '' }}>Menor Stock
+                            Disponible</option>
+                        <option value="alfabetico" {{ request('ordenar') == 'alfabetico' ? 'selected' : '' }}>Orden
+                            Alfabético (A-Z)</option>
+                        <option value="mas_vendidos" {{ request('ordenar') == 'mas_vendidos' ? 'selected' : '' }}>Más
+                            Vendidos 🔥</option>
+                        <option value="menos_vendidos" {{ request('ordenar') == 'menos_vendidos' ? 'selected' : '' }}>
+                            Menos Vendidos</option>
+                    </select>
+                </form>
             </div>
+
         </div>
-    @endsection
+    </div>
+
+    <div class="card shadow-sm border-0 border-top border-warning border-3 p-4 bg-white">
+        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-list-stars text-secondary me-2"></i>Artículos en Inventario
+        </h5>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle border mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3" style="width: 8%;">Código</th>
+                        <th style="width: 10%;">Miniatura</th>
+                        <th>Nombre del Producto</th>
+                        <th>Categoría</th>
+                        <th>Precio Unitario</th>
+                        <th>Stock Disponible</th>
+                        <th class="text-center" style="width: 15%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($productos as $producto)
+                        <tr>
+                            <td class="ps-3 fw-bold text-secondary">{{ $producto->sku }}</td>
+                            <td>
+                                <div class="bg-light border rounded d-flex align-items-center justify-content-center text-muted"
+                                    style="width: 50px; height: 50px; font-size: 0.75rem; overflow: hidden;">
+                                    @if ($producto->url_imagen)
+                                        <img src="{{ asset($producto->url_imagen) }}"
+                                            alt="Miniatura de {{ $producto->nombre }}" class="w-100 h-100"
+                                            style="object-fit: cover;">
+                                    @else
+                                        <i class="bi bi-image" style="font-size: 1.2rem;"></i>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="fw-bold text-dark">
+                                <div>{{ $producto->nombre }}</div>
+
+                                <small class="text-muted fw-normal d-block mt-1" style="font-size: 0.78rem;">
+                                    <i class="bi bi-graph-up-arrow text-success me-1"></i>
+                                    Vendidos: <span
+                                        class="fw-bold text-secondary">{{ $producto->total_vendido ?? 0 }}</span> u.
+                                </small>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    @if ($cat = \App\Models\Categoria::buscar($producto->categoria_id))
+                                        {{ $cat->nombre }}
+                                    @else
+                                        Sin categoría
+                                    @endif
+                                </span>
+                            </td>
+
+                            <td class="fw-semibold text-dark">${{ number_format($producto->precio, 0, ',', '.') }}</td>
+                            <td>
+                                @if ($producto->stock == 0)
+                                    <span class="badge bg-danger-subtle text-danger border border-danger fw-bold">Sin
+                                        Stock</span>
+                                @elseif($producto->stock <= 5)
+                                    <span
+                                        class="badge bg-warning-subtle text-warning border border-warning fw-bold">{{ $producto->stock }}
+                                        últimas</span>
+                                @else
+                                    <span
+                                        class="badge bg-success-subtle text-success border border-success fw-bold">{{ $producto->stock }}
+                                        unidades</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if ($producto->activo)
+                                    <a href="{{ route('productos.edit', $producto->id) }}"
+                                        class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+
+                                    <form action="{{ route('productos.destroy', $producto->id) }}" method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('¿Estás seguro de desactivar este producto?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Inactivar">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('productos.restore', $producto->id) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-sm btn-success fw-bold px-3"
+                                            title="Reactivar">
+                                            <i class="bi bi-arrow-counterclockwise me-1"></i> Reactivar
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="bi bi-emoji-frown fs-4 d-block mb-2 text-warning"></i>
+                                No se encontraron productos que coincidan con la búsqueda o el criterio de ordenamiento.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection

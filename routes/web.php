@@ -231,13 +231,27 @@ Route::middleware(['admin'])->group(function () {
             return response()->json(['success' => false, 'message' => 'Estado inválido'], 400);
         }
 
-        // Buscamos la orden y la actualizamos directamente
+        // Buscamos la orden
         $orden = Orden::findOrFail($id);
+
+        // 🟢 NUEVO: Si pasa a 'cancelada' y no estaba cancelada antes, devolvemos el stock
+        if ($request->estado === 'cancelada' && $orden->estado !== 'cancelada') {
+
+            // Recorremos los ítems de la orden y sumamos al stock del producto
+            // (Asegurate de que 'items' sea el nombre de tu relación en el modelo Orden)
+            foreach ($orden->items as $item) {
+                if ($item->producto) {
+                    $item->producto->increment('stock', $item->cantidad);
+                }
+            }
+
+        }
+
+        // Actualizamos el estado de la orden y guardamos
         $orden->estado = $request->estado;
         $orden->save();
 
         // Respondemos con éxito a JavaScript
         return response()->json(['success' => true]);
     })->name('admin.ordenes.actualizar_estado');
-
 });

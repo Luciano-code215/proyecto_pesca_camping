@@ -71,8 +71,11 @@ class ProductoController extends Controller
 
         $estado = $request->get('estado', 'activos');
 
-        // Mandamos los tres parámetros a tu método del modelo
-        $productos = Producto::filtrar($request->buscar, $request->categoria_id, $estado);
+        // 1. Capturamos el criterio de ordenamiento que viene de la vista
+        $orden = $request->query('ordenar');
+
+        // 2. Le pasamos el $orden como cuarto parámetro al método filtrar de tu modelo
+        $productos = Producto::filtrar($request->buscar, $request->categoria_id, $estado, $orden);
 
         return view('admin.productos', compact('productos', 'categorias'));
     }

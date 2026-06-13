@@ -131,4 +131,18 @@ class Orden extends Model
     {
         return $this->hasMany(ItemOrden::class);
     }
+
+    public function devolverStock()
+    {
+        // Recorremos los ítems asociados a esta orden
+        // (Asegurate de que 'items' sea el nombre de tu relación en el modelo Orden)
+        foreach ($this->items as $item) {
+            $producto = $item->producto; // Accedemos al producto del ítem
+
+            if ($producto) {
+                // Le sumamos al stock físico la cantidad que se había cancelado
+                $producto->increment('stock', $item->cantidad);
+            }
+        }
+    }
 }

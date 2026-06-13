@@ -67,7 +67,6 @@ class Categoria extends Model
         return self::withSum(['items as total_vendido' => $filtroSoloEntregadas], 'cantidad')
             ->withSum(['items as total_recaudado' => $filtroSoloEntregadas], 'subtotal')
             ->orderBy('total_vendido', 'desc')
-            ->take($limite)
             ->get();
     }
 
