@@ -178,16 +178,18 @@
         </div>
     </div>
 
-    <ul class="navbar-nav flex-row ms-auto align-items-center">
-        <li class="nav-item me-3 position-relative">
-            <a class="nav-link fs-3" href="/carrito">
-                <i class="bi bi-cart3"></i>
-                <span class="position-absolute badge rounded-pill bg-danger"
-                    style="font-size: 0.45em; top: 5px; right: -5px; padding: 0.35em 0.5em;">
-                    <?php echo isset($_SESSION['carrito']) ? count($_SESSION['carrito']) : '0'; ?>
-                </span>
-            </a>
-        </li>
+ <div class="d-flex align-items-center me-3">
+          <a href="/carrito" class="btn btn-outline-light position-relative">
+              <i class="bi bi-cart3 fs-5"></i>
+              
+              {{-- Contador basado en productos diferentes --}}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ session('cart') ? count(session('cart')) : 0 }}
+              </span>
+          </a>
+     </div>
+
+
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-whatsapp"></i></a>
         </li>
