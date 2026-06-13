@@ -70,4 +70,10 @@ class Categoria extends Model
             ->take($limite)
             ->get();
     }
+
+    public static function obtenerIdPorNombre($nombre)
+    {
+        $categoria = self::where('nombre', $nombre)->first();
+        return $categoria ? $categoria->id : null;
+    }
 }

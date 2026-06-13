@@ -60,20 +60,6 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="celular" class="form-label fw-semibold">Celular de Contacto</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                    <input type="text" class="form-control @error('celular') is-invalid @enderror"
-                                        id="celular" name="celular" placeholder="Ej: 912345678" inputmode="numeric"
-                                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                        value="{{ old('celular') }}" required>
-                                    @error('celular')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
                             <div class="mb-4">
                                 <label for="mensaje" class="form-label fw-semibold">Detalle de tu Consulta</label>
                                 <textarea class="form-control @error('mensaje') is-invalid @enderror" id="mensaje" name="mensaje" rows="4"
