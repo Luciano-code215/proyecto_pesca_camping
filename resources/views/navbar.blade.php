@@ -189,7 +189,7 @@
           </a>
      </div>
 
-
+   <ul class="navbar-nav flex-row ms-auto">
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-whatsapp"></i></a>
         </li>
