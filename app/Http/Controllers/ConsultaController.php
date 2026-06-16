@@ -18,7 +18,6 @@ class ConsultaController extends Controller
     {
         $datosValidados = $request->validate([
             'asunto' => 'required|string|max:150',
-            'celular' => 'required|string|max:20',
             'mensaje' => 'required|string|min:10|max:2000',
         ], [
             'asunto.required' => 'El asunto es obligatorio.',

@@ -11,7 +11,6 @@
     </div>
 
     <div class="row g-3 mb-4">
-
         <div class="col-12 col-sm-6 col-md-4">
             <div class="card bg-warning text-dark p-3 shadow-sm border-0 position-relative overflow-hidden">
                 <div class="position-absolute end-0 bottom-0 opacity-25 me-2" style="font-size: 4rem;">
@@ -35,7 +34,6 @@
     </div>
 
     <div class="card shadow-sm border-0 border-top border-success border-3 p-4 bg-white">
-
         <h5 class="fw-bold text-dark mb-3"><i class="bi bi-funnel text-secondary me-2"></i>Buscador y Filtros Avanzados</h5>
         <div class="row g-3 mb-4">
             <div class="col-12 col-sm-8">
@@ -111,7 +109,6 @@
             aria-labelledby="modalLabel{{ $orden->id }}" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-
                     <div class="modal-header bg-light">
                         <h5 class="modal-title fw-bold" id="modalLabel{{ $orden->id }}">
                             Detalle de la Orden {{ $orden->obtenerCodigoFormateado() }}
@@ -147,16 +144,12 @@
                                 <tbody>
                                     @foreach ($orden->items as $item)
                                         <tr>
-                                            <td class="text-start">
-                                                {{ $item->producto->nombre }}
-                                            </td>
+                                            <td class="text-start">{{ $item->producto->nombre }}</td>
                                             <td class="text-center fw-bold">{{ $item->cantidad }}</td>
-                                            <td class="text-end">
-                                                ${{ number_format($item->precio_unitario, 0, ',', '.') }}
+                                            <td class="text-end">${{ number_format($item->precio_unitario, 0, ',', '.') }}
                                             </td>
                                             <td class="text-end text-dark fw-bold">
-                                                ${{ number_format($item->subtotal, 0, ',', '.') }}
-                                            </td>
+                                                ${{ number_format($item->subtotal, 0, ',', '.') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -173,7 +166,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -185,6 +177,7 @@
 
             selectores.forEach(select => {
                 let estadoAnterior = select.value;
+
                 select.addEventListener('focus', function() {
                     estadoAnterior = this.value;
                 });
@@ -198,8 +191,7 @@
                             `¿Estás seguro de marcar esta orden como ${nuevoEstado.toUpperCase()}? Esta acción NO se puede deshacer.`;
 
                         if (!confirm(mensaje)) {
-                            this.value =
-                                estadoAnterior;
+                            this.value = estadoAnterior;
                             return;
                         }
                     }
@@ -223,13 +215,13 @@
 
                                 if (nuevoEstado === 'cancelada' || nuevoEstado ===
                                     'entregada') {
-                                    select.disabled = true;¿
+                                    select.disabled =
+                                        true;
                                 } else {
                                     select.disabled = false;
                                     estadoAnterior =
-                                        nuevoEstado;¿
+                                        nuevoEstado;
                                 }
-
                             } else {
                                 select.disabled = false;
                                 this.value = estadoAnterior;
