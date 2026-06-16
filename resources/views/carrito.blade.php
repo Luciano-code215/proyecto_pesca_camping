@@ -53,9 +53,7 @@
                             @php
                                 $subtotal = $detalles['precio'] * $detalles['cantidad'];
                                 $total += $subtotal;
-
                                 $productoBD = \App\Models\Producto::find((int) $id);
-
                                 $stockDisponible = $productoBD ? $productoBD->stock : 0;
                             @endphp
 
@@ -70,7 +68,6 @@
                                     @endif
                                     <strong>{{ $detalles['nombre'] }}</strong>
                                     <br>
-                                    {{-- Mostramos el stock disponible real --}}
                                     <small class="text-muted">Stock disponible: {{ $stockDisponible }} uds.</small>
                                 </td>
                                 <td>${{ number_format($detalles['precio'], 2, ',', '.') }}</td>
@@ -92,7 +89,6 @@
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="action" value="increment">
-
                                             <button type="submit" class="btn btn-sm btn-outline-secondary py-1 px-2"
                                                 @if (!$productoBD || $detalles['cantidad'] >= $stockDisponible) disabled title="Llegaste al límite de stock disponible" @endif>
                                                 +
@@ -117,53 +113,39 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-4 w-100">
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="d-flex gap-2">
+                    <a href="{{ url('/productosPub') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Seguir Comprando
+                    </a>
 
+                    <form action="{{ route('cart.clear') }}" method="POST" class="form-vaciar m-0">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-trash3"></i> Vaciar Carrito
+                        </button>
+                    </form>
+                </div>
 
-                {{-- BLOQUE DE BOTONES Y TOTALES --}}
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <div class="d-flex gap-2">
-                        <a href="{{ url('/productosPub') }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left"></i> Seguir Comprando
-                        </a>
+                <div class="d-flex align-items-center gap-4 ms-auto">
+                    <h4 class="m-0 fw-bold">Total: <span
+                            class="text-success">${{ number_format($total, 2, ',', '.') }}</span></h4>
 
-                        {{-- Formulario para Vaciar Carrito --}}
-                        <form action="{{ route('cart.clear') }}" method="POST" class="form-vaciar m-0">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-danger">
-                                <i class="bi bi-trash3"></i> Vaciar Carrito
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="d-flex align-items-center gap-4 ms-auto">
-                        <h4 class="m-0 fw-bold">Total: <span
-                                class="text-success">${{ number_format($total, 2, ',', '.') }}</span></h4>
-
-                        <form action="{{ route('cart.checkout') }}" method="POST" class="m-0"
-                            onsubmit="return confirm('¿Confirmás la compra de los artículos de tu carrito?');">
-                            @csrf
-                            <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
-                                <i class="bi bi-credit-card-2-back"></i> Finalizar Compra
-                            </button>
-                        </form>
-                    </div>
+                    <form action="{{ route('cart.checkout') }}" method="POST" class="m-0"
+                        onsubmit="return confirm('¿Confirmás la compra de los artículos de tu carrito?');">
+                        @csrf
+                        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
+                            <i class="bi bi-credit-card-2-back"></i> Finalizar Compra
+                        </button>
+                    </form>
                 </div>
             </div>
+        @endif
     </div>
 
+    @include('footer')
+
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-</body>
-
-
-
-</html>
-
-
-
-
-@include('footer')
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
 </html>
