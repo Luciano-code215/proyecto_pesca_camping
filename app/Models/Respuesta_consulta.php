@@ -51,17 +51,14 @@ class Respuesta_consulta extends Model
 
     public static function marcarComoLeidasPorConsultas($consultas)
     {
-        // 1. Validamos que la colección no esté vacía para evitar queries innecesarias
         if (!$consultas || $consultas->isEmpty()) {
             return 0;
         }
 
-        // 2. Extraemos todos los IDs de las consultas recibidas
         $consultaIds = $consultas->pluck('id');
 
-        // 3. Buscamos las respuestas de esas consultas que estén sin leer y las actualizamos
         return self::whereIn('consulta_id', $consultaIds)
-            ->where('leido', false) // Cambiá 'leido' por tu columna real (ej: 'visto')
+            ->where('leido', false)
             ->update(['leido' => true]);
     }
 }

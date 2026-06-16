@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Orden;
 
 class AdminController extends Controller
 {
@@ -22,15 +23,11 @@ class AdminController extends Controller
         User::registrarUser($datosValidados);
 
         return redirect()->back()->with('registrado', 'Administrador creado exitosamente');
-
     }
 
     public function usuarios()
     {
-        // Llamamos a tu método del modelo (devuelve la colección de objetos)
         $usuarios = User::obtenerUsuarios();
-
-        // Pasamos la variable '$usuarios' a la vista
         return view('admin.usuarios', compact('usuarios'));
     }
 
@@ -56,7 +53,10 @@ class AdminController extends Controller
             $usuario->active = !$usuario->active;
             $usuario->save();
 
-            $mensaje = $usuario->active ? "Se ha reactivado el usuario {$usuario->name}." : "Se ha suspendido el usuario {$usuario->name}.";
+            $mensaje = $usuario->active
+                ? "Se ha reactivado el usuario {$usuario->name}."
+                : "Se ha suspendido el usuario {$usuario->name}.";
+
             return redirect()->back()->with('activo_usuario_alternado', $mensaje);
 
         } catch (\Exception $e) {
@@ -72,7 +72,6 @@ class AdminController extends Controller
 
         try {
             $idUsuarioLogueado = auth()->id();
-
             User::actualizarPassword($idUsuarioLogueado, $request->password);
 
             return redirect()->back()->with('contraseña_actualizada', 'Tu contraseña ha sido actualizada con éxito.');
@@ -80,5 +79,29 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error_cambiar_password', 'No se pudo actualizar la contraseña.');
         }
+    }
+
+    public function actualizarEstadoOrden(Request $request, $id)
+    {
+        $estadosValidos = array_keys(Orden::obtenerEstadosDisponibles());
+
+        if (!in_array($request->estado, $estadosValidos)) {
+            return response()->json(['success' => false, 'message' => 'Estado inválido'], 400);
+        }
+
+        $orden = Orden::findOrFail($id);
+
+        if ($request->estado === 'cancelada' && $orden->estado !== 'cancelada') {
+            foreach ($orden->items as $item) {
+                if ($item->producto) {
+                    $item->producto->increment('stock', $item->cantidad);
+                }
+            }
+        }
+
+        $orden->estado = $request->estado;
+        $orden->save();
+
+        return response()->json(['success' => true]);
     }
 }

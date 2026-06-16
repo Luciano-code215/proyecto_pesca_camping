@@ -23,7 +23,6 @@ class Categoria extends Model
 
     public function create()
     {
-        // CAMBIA Categoria::all() POR ESTO:
         $categorias = $this->categoriasActivas();
 
         return view('admin.agregar_producto', compact('categorias'));
@@ -33,7 +32,6 @@ class Categoria extends Model
     {
         $producto = \App\Models\Producto::find($id);
 
-        // ASÍ TAMBIÉN AQUÍ:
         $categorias = \App\Models\Categoria::where('activo', true)->get();
 
         return view('admin.agregar_producto', compact('producto', 'categorias'));

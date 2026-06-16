@@ -94,7 +94,6 @@ class Producto extends Model
         if ($estado === 'inactivos') {
             $query->where('activo', false);
         } elseif ($estado === 'todos') {
-            // No hace nada, trae activos e inactivos
         } else {
             $query->where('activo', true);
         }
@@ -107,7 +106,6 @@ class Producto extends Model
             });
         }
 
-        // 🟢 CORREGIDO: Ahora coincide con el parámetro de la función
         if (!empty($categoria_id)) {
             $query->where('categoria_id', $categoria_id);
         }
@@ -173,7 +171,6 @@ class Producto extends Model
 
     public function itemOrden()
     {
-        // Cambiá 'App\Models\ItemOrder' por el espacio de nombres real de tu modelo de ítems
         return $this->hasMany(\App\Models\ItemOrden::class, 'producto_id');
     }
 
@@ -181,21 +178,6 @@ class Producto extends Model
     {
         return $query->withSum('itemOrden as total_vendido', 'cantidad');
     }
-
-    /*  
-
-
-     public static function crearProducto(array $datos, $archivoImagen = null)
-        {
-            if ($archivoImagen) {
-                $path = $archivoImagen->store('public/productos'); // ESTA LINEA SERIA LA QUE ESTA DIFERENTE EN ESTA FUNCION
-                $datos['url_imagen'] = Storage::url($path);
-            }
-
-            return self::create($datos);
-        }
-    */
-
 
 }
 

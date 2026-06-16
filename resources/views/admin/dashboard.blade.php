@@ -144,7 +144,6 @@
                     @foreach ($topCategorias as $categoria)
                         <tr>
                             <td class="ps-3">
-                                {{-- 🟢 Puestos Dinámicos con diseño condicional --}}
                                 @if ($loop->iteration == 1)
                                     <span class="badge bg-warning text-dark fw-bold fs-6 shadow-sm"><i
                                             class="bi bi-trophy-fill me-1"></i>#1</span>
@@ -154,7 +153,6 @@
                                     <span class="badge bg-danger text-white fw-bold fs-6 shadow-sm"
                                         style="background-color: #cd7f32 !important;">#3</span>
                                 @else
-                                    {{-- Del puesto 4 en adelante se genera el número automático gris clásico --}}
                                     <span
                                         class="badge bg-light text-dark border fw-semibold fs-6">#{{ $loop->iteration }}</span>
                                 @endif

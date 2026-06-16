@@ -21,7 +21,6 @@ class CartController extends Controller
         $producto = Producto::findOrFail($id);
         $cart = session()->get('cart', []);
 
-        // Verificamos si ya hay stock suficiente para sumar 1 más
         $cantidadActual = isset($cart[$id]) ? $cart[$id]['cantidad'] : 0;
 
         if ($cantidadActual + 1 > $producto->stock) {
@@ -35,7 +34,7 @@ class CartController extends Controller
                 "nombre" => $producto->nombre,
                 "cantidad" => 1,
                 "precio" => $producto->precio,
-                "imagen" => $producto->url_imagen // Corregido según tu migración real
+                "imagen" => $producto->url_imagen
             ];
         }
 
@@ -43,35 +42,27 @@ class CartController extends Controller
         return redirect()->back()->with('success', '¡Producto agregado al carrito!');
     }
 
-    // NUEVO MÉTODO: Actualiza cantidades sumando o restando y validando stock
     public function update(Request $request, $id)
     {
-        // FORZAMOS EL ID A ENTERO: Evita que "3" (texto) falle al compararse con 3 (número)
         $id = (int) $id;
 
-        // 1. Buscamos el producto directo en la Base de Datos
         $producto = Producto::findOrFail($id);
         $cart = session()->get('cart', []);
         $accion = $request->input('action');
 
-        // 2. Verificamos si el producto realmente existe en el carrito
         if (array_key_exists($id, $cart) || isset($cart[$id])) {
 
             if ($accion === 'increment') {
 
-                // VALIDACIÓN ESTRICTA DE STOCK
-                // Comparamos el valor actual en el carrito contra el stock real de la BD
                 if ($cart[$id]['cantidad'] >= $producto->stock) {
                     return redirect()->back()->with('error', "No podés sumar más unidades. El stock máximo disponible de {$producto->nombre} es de {$producto->stock} unidades.");
                 }
 
-                // Si pasa la validación, recién ahí incrementamos
                 $cart[$id]['cantidad']++;
 
             } elseif ($accion === 'decrement') {
                 $cart[$id]['cantidad']--;
 
-                // Si la cantidad llega a 0, se elimina de la sesión
                 if ($cart[$id]['cantidad'] <= 0) {
                     unset($cart[$id]);
                     session()->put('cart', $cart);
@@ -79,7 +70,6 @@ class CartController extends Controller
                 }
             }
 
-            // Guardamos los cambios reales en la sesión del usuario
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Cantidad actualizada correctamente.');
         }
@@ -89,16 +79,13 @@ class CartController extends Controller
 
     public function remove($id)
     {
-        // 1. Obtenemos el carrito de la sesión
         $cart = session()->get('cart', []);
 
-        // 2. Si el producto existe en el carrito, lo removemos
         if (isset($cart[$id])) {
             unset($cart[$id]);
             session()->put('cart', $cart);
         }
 
-        // 3. REDIRECCIÓN CLAVE: Volver exactamente a la misma vista (el carrito)
         return redirect()->back()->with('success', 'Producto eliminado del carrito exitosamente.');
     }
     public function clear()
@@ -118,55 +105,41 @@ class CartController extends Controller
         }
 
         try {
-            // Iniciamos la transacción segura
             DB::transaction(function () use ($cart) {
 
-                // 1. Creamos la Orden base (Padre)
                 $orden = new Orden();
-                // Si tenés sistema de usuarios/auth, vinculamos el ID. Si no, usá nulled o el dato de tu app.
                 $orden->user_id = Auth::id();
-                $orden->estado = 'creada'; // Estado inicial de la orden
-                $orden->total = 0.0; // Se iniciará en 0.0 para coincidir con el tipo decimal
+                $orden->estado = 'creada';
+                $orden->total = 0.0;
                 $orden->save();
 
-                // 2. Iteramos los productos del carrito para validar stock y crear los ítems
                 foreach ($cart as $id => $detalles) {
 
-                    // Buscamos el producto con bloqueo de fila para evitar compras simultáneas sin stock
                     $producto = Producto::lockForUpdate()->findOrFail((int) $id);
 
-                    // Doble chequeo de seguridad de stock en el servidor
                     if ($producto->stock < $detalles['cantidad']) {
                         throw new \Exception("Lo sentimos, no hay stock suficiente de {$producto->nombre}. Disponible: {$producto->stock} unidades.");
                     }
 
-                    // 🟢 A. Descontamos del stock real del Producto y guardamos
                     $producto->descontarStock($detalles['cantidad']);
 
 
-                    // 🟢 B. Creamos el renglón del detalle (ItemOrden) vinculado a la orden
                     $item = new ItemOrden();
-                    $item->orden_id = $orden->id; // El ID de la orden que acabamos de crear arriba
+                    $item->orden_id = $orden->id;
                     $item->producto_id = $producto->id;
                     $item->cantidad = $detalles['cantidad'];
 
-                    // Guardamos el precio unitario del momento exacto de la compra (historial)
                     $item->precio_unitario = $detalles['precio'];
 
-                    // Al hacer save(), el evento 'booted' calculará el subtotal 
-                    // y actualizará el 'total' general de la $orden de forma automática.
                     $item->save();
                 }
             });
 
-            // Si la transacción fue exitosa (todo se guardó perfectamente), vaciamos la sesión
             session()->forget('cart');
 
             return redirect()->to('/productosPub')->with('compra_finalizada', '¡Compra finalizada con éxito! Nuestro personal se pondra en contactio al mail ' . Auth::user()->email . ' para coordinar la entrega.');
 
         } catch (\Exception $e) {
-            // Si saltó la excepción de stock o algún fallo de BD, la transacción hace Rollback 
-            // automáticamente: no se crea la orden, ni los ítems, ni se descuenta stock.
             return redirect()->to('/productosPub')->with('compra_error', $e->getMessage());
         }
     }

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\FormConsultasController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\ConsultaController;
 use App\Models\Consulta;
@@ -19,6 +18,8 @@ use App\Models\ItemOrden;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\CartController;
 
+
+////// PUBLICAS  //////
 
 Route::get('/', function () {
     return view('inicio');
@@ -52,7 +53,6 @@ Route::get('/comercializacion', function () {
     return view('comercializacion');
 });
 
-
 Route::get('/quienes_somos', function () {
     return view('quienes_somos');
 });
@@ -60,7 +60,6 @@ Route::get('/quienes_somos', function () {
 Route::get('/terminos_y_usos', function () {
     return view('terminos_y_usos');
 });
-
 
 Route::get('/productosPub', [ProductoController::class, 'indexPub'])->name('productosPub');
 
@@ -72,49 +71,23 @@ Route::get('contacto/form-contacto', function () {
     return view('contacto_cliente');
 })->name('form.contacto');
 
-
-// CARRITO:
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
+Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
 
 
 ///// CLIENTES LOGUEADOS //////
+
 Route::middleware('auth')->group(function () {
 
     Route::get('consultas/form-consultas', function () {
         return view('consulta_cliente');
     })->name('form.consultas');
 
-
     Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
 
-    Route::get('/mis-consultas', function (Request $request) {
-        $consultas = Consulta::buscarPorUsuarioId(auth()->id());
-        if ($request->has('estado') && $request->estado !== 'todos') {
-            $valorEstado = ($request->estado === 'pendientes') ? 'pendiente' : 'respondida';
-            $consultas = $consultas->filter(function ($consulta) use ($valorEstado) {
-                return $consulta->estado === $valorEstado;
-            });
-        }
-
-        Respuesta_consulta::marcarComoLeidasPorConsultas($consultas);
-
-        return view('mis-consultas', compact('consultas'));
-    })->name('mis.consultas');
+    Route::get('/mis-consultas', [ConsultaController::class, 'misConsultas'])->name('mis.consultas');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    ///////////////////////////   Ultima modificacion   //////////////////////////////
     Route::get('/carrito', [CartController::class, 'index'])->name('carrito.index');
 
     Route::post('/carrito/agregar/{id}', [CartController::class, 'add'])->name('cart.add');
@@ -131,18 +104,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
 
-    Route::get('/mis-compras', function () {
-        $ordenes = Orden::obtenerDeUsuarioLogueado();
-        return view('mis_compras', compact('ordenes'));
-    })->name('mis-compras');
+    Route::get('/mis-compras', [ConsultaController::class, 'misCompras'])->name('mis-compras');
 
 });
-
-
-
-////// PUBLICAS  //////    
-
-Route::post('/contacto', [ContactoController::class, 'store'])->name('contacto.store');
 
 
 ////// ADMIN //////
@@ -170,9 +134,7 @@ Route::middleware(['admin'])->group(function () {
     });
 
     Route::get('admin/pedidos', function (Request $request) {
-
         $ordenes = Orden::index($request);
-
         return view('admin.pedidos', compact('ordenes'));
     })->name('admin.pedidos');
 
@@ -222,36 +184,6 @@ Route::middleware(['admin'])->group(function () {
 
     Route::post('/admin/consultas/atender', [ConsultaController::class, 'responder'])->name('admin.consultas.responder');
 
-    Route::post('/admin/ordenes/{id}/actualizar-estado', function (Request $request, $id) {
+    Route::post('/admin/ordenes/{id}/actualizar-estado', [AdminController::class, 'actualizarEstadoOrden'])->name('admin.ordenes.actualizar_estado');
 
-        // Validamos que el estado enviado esté dentro de los permitidos
-        $estadosValidos = array_keys(Orden::obtenerEstadosDisponibles());
-
-        if (!in_array($request->estado, $estadosValidos)) {
-            return response()->json(['success' => false, 'message' => 'Estado inválido'], 400);
-        }
-
-        // Buscamos la orden
-        $orden = Orden::findOrFail($id);
-
-        // 🟢 NUEVO: Si pasa a 'cancelada' y no estaba cancelada antes, devolvemos el stock
-        if ($request->estado === 'cancelada' && $orden->estado !== 'cancelada') {
-
-            // Recorremos los ítems de la orden y sumamos al stock del producto
-            // (Asegurate de que 'items' sea el nombre de tu relación en el modelo Orden)
-            foreach ($orden->items as $item) {
-                if ($item->producto) {
-                    $item->producto->increment('stock', $item->cantidad);
-                }
-            }
-
-        }
-
-        // Actualizamos el estado de la orden y guardamos
-        $orden->estado = $request->estado;
-        $orden->save();
-
-        // Respondemos con éxito a JavaScript
-        return response()->json(['success' => true]);
-    })->name('admin.ordenes.actualizar_estado');
 });

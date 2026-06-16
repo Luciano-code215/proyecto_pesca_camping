@@ -54,10 +54,8 @@
                                 $subtotal = $detalles['precio'] * $detalles['cantidad'];
                                 $total += $subtotal;
 
-                                // Convertimos el ID de la sesión a entero para asegurar que la BD lo encuentre correctamente
                                 $productoBD = \App\Models\Producto::find((int) $id);
 
-                                // Definimos el stock real, si no lo encuentra por las dudas asumimos 0
                                 $stockDisponible = $productoBD ? $productoBD->stock : 0;
                             @endphp
 
@@ -95,7 +93,6 @@
                                             @method('PATCH')
                                             <input type="hidden" name="action" value="increment">
 
-                                            {{-- Si el producto no existe en la BD o la cantidad iguala/supera al stock, el botón se bloquea físicamente --}}
                                             <button type="submit" class="btn btn-sm btn-outline-secondary py-1 px-2"
                                                 @if (!$productoBD || $detalles['cantidad'] >= $stockDisponible) disabled title="Llegaste al límite de stock disponible" @endif>
                                                 +
@@ -143,7 +140,6 @@
                         <h4 class="m-0 fw-bold">Total: <span
                                 class="text-success">${{ number_format($total, 2, ',', '.') }}</span></h4>
 
-                        {{-- Formulario para Finalizar Compra --}}
                         <form action="{{ route('cart.checkout') }}" method="POST" class="m-0"
                             onsubmit="return confirm('¿Confirmás la compra de los artículos de tu carrito?');">
                             @csrf
@@ -164,38 +160,10 @@
 </html>
 
 
-<!--
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <a href="{{ url('/productos') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Seguir Comprando
-                </a>
-                
-                <form action="{{ route('cart.clear') }}" method="POST" class="m-0">
-                       @csrf
-                       <button type="submit" class="btn btn-outline-danger">
-                          <i class="bi bi-trash3"></i> Vaciar Carrito
-                        </button>
-                  </form>
-             </div>
 
 
-                <div class="text-end d-flex align-items-center gap-3">
-                    <h4 class="m-0">Total: <span class="text-success">${{ number_format($total, 2, ',', '.') }}</span></h4>
-                    
-                    {{-- Formulario para Finalizar Compra --}}
-                    <form action="{{ route('cart.checkout') }}" method="POST" onsubmit="return confirm('¿Confirmás la compra de los artículos de tu carrito?');">
-                        @csrf
-                        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
-                            <i class="bi bi-credit-card-2-back"></i> Finalizar Compra
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @endif
-    </div>
-
-    @include('footer')
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+@include('footer')
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
 </html>

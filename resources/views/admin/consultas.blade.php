@@ -180,14 +180,12 @@
                 modalRespuesta.addEventListener('show.bs.modal', function(event) {
                     const button = event.relatedTarget;
 
-                    // Extracción de atributos de datos
                     const id = button.getAttribute('data-id');
                     const asunto = button.getAttribute('data-asunto');
                     const mensaje = button.getAttribute('data-mensaje');
                     const estado = button.getAttribute('data-estado');
                     const respuesta = button.getAttribute('data-respuesta');
 
-                    // Llenado de los campos del modal
                     document.getElementById('modal-consulta-id').value = id;
                     document.getElementById('modal-asunto').textContent = asunto;
                     document.getElementById('modal-mensaje').textContent = mensaje;
@@ -195,15 +193,14 @@
                     const textareaRespuesta = document.getElementById('textarea-respuesta');
                     const btnGuardar = document.getElementById('btn-guardar-respuesta');
 
-                    // 🛑 Validación basada en tu lógica de estado 'respondida'
                     if (estado === 'respondida') {
                         textareaRespuesta.value = respuesta;
-                        textareaRespuesta.readOnly = true; // Bloquea la edición
-                        btnGuardar.style.display = 'none'; // Desaparece el botón de enviar
+                        textareaRespuesta.readOnly = true;
+                        btnGuardar.style.display = 'none';
                     } else {
                         textareaRespuesta.value = '';
-                        textareaRespuesta.readOnly = false; // Habilita la escritura
-                        btnGuardar.style.display = 'block'; // Muestra el botón de enviar
+                        textareaRespuesta.readOnly = false;
+                        btnGuardar.style.display = 'block';
                     }
                 });
             }

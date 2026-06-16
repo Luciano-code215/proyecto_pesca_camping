@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Consulta;
 use App\Models\Respuesta_consulta;
+use App\Models\Orden;
 
 class ConsultaController extends Controller
 {
@@ -12,7 +13,6 @@ class ConsultaController extends Controller
     {
         return view('admin.consultas.create');
     }
-
 
     public function store(Request $request)
     {
@@ -32,6 +32,28 @@ class ConsultaController extends Controller
             'nombre_usuario' => auth()->user()->name,
             'email_usuario' => auth()->user()->email
         ]);
+    }
+
+    public function misConsultas(Request $request)
+    {
+        $consultas = Consulta::buscarPorUsuarioId(auth()->id());
+
+        if ($request->has('estado') && $request->estado !== 'todos') {
+            $valorEstado = ($request->estado === 'pendientes') ? 'pendiente' : 'respondida';
+            $consultas = $consultas->filter(function ($consulta) use ($valorEstado) {
+                return $consulta->estado === $valorEstado;
+            });
+        }
+
+        Respuesta_consulta::marcarComoLeidasPorConsultas($consultas);
+
+        return view('mis-consultas', compact('consultas'));
+    }
+
+    public function misCompras()
+    {
+        $ordenes = Orden::obtenerDeUsuarioLogueado();
+        return view('mis_compras', compact('ordenes'));
     }
 
     public function responder(Request $request)

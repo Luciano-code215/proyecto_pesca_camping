@@ -79,15 +79,13 @@ class Consulta extends Model
 
     public static function tieneConsultasPendientes()
     {
-        // Si el usuario no está logueado, devolvemos false al toque
         if (!auth()->check()) {
             return false;
         }
 
-        // Cuenta si hay mensajes con estado 'pendiente' para este usuario
         return self::where('user_id', auth()->id())
             ->where('estado', 'pendiente')
-            ->exists(); // Devuelve true o false directamente
+            ->exists();
     }
 
     public function scopeBuscarPorUsuarioId($query, $usuarioId)

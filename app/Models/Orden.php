@@ -37,43 +37,32 @@ class Orden extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relación con los renglones (ítems)
     public function items()
     {
         return $this->hasMany(ItemOrden::class, 'orden_id');
     }
 
-    /**
-     * 🟢 Retorna el ID formateado con hash y ceros a la izquierda (Ej: #0003)
-     */
+
     public function obtenerCodigoFormateado()
     {
         return '#' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
     }
 
-    /**
-     * 🟢 Retorna la fecha de creación formateada en estilo Latinoamericano
-     */
+
     public function obtenerFechaFormateada()
     {
         return $this->created_at->format('d/m/Y');
     }
 
-    /**
-     * 🟢 Calcula el total dinámicamente sumando los subtotales de sus ítems
-     * y lo devuelve formateado como moneda con signo pesos.
-     */
+
     public function obtenerTotalMoneda()
     {
-        // Usamos la relación 'items' cargada en memoria y sumamos la columna subtotal
         $totalCalculado = $this->items->sum('subtotal');
         return '$' . number_format($totalCalculado, 0, ',', '.');
     }
 
 
-    /**
-     * 🟢 Retorna el HTML del Badge de envío con sus respectivos iconos de Bootstrap
-     */
+
     public function obtenerBadgeEnvio()
     {
         switch ($this->estado) {
@@ -134,13 +123,10 @@ class Orden extends Model
 
     public function devolverStock()
     {
-        // Recorremos los ítems asociados a esta orden
-        // (Asegurate de que 'items' sea el nombre de tu relación en el modelo Orden)
         foreach ($this->items as $item) {
-            $producto = $item->producto; // Accedemos al producto del ítem
+            $producto = $item->producto;
 
             if ($producto) {
-                // Le sumamos al stock físico la cantidad que se había cancelado
                 $producto->increment('stock', $item->cantidad);
             }
         }

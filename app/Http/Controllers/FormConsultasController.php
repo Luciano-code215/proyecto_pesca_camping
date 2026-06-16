@@ -6,14 +6,13 @@ use Illuminate\Http\Request;
 
 class FormConsultasController extends Controller
 {
-    public function enviarConsulta(Request $request) 
-{
+    public function enviarConsulta(Request $request)
+    {
 
-    // Redirigimos de vuelta con los datos
-    return redirect()->back()->with([
-        'mensaje_exito' => 'Gracias!',
-        'nombre_usuario' => $request->nombre,
-        'email_usuario' => $request->email
-    ]);
-}
+        return redirect()->back()->with([
+            'mensaje_exito' => 'Gracias!',
+            'nombre_usuario' => $request->nombre,
+            'email_usuario' => $request->email
+        ]);
+    }
 }

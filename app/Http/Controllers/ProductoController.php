@@ -16,10 +16,8 @@ class ProductoController extends Controller
         $catId = $request->query('categoria');
         $tipo = $request->query('tipo');
 
-        // A. Traemos TODAS las categorías activas de la BD para armar el menú dinámico
         $categoriasMenu = Categoria::where('activo', true)->get();
 
-        // B. Iniciamos la consulta de productos
         $query = Producto::where('activo', true);
 
         if ($catId) {
@@ -35,7 +33,6 @@ class ProductoController extends Controller
 
         $productosFiltrados = $query->get();
 
-        // C. Lógica de los Breadcrumbs dinámicos basados en BD
         $breadcrumbs = [];
         if ($catId) {
             $categoriaActual = Categoria::find($catId);
@@ -54,10 +51,9 @@ class ProductoController extends Controller
             ];
         }
 
-        // D. Enviamos tanto los productos como las categorías a la vista
         return view('productosPub', [
             'productos' => $productosFiltrados,
-            'categoriasMenu' => $categoriasMenu, // <-- Enviamos la colección de categorías
+            'categoriasMenu' => $categoriasMenu,
             'breadcrumbs' => $breadcrumbs
         ]);
     }
@@ -71,16 +67,13 @@ class ProductoController extends Controller
 
         $estado = $request->get('estado', 'activos');
 
-        // 1. Capturamos el criterio de ordenamiento que viene de la vista
         $orden = $request->query('ordenar');
 
-        // 2. Le pasamos el $orden como cuarto parámetro al método filtrar de tu modelo
         $productos = Producto::filtrar($request->buscar, $request->categoria_id, $estado, $orden);
 
         return view('admin.productos', compact('productos', 'categorias'));
     }
 
-    // Procesa la reactivación lógica
     public function restore($id)
     {
         Producto::reactivarProducto($id);

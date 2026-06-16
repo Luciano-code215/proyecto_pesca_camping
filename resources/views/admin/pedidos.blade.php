@@ -77,7 +77,6 @@
                             <td>{{ $orden->obtenerFechaFormateada() }}</td>
                             <td class="fw-bold text-dark">{{ $orden->obtenerTotalMoneda() }}</td>
                             <td>
-                                {{-- Creamos un array con los estados que bloquean la orden --}}
                                 @php
                                     $estadosFinales = ['cancelada', 'entregada'];
                                 @endphp
@@ -185,7 +184,6 @@
             const selectores = document.querySelectorAll('.selector-estado');
 
             selectores.forEach(select => {
-                // 💡 Guardamos el estado actual en memoria apenas el usuario hace foco en el select
                 let estadoAnterior = select.value;
                 select.addEventListener('focus', function() {
                     estadoAnterior = this.value;
@@ -195,23 +193,19 @@
                     const ordenId = this.getAttribute('data-orden-id');
                     const nuevoEstado = this.value;
 
-                    // 🟢 CARTEL DE CONFIRMACIÓN: Si elige un estado definitivo, preguntamos.
                     if (nuevoEstado === 'cancelada' || nuevoEstado === 'entregada') {
                         const mensaje =
                             `¿Estás seguro de marcar esta orden como ${nuevoEstado.toUpperCase()}? Esta acción NO se puede deshacer.`;
 
-                        // Si el usuario presiona "Cancelar" en el cartelito del navegador:
                         if (!confirm(mensaje)) {
                             this.value =
-                            estadoAnterior; // Revertimos el diseño al estado que tenía antes
-                            return; // 🛑 Frenamos el script acá, no se manda nada al servidor
+                                estadoAnterior;
+                            return;
                         }
                     }
 
-                    // Si aceptó o si eligió otro estado común (ej: "En camino"), el script sigue de largo:
                     select.disabled = true;
 
-                    // Llamada fetch en segundo plano
                     fetch(`/admin/ordenes/${ordenId}/actualizar-estado`, {
                             method: 'POST',
                             headers: {
@@ -229,24 +223,22 @@
 
                                 if (nuevoEstado === 'cancelada' || nuevoEstado ===
                                     'entregada') {
-                                    select.disabled = true;
-                                    // Ya no hace falta el alert de éxito acá porque ya confirmó antes, 
-                                    // pero podés dejarlo si querés asegurar la jugada.
+                                    select.disabled = true;¿
                                 } else {
                                     select.disabled = false;
                                     estadoAnterior =
-                                    nuevoEstado; // Actualizamos el backup del estado
+                                        nuevoEstado;¿
                                 }
 
                             } else {
                                 select.disabled = false;
-                                this.value = estadoAnterior; // Revertimos si falló el servidor
+                                this.value = estadoAnterior;
                                 alert('Hubo un error al actualizar el estado en el servidor.');
                             }
                         })
                         .catch(error => {
                             select.disabled = false;
-                            this.value = estadoAnterior; // Revertimos si se cayó la red
+                            this.value = estadoAnterior;
                             console.error('Error:', error);
                             alert('No se pudo conectar con el servidor.');
                         });

@@ -18,7 +18,6 @@
         @foreach ($categorias as $categoria)
             @if ($categoria->activo)
                 @php
-                    // Usamos un contador manual o el $loop->iteration para que los colores no se salten si hay ocultas
                     $colorActual = $colores[$loop->iteration % count($colores)];
                 @endphp
 

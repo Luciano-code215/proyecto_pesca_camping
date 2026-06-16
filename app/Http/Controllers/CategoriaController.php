@@ -9,7 +9,6 @@ class CategoriaController extends Controller
 {
     public function index()
     {
-        // Traemos TODAS las categorías (Activas y Ocultas) para la gestión interna
         $categorias = Categoria::all();
 
         return view('admin.categorias', compact('categorias'));
@@ -23,7 +22,7 @@ class CategoriaController extends Controller
 
         $categoria = new Categoria();
         $categoria->nombre = $request->nombre;
-        $categoria->activo = true; // Entra siempre visible por defecto
+        $categoria->activo = true;
         $categoria->save();
 
         return redirect()->route('categorias.index')->with('categoria_creada', '¡Categoría creada con éxito!');
@@ -54,7 +53,7 @@ class CategoriaController extends Controller
     public function reactivar($id)
     {
         $categoria = Categoria::findOrFail($id);
-        $categoria->activo = true; // Alta lógica
+        $categoria->activo = true;
         $categoria->save();
 
         return redirect()->route('categorias.index')->with('categoria_reactivada', '¡La categoría vuelve a estar visible!');

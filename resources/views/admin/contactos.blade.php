@@ -179,7 +179,6 @@
                 });
             }
 
-            // 🟢 SISTEMA DE COPIADO CORREGIDO PARA MODALES
             const btnCopiar = document.getElementById('btn-copiar-correo');
             if (btnCopiar) {
                 btnCopiar.addEventListener('click', function() {
@@ -188,20 +187,17 @@
 
                     if (!emailText) return;
 
-                    // Intento 1: API Moderna
                     if (navigator.clipboard && window.isSecureContext) {
                         navigator.clipboard.writeText(emailText)
                             .then(() => darFeedback(this))
                             .catch(() => usarMetodoSeleccion(emailSpan, this));
                     } else {
-                        // Intento 2: Copiado por selección directa del elemento del modal (Falla-safe absoluto)
                         usarMetodoSeleccion(emailSpan, this);
                     }
                 });
             }
 
             function usarMetodoSeleccion(elemento, elementoBoton) {
-                // Creamos una selección sobre el propio texto visible del modal
                 const rango = document.createRange();
                 rango.selectNodeContents(elemento);
 
@@ -210,7 +206,6 @@
                 seleccion.addRange(rango);
 
                 try {
-                    // Ejecutamos el copiado del texto seleccionado
                     const exito = document.execCommand('copy');
                     if (exito) {
                         darFeedback(elementoBoton);
@@ -219,7 +214,6 @@
                     console.error('No se pudo copiar:', err);
                 }
 
-                // Deseleccionamos el texto para que el usuario no lo vea pintado de azul
                 seleccion.removeAllRanges();
             }
 

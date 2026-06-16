@@ -46,7 +46,6 @@
     <div class="card shadow-sm border-0 p-3 mb-4 bg-white">
         <div class="row g-3">
 
-            {{-- 1. Buscador de Texto --}}
             <div class="col-12 col-md-3">
                 <form action="{{ route('productos.index') }}" method="GET">
                     @if (request('categoria_id'))
@@ -67,7 +66,6 @@
                 </form>
             </div>
 
-            {{-- 2. Selector de Categorías --}}
             <div class="col-12 col-md-3">
                 <form action="{{ route('productos.index') }}" method="GET">
                     @if (request('buscar'))
@@ -92,7 +90,6 @@
                 </form>
             </div>
 
-            {{-- 3. Selector de Estado --}}
             <div class="col-12 col-md-3">
                 <form action="{{ route('productos.index') }}" method="GET">
                     @if (request('buscar'))
