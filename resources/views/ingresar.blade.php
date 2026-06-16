@@ -11,6 +11,49 @@
 <body>
     @include('navbar')
 
+    @if (session('email_incorrecto'))
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-3 text-start" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                <div>
+                    <span class="fw-bold">Error de correo:</span> {{ session('email_incorrecto') }}
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session('cuenta_desactivada'))
+        <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm mb-3 text-start" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-person-x-fill fs-4 me-2 text-dark"></i>
+                <div>
+                    <span class="fw-bold">Cuenta Bloqueada:</span> {{ session('cuenta_desactivada') }}
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session('password_incorrecta'))
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-3 text-start" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-shield-lock-fill fs-4 me-2"></i>
+                <div>
+                    <span class="fw-bold">Contraseña errónea:</span> {{ session('password_incorrecta') }}
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-3 text-start" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     @if (session('auth_requiered'))
         <div class="alert alert-warning alert-dismissible fade show border-0 shadow-sm d-flex align-items-center gap-2 mb-4"
             role="alert">
@@ -89,8 +132,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalLoginExitoso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalLoginExitoso" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">

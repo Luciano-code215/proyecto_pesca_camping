@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -33,14 +34,26 @@ class AuthController extends Controller
 
         $remember = $request->filled('remember');
 
-        if (Auth::attempt(['email' => $credenciales['email'], 'password' => $credenciales['password'], 'active' => true], $remember)) {
+        $usuario = User::where('email', $credenciales['email'])->first();
 
-            $request->session()->regenerate();
-
-            return back()->with('success', 'Inicio de sesión exitoso');
+        if (!$usuario) {
+            return back()->with('email_incorrecto', 'El correo electrónico no se encuentra registrado.');
         }
 
-        return back()->with('error', 'Por favor verifica tus credenciales e intenta nuevamente');
+        if (!$usuario->active) {
+            return back()->with('cuenta_desactivada', 'Tu cuenta se encuentra desactivada. Contacta al administrador.');
+        }
+
+        if (!Hash::check($credenciales['password'], $usuario->password)) {
+            return back()->with('password_incorrecta', 'La contraseña introducida es incorrecta.');
+        }
+
+        Auth::login($usuario, $remember);
+
+        $request->session()->regenerate();
+
+        return back()->with('success', 'Inicio de sesión exitoso');
+
     }
 
     public function logout(Request $request)

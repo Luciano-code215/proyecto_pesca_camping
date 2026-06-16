@@ -178,25 +178,23 @@
         </div>
     </div>
 
- <div class="d-flex align-items-center me-3">
-          <a href="/carrito" class="btn btn-outline-light position-relative">
-              <i class="bi bi-cart3 fs-5"></i>
-              
-              {{-- Contador basado en productos diferentes --}}
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {{ session('cart') ? count(session('cart')) : 0 }}
-              </span>
-          </a>
-     </div>
+    <div class="d-flex align-items-center me-3">
+        <a href="/carrito" class="btn btn-outline-light position-relative border-0 p-1">
+            <i class="bi bi-cart-fill fs-3"></i>
 
-   <ul class="navbar-nav flex-row ms-auto">
+            <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 0.65rem;">
+                {{ session('cart') ? count(session('cart')) : 0 }}
+            </span>
+        </a>
+    </div>
+
+    <ul class="navbar-nav flex-row ms-auto">
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-whatsapp"></i></a>
         </li>
         <li class="nav-item me-3">
             <a class="nav-link fs-3" href="/en_construccion"><i class="bi bi-instagram"></i></a>
         </li>
-
-
     </ul>
 </nav>
