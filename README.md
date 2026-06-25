@@ -399,9 +399,10 @@ Editar `.env` con los datos del entorno local:
 ```env
 APP_NAME=Laravel
 APP_ENV=local
-APP_KEY=base64:tsIrxCQm0vHW1d9rsGS96cDmJUKlFwdJ17xlHRZ+LwU=
+APP_KEY=base64:lXfuUao7xpdOYYARo64B0j5K2RzofONO8/ihOCbjt84=
 APP_DEBUG=true
 APP_URL=http://proyecto_pesca_camping.test
+
 APP_LOCALE=en
 APP_FALLBACK_LOCALE=en
 APP_FAKER_LOCALE=en_US
@@ -418,14 +419,14 @@ LOG_STACK=single
 LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug
 
-DB_CONNECTION=sqlite
-# DB_HOST=127.0.0.1
-# DB_PORT=3306
-DB_DATABASE=database/database.sqlite
-# DB_USERNAME=root
-# DB_PASSWORD=
+ DB_CONNECTION=mariadb
+ DB_HOST=127.0.0.1
+ DB_PORT=3306
+ DB_DATABASE=proyecto_pesca_camping
+ DB_USERNAME=root
+ DB_PASSWORD=Abraham9
 
-SESSION_DRIVER=file
+SESSION_DRIVER=database
 SESSION_LIFETIME=120
 SESSION_ENCRYPT=false
 SESSION_PATH=/
@@ -435,7 +436,7 @@ BROADCAST_CONNECTION=log
 FILESYSTEM_DISK=local
 QUEUE_CONNECTION=database
 
-CACHE_STORE=file
+CACHE_STORE=database
 # CACHE_PREFIX=
 
 MEMCACHED_HOST=127.0.0.1
@@ -527,25 +528,10 @@ npm run build
 
 ## 11. Crear un usuario administrador
 
-Opción A — desde Tinker:
+— Ingresar con usuario administrador previamente cargado
 
-```bash
-php artisan tinker
-```
-
-```php
-\App\Models\User::create([
-    'name'     => 'Admin',
-    'email'    => 'admin@goleadorfc.com',
-    'password' => bcrypt('password123'),
-    'role'     => 'admin',
-]);
-```
-
-Opción B — Ingresar con usuario administrador previamente cargado
-
-    'email' => 
-    'password' => 
+    'email' => admin@tienda.com
+    'password' => admin1234
 
 ---
 
